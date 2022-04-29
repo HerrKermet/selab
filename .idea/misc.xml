@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable-v24/circle.xml" value="0.2985" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_welcome.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire__welcome.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__m_d_b_f_.xml" value="0.358695652173913" />
       </map>
     </option>
   </component>

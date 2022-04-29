@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">22B11</string>
+    <string name="questionnaire_Button_Home">Fragebogen</string>
+    <string name="tv_calm">ruhig</string>
+    <string name="tv_uncomfortable">unwohl</string>
+    <string name="tv_comfortable">wohl</string>
+    <string name="tv_relaxed">entspannt</string>
+    <string name="tv_tense">angespannt</string>
+    <string name="tv_energetic">energiegeladen</string>
+    <string name="tv_lacking_energy">energielos</string>
+    <string name="tv_tired">müde</string>
+    <string name="tv_awake">wach</string>
+    <string name="tv_dissatisfied">unzufrieden</string>
+    <string name="tv_satisfied_q1">zufrieden</string>
+    <string name="tv_restless_q1">unruhig</string>
+    <string name="btn_next">Weiter</string>
+    <string name="btn_back">Zurück</string>
+    <string name="question_MDBF">"In den letzten 24 Stunden fühlte ich mich im Durchschnitt… "</string>
+</resources>

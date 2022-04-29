@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">22B11</string>
+    <string name="questionnaire_Button_Home">Questionnaire</string>
+
+    
+    <string name="tv_calm">calm</string>
+    <string name="tv_uncomfortable">uncomfortable</string>
+    <string name="tv_comfortable">comfortable</string>
+    <string name="tv_relaxed">relaxed</string>
+    <string name="tv_tense">tense</string>
+    <string name="tv_energetic">energetic</string>
+    <string name="tv_lacking_energy">lacking energy</string>
+    <string name="tv_tired">tired</string>
+    <string name="tv_awake">awake</string>
+    <string name="tv_dissatisfied">dissatisfied</string>
+    <string name="tv_satisfied_q1">satisfied</string>
+    <string name="tv_restless_q1">restless</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_next">Next</string>
+    <string name="question_MDBF">In the last 24 hours, I felt on average...</string>
+
 </resources>

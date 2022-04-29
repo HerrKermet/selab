@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_1">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_1"
+    app:startDestination="@id/questionnaire_question_MDBF_Fragment">
 
+    <fragment
+        android:id="@+id/questionnaire_Welcome_Fragment"
+        android:name="com.example.a22b11.Questionnaire_Welcome_Fragment"
+        android:label="fragment_questionnaire__welcome"
+        tools:layout="@layout/fragment_questionnaire__welcome" >
+        <action
+            android:id="@+id/action_questionnaire_Welcome_Fragment_Next"
+            app:destination="@id/questionnaire_question_MDBF_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaire_question_MDBF_Fragment"
+        android:name="com.example.a22b11.Questionnaire_question_MDBF_Fragment"
+        android:label="fragment_questionnaire_question__m_d_b_f_"
+        tools:layout="@layout/fragment_questionnaire_question__m_d_b_f_" >
+        <action
+            android:id="@+id/action_questionnaire_question_MDBF_Fragment_Back"
+            app:destination="@id/questionnaire_Welcome_Fragment" />
+    </fragment>
 </navigation>
