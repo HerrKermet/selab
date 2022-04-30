@@ -3,10 +3,13 @@ package com.example.a22b11;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,10 +18,6 @@ import android.view.ViewGroup;
  */
 public class Questionnaire_Welcome_Fragment extends Fragment {
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public Questionnaire_Welcome_Fragment() {
         // Required empty public constructor
@@ -35,6 +34,7 @@ public class Questionnaire_Welcome_Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
@@ -43,4 +43,6 @@ public class Questionnaire_Welcome_Fragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_questionnaire__welcome, container, false);
     }
+
+
 }

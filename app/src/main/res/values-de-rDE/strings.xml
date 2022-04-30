@@ -17,4 +17,12 @@
     <string name="btn_next">Weiter</string>
     <string name="btn_back">Zurück</string>
     <string name="question_MDBF">"In den letzten 24 Stunden fühlte ich mich im Durchschnitt… "</string>
+    <string name="questionnaire_welcome_text">Als Nächstes werden wir Ihnen ein paar Fragen stellen. Das wird nicht lange dauern.</string>
+    <string name="question_Event_Appraisal_item_22">Haben Sie seit der letzten Abfrage eines oder mehrere negative Ereignisse erlebt?\n Wie intensiv war
+das bedeutendste negative Ereignis?</string>
+    <string name="question_Event_Appraisal_item_23">Haben Sie seit der letzten Abfrage eines oder mehrere positive Ereignisse erlebt?\n Wie intensiv war
+das bedeutendste positive Ereignis?</string>
+    <string name="question_Event_Appraisal_no_event">kein Ereignis</string>
+    <string name="question_Event_Appraisal_very_intense">sehr intensiv</string>
+    <string name="btn_Start">Start</string>
 </resources>

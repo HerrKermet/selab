@@ -2,7 +2,7 @@
     <string name="app_name">22B11</string>
     <string name="questionnaire_Button_Home">Questionnaire</string>
 
-    
+
     <string name="tv_calm">calm</string>
     <string name="tv_uncomfortable">uncomfortable</string>
     <string name="tv_comfortable">comfortable</string>
@@ -18,5 +18,13 @@
     <string name="btn_back">Back</string>
     <string name="btn_next">Next</string>
     <string name="question_MDBF">In the last 24 hours, I felt on average...</string>
+    <string name="questionnaire_welcome_text">Next we will ask you a few questions.\n This wont take long.</string>
+    <string name="question_Event_Appraisal_no_event">no event</string>
+    <string name="question_Event_Appraisal_very_intense">very intense</string>
+    <string name="question_Event_Appraisal_item_22">Have you experienced one or more negative events since the last query?\n How intense was the most important negative event?</string>
+    <string name="question_Event_Appraisal_item_23">Have you experienced one or more positive events since the last query?\n How intense was the most important positive event?
+</string>
+    <string name="btn_Start">Start</string>
+
 
 </resources>
