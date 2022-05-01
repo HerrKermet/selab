@@ -31,4 +31,13 @@ das bedeutendste positive Ereignis?</string>
     <string name="question_Social_context_item_25">Wenn Sie an die Personen denken, die Sie gerade umgeben,\n inwiefern trifft folgende Aussage zu? Ich mag diese Leute nicht!</string>
     <string name="not_at_all_true">trifft überhaupt nicht zu</string>
     <string name="completely_true">trifft völlig zu</string>
+    <string-array name="social_situation_list">
+        <item>auswählen</item>
+        <item>Lebenspartner*in</item>
+        <item>Familie</item>
+        <item>Freunde</item>
+        <item>Arbeitskolleg*innen</item>
+        <item>Fremde</item>
+    </string-array>
+    <string name="question_Social_situation_question">Von welchen Menschen sind Sie momentan umgeben?</string>
 </resources>

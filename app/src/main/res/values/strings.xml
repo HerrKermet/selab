@@ -31,6 +31,15 @@
     <string name="question_Social_context_item_25">When you think of the people you are surrounded, how does the following statement apply?\n I do not like these people!</string>
     <string name="not_at_all_true">not at all true</string>
     <string name="completely_true">completely true</string>
+    <string-array name="social_situation_list">
+        <item>select</item>
+        <item>Life partner</item>
+        <item>Family</item>
+        <item>Friends</item>
+        <item>Work colleagues</item>
+        <item>Strangers</item>
+    </string-array>
+    <string name="question_Social_situation_question">What kind of people are you surrounded by at the moment?</string>
 
 
 </resources>

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -80,15 +79,35 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         RadioButton rb_btn_item_24 = findViewById(R.id.rBtn_item_24_no);
 
         // if answer to item 24 is no then skip Social_situation question
-        if (rb_btn_item_24.isChecked()) question_progress_dict.put("question_Social_situation",true);
-        else question_progress_dict.put("question_Social_situation",false);
-        updateQuestionProgessBar();
-        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next);
+        if (rb_btn_item_24.isChecked()) {
+            question_progress_dict.put("question_Social_situation",true);
+            updateQuestionProgessBar();
+            Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next_skip);
+        }
+
+        else {
+            question_progress_dict.put("question_Social_situation", false);
+            updateQuestionProgessBar();
+            Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next);
+        }
     }
     public void onBtnBackClick_question_Social_context(View view) {
         //set array at question index to true on button next
 
-        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Back);
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next);
+    }
+
+    public void onBtnNextClick_question_Social_situation(View view) {
+        //set dict at question index to true on button next
+        question_progress_dict.put("question_Social_situation",true);
+
+        updateQuestionProgessBar();
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_situation_Fragment_Next);
+    }
+    public void onBtnBackClick_question_Social_situation(View view) {
+        //set array at question index to true on button next
+
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_situation_Fragment_Back);
     }
 
 

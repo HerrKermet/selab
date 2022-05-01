@@ -42,7 +42,7 @@ public class Questionnaire_question_Social_context_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_questionnaire_question__social_situation_, container, false);
+        return inflater.inflate(R.layout.fragment_questionnaire_question__social_context_, container, false);
     }
 
     @Override
