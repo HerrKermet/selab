@@ -40,6 +40,19 @@
         <item>Strangers</item>
     </string-array>
     <string name="question_Social_situation_question">What kind of people are you surrounded by at the moment?</string>
+    <string-array name="context_list">
+        <item>select</item>
+        <item>Home</item>
+        <item>Work</item>
+        <item>Sport</item>
+        <item>other hobby</item>
+        <item>shopping</item>
+        <item>visit</item>
+        <item>other</item>
+    </string-array>
+    <string name="question_context_question">Where are you right now?</string>
+    <string name="question_selbstwert_question_1">At present I am satisfied with myself</string>
+    <string name="question_selbstwert_question_2">At the moment I consider myself a failure</string>
 
 
 </resources>

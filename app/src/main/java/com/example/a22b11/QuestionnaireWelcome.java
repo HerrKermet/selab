@@ -23,7 +23,6 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         updateQuestionProgessBar();
 
-
     }
 
 
@@ -72,7 +71,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Event_Appraisal_Fragment_Next);
     }
     public void onBtnBackClick_question_Event_Appraisal(View view) {
-        //set array at question index to true on button next
+
 
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Event_Appraisal_Fragment_Back);
     }
@@ -96,7 +95,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         }
     }
     public void onBtnBackClick_question_Social_context(View view) {
-        //set array at question index to true on button next
+
 
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next);
     }
@@ -112,6 +111,32 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         //set array at question index to true on button next
 
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_situation_Fragment_Back);
+    }
+
+    public void onBtnNextClick_question_Context(View view) {
+        //set dict at question index to true on button next
+        question_progress_dict.put("question_Context",true);
+
+        updateQuestionProgessBar();
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Next);
+    }
+    public void onBtnBackClick_question_Context(View view) {
+
+
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Back);
+    }
+
+    public void onBtnNextClick_question_Selbstwert(View view) {
+        //set dict at question index to true on button next
+        question_progress_dict.put("question_Selbstwert",true);
+
+        updateQuestionProgessBar();
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Selbstwert_Fragment_Next);
+    }
+    public void onBtnBackClick_question_Selbstwert(View view) {
+
+
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Selbstwert_Fragment_Back);
     }
 
 

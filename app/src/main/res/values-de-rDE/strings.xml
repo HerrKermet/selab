@@ -40,4 +40,17 @@ das bedeutendste positive Ereignis?</string>
         <item>Fremde</item>
     </string-array>
     <string name="question_Social_situation_question">Von welchen Menschen sind Sie momentan umgeben?</string>
+    <string-array name="context_list">
+        <item>auswählen</item>
+        <item>Zuhause</item>
+        <item>Arbeit</item>
+        <item>Sport</item>
+        <item>sonstiges Hobby</item>
+        <item>Einkaufen</item>
+        <item>Besuch</item>
+        <item>Sonstiges</item>
+    </string-array>
+    <string name="question_context_question">Wo befinden Sie sich grade?</string>
+    <string name="question_selbstwert_question_2">"Im Augenblick halte ich mich für einen Versager "</string>
+    <string name="question_selbstwert_question_1">"Gegenwärtig bin ich mit mir selbst zufrieden "</string>
 </resources>

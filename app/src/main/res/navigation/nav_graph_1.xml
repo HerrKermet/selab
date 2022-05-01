@@ -85,7 +85,7 @@
         tools:layout="@layout/fragment_questionnaire_question__social_situation_" >
         <action
             android:id="@+id/action_questionnaire_question_Social_situation_Fragment_Next"
-            app:destination="@id/questionnaire_Welcome_Fragment"
+            app:destination="@id/questionnaire_question_Context"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -93,6 +93,46 @@
         <action
             android:id="@+id/action_questionnaire_question_Social_situation_Fragment_Back"
             app:destination="@id/questionnaire_question_Social_context_Fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaire_question_Context"
+        android:name="com.example.a22b11.Questionnaire_question_Context_Fragment"
+        android:label="fragment_questionnaire_question__context"
+        tools:layout="@layout/fragment_questionnaire_question__context" >
+        <action
+            android:id="@+id/action_questionnaire_question_Context_Back"
+            app:destination="@id/questionnaire_question_Social_situation_Fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_questionnaire_question_Context_Next"
+            app:destination="@id/questionnaire_question_Selbstwert_Fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaire_question_Selbstwert_Fragment"
+        android:name="com.example.a22b11.Questionnaire_question_Selbstwert_Fragment"
+        android:label="fragment_questionnaire_question__selbstwert_"
+        tools:layout="@layout/fragment_questionnaire_question__selbstwert_" >
+        <action
+            android:id="@+id/action_questionnaire_question_Selbstwert_Fragment_Back"
+            app:destination="@id/questionnaire_question_Context"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_questionnaire_question_Selbstwert_Fragment_Next"
+            app:destination="@id/questionnaire_Welcome_Fragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
