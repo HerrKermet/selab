@@ -25,4 +25,10 @@ das bedeutendste positive Ereignis?</string>
     <string name="question_Event_Appraisal_no_event">kein Ereignis</string>
     <string name="question_Event_Appraisal_very_intense">sehr intensiv</string>
     <string name="btn_Start">Start</string>
+    <string name="question_Social_context_item_24">Sind Sie im Moment alleine?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="question_Social_context_item_25">Wenn Sie an die Personen denken, die Sie gerade umgeben,\n inwiefern trifft folgende Aussage zu? Ich mag diese Leute nicht!</string>
+    <string name="not_at_all_true">trifft überhaupt nicht zu</string>
+    <string name="completely_true">trifft völlig zu</string>
 </resources>

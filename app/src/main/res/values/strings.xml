@@ -25,6 +25,12 @@
     <string name="question_Event_Appraisal_item_23">Have you experienced one or more positive events since the last query?\n How intense was the most important positive event?
 </string>
     <string name="btn_Start">Start</string>
+    <string name="question_Social_context_item_24">Are you alone now?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="question_Social_context_item_25">When you think of the people you are surrounded, how does the following statement apply?\n I do not like these people!</string>
+    <string name="not_at_all_true">not at all true</string>
+    <string name="completely_true">completely true</string>
 
 
 </resources>
