@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">22B11</string>
     <string name="questionnaire_Button_Home">Questionnaire</string>
-    <string name="bonjour">test</string>
+
 
     <string name="tv_calm">calm</string>
     <string name="tv_uncomfortable">uncomfortable</string>
@@ -54,6 +54,7 @@
     <string name="question_selbstwert_question_1">At present I am satisfied with myself</string>
     <string name="question_selbstwert_question_2">At the moment I consider myself a failure</string>
     <string name="testitest">testitest</string>
+    <string name="tester">tester</string>
     <string name="test123">test</string>
 
 </resources>
