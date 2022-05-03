@@ -79,7 +79,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     public void onBtnNextClick_question_Social_context(View view) {
         //set dict at question index to true on button next
         question_progress_dict.put("question_Social_context",true);
-        RadioButton rb_btn_item_24 = findViewById(R.id.rBtn_item_24_no);
+        RadioButton rb_btn_item_24 = findViewById(R.id.rBtn_item_24_yes);
 
         // if answer to item 24 is no then skip Social_situation question
         if (rb_btn_item_24.isChecked()) {
