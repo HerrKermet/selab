@@ -15,6 +15,7 @@ import java.util.Map;
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
     public Map<String,Boolean> question_progress_dict = new HashMap<>();
+    public boolean social_situation_is_skipped = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +28,8 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
     private int getQuestionCount() {
-        //set this value to number of questions
-        int questionCount = 8;
+        //TODO set this value to number of questions
+        int questionCount = 7;
         return questionCount;
     }
 
@@ -43,6 +44,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         }
 
         pb.setProgress(progress);
+        pb.setMax(getQuestionCount());
         double progress_percent = (double) progress / (double) getQuestionCount() * 100;
         tv.setText((int)progress_percent+"%");
     }
@@ -81,15 +83,17 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         question_progress_dict.put("question_Social_context",true);
         RadioButton rb_btn_item_24 = findViewById(R.id.rBtn_item_24_yes);
 
-        // if answer to item 24 is no then skip Social_situation question
+        // if answer to item 24 is yes then skip Social_situation question
         if (rb_btn_item_24.isChecked()) {
             question_progress_dict.put("question_Social_situation",true);
+            social_situation_is_skipped = true;
             updateQuestionProgessBar();
             Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next_skip);
         }
 
         else {
             question_progress_dict.put("question_Social_situation", false);
+            social_situation_is_skipped = false;
             updateQuestionProgessBar();
             Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next);
         }
@@ -110,6 +114,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     public void onBtnBackClick_question_Social_situation(View view) {
         //set array at question index to true on button next
 
+
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_situation_Fragment_Back);
     }
 
@@ -121,9 +126,12 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Next);
     }
     public void onBtnBackClick_question_Context(View view) {
-
-
-        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Back);
+        if (social_situation_is_skipped) {
+            Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Back_Skip);
+        }
+        else {
+            Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Back);
+        }
     }
 
     public void onBtnNextClick_question_Selbstwert(View view) {
@@ -137,6 +145,20 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Selbstwert_Fragment_Back);
+    }
+
+    public void onBtnNextClick_question_Impulsivitaet(View view) {
+        //set dict at question index to true on button next
+        question_progress_dict.put("question_Impulsivitaet",true);
+
+        updateQuestionProgessBar();
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Impulsivitaet_Fragment_Next);
+        System.out.println(question_progress_dict);
+    }
+    public void onBtnBackClick_question_Impulsivitaet(View view) {
+
+
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Impulsivitaet_Fragment_Back);
     }
 
 

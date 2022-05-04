@@ -53,8 +53,8 @@
     <string name="question_context_question">Where are you right now?</string>
     <string name="question_selbstwert_question_1">At present I am satisfied with myself</string>
     <string name="question_selbstwert_question_2">At the moment I consider myself a failure</string>
-    <string name="testitest">testitest</string>
-    <string name="tester">tester</string>
-    <string name="test123">test</string>
+    <string name="question_Impulsivitaet_1">Since the last query, I have acted impulsively, i.e., I have acted without thinking about possible consequences</string>
+    <string name="question_Impulsivitaet_2">Since the last query, I have behaved in an angry or aggressive manner towards another person, which
+which I felt sorry for afterwards</string>
 
 </resources>
