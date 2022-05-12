@@ -101,7 +101,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     public void onBtnBackClick_question_Social_context(View view) {
 
 
-        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next);
+        Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Back);
     }
 
     public void onBtnNextClick_question_Social_situation(View view) {
@@ -126,6 +126,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Next);
     }
     public void onBtnBackClick_question_Context(View view) {
+        System.out.println(social_situation_is_skipped);
         if (social_situation_is_skipped) {
             Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Back_Skip);
         }
