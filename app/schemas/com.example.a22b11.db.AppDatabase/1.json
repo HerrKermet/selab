@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "09a1b39457840515f845bfa8ece69216",
+    "identityHash": "2090a0ba87a5054a1fddf7ccf8ea8a9d",
     "entities": [
       {
         "tableName": "users",
@@ -41,12 +41,160 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "activities",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER NOT NULL, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isModified",
+            "columnName": "is_modified",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastModification",
+            "columnName": "last_modification",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "start",
+            "columnName": "start",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "end",
+            "columnName": "end",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "moods",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER NOT NULL, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `assessment` INTEGER NOT NULL, `satisfaction` INTEGER NOT NULL, `calmness` INTEGER NOT NULL, `comfort` INTEGER NOT NULL, `relaxation` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `wakefulness` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isModified",
+            "columnName": "is_modified",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastModification",
+            "columnName": "last_modification",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "assessment",
+            "columnName": "assessment",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "satisfaction",
+            "columnName": "satisfaction",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calmness",
+            "columnName": "calmness",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comfort",
+            "columnName": "comfort",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "relaxation",
+            "columnName": "relaxation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "energy",
+            "columnName": "energy",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wakefulness",
+            "columnName": "wakefulness",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '09a1b39457840515f845bfa8ece69216')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2090a0ba87a5054a1fddf7ccf8ea8a9d')"
     ]
   }
 }
