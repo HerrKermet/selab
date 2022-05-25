@@ -10,7 +10,7 @@ import java.time.Instant;
 public class Mood {
     public Mood (
             long userId,
-            int assessment,
+            Instant assessment,
             int satisfaction,
             int calmness,
             int comfort,
@@ -46,7 +46,7 @@ public class Mood {
     @ColumnInfo(name = "last_modification")
     public Instant lastModification;
 
-    public int assessment;
+    public Instant assessment;
 
     public int satisfaction;
 

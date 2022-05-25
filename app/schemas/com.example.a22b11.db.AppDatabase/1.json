@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2090a0ba87a5054a1fddf7ccf8ea8a9d",
+    "identityHash": "162e1be9a93ce4526092d4dbf0b54251",
     "entities": [
       {
         "tableName": "users",
@@ -106,7 +106,7 @@
       },
       {
         "tableName": "moods",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER NOT NULL, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `assessment` INTEGER NOT NULL, `satisfaction` INTEGER NOT NULL, `calmness` INTEGER NOT NULL, `comfort` INTEGER NOT NULL, `relaxation` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `wakefulness` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER NOT NULL, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `assessment` INTEGER, `satisfaction` INTEGER NOT NULL, `calmness` INTEGER NOT NULL, `comfort` INTEGER NOT NULL, `relaxation` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `wakefulness` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -142,7 +142,7 @@
             "fieldPath": "assessment",
             "columnName": "assessment",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "satisfaction",
@@ -194,7 +194,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2090a0ba87a5054a1fddf7ccf8ea8a9d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '162e1be9a93ce4526092d4dbf0b54251')"
     ]
   }
 }
