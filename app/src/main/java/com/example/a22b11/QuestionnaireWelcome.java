@@ -4,13 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.db.Mood;
+import com.example.a22b11.db.MoodDao;
+import com.example.a22b11.db.User;
+import com.example.a22b11.db.UserDao;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
@@ -28,7 +41,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
     private int getQuestionCount() {
-        //TODO set this value to number of questions
+        //TODO set this value to number of questions or make it dynamic
         int questionCount = 7;
         return questionCount;
     }
@@ -50,7 +63,76 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     }
 
 
-    public void onBtnNextClick_Questionnaire_Welcome_Fragment(View view) {
+    public void onBtnNextClick_Questionnaire_Welcome_Fragment(View view) throws ExecutionException, InterruptedException {
+        //TODO Delete test code
+        // Begin of testcode
+        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+
+        // create and add test mood
+        MoodDao moodDao = db.moodDao();
+        Mood mood1 = new Mood(1,Instant.now(), 10, 10, 10 ,5,10, 1);
+
+        ListenableFuture<Void> moodinsert = moodDao.insert(mood1);
+
+        List<Mood> moodList;
+        ListenableFuture<List<Mood>> futuremood = moodDao.getAll();
+        Futures.addCallback(
+                futuremood,
+                new FutureCallback<List<Mood>>() {
+                    @Override
+                    public void onSuccess(List<Mood> result) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
+        moodList = futuremood.get();
+        System.out.println("Moods:" + moodList);
+
+
+        //create and add test user
+        UserDao userDao = db.userDao();
+        User user = new User(1, Instant.now(),"test123");
+        User user2 = new User(2,Instant.now(),"hello");
+        ListenableFuture<Void> future = userDao.insertAll(user,user2);
+
+
+        // get test user from Database
+        List<User> userlist;
+        ListenableFuture<List<User>> future2 = userDao.getAll();
+        Futures.addCallback(
+                future2,
+                new FutureCallback<List<User>>() {
+
+
+                    @Override
+                    public void onSuccess(List<User> result) {
+
+                    }
+
+                    public void onFailure(Throwable thrown) {
+                        // handle failure
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
+        userlist = future2.get();
+        System.out.println(userlist.get(0).password);
+
+        // End of Testcode
+
+
+
+
+
+
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_Welcome_Fragment_Next);
     }
 
