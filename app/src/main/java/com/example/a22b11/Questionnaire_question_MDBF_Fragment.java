@@ -74,17 +74,17 @@ public class Questionnaire_question_MDBF_Fragment extends Fragment {
 
         ArrayList<SeekBar> seekBarArrayList = new ArrayList<>();
 
-        SeekBar sb7 = view.findViewById(R.id.seekBar7);
+        SeekBar sb7 = view.findViewById(R.id.seekBar_m_d_b_f_satisfied);
         seekBarArrayList.add(sb7);
-        SeekBar sb8 = view.findViewById(R.id.seekBar8);
+        SeekBar sb8 = view.findViewById(R.id.seekBar_m_d_b_f_calm);
         seekBarArrayList.add(sb8);
-        SeekBar sb9 = view.findViewById(R.id.seekBar9);
+        SeekBar sb9 = view.findViewById(R.id.seekBar_m_d_b_f_comfortable);
         seekBarArrayList.add(sb9);
-        SeekBar sb10 = view.findViewById(R.id.seekBar10);
+        SeekBar sb10 = view.findViewById(R.id.seekBar_m_d_b_f_relaxed);
         seekBarArrayList.add(sb10);
-        SeekBar sb11 = view.findViewById(R.id.seekBar11);
+        SeekBar sb11 = view.findViewById(R.id.seekBar_m_d_b_f_energetic);
         seekBarArrayList.add(sb11);
-        SeekBar sb12 = view.findViewById(R.id.seekBar12);
+        SeekBar sb12 = view.findViewById(R.id.seekBar_m_d_b_f_awake);
         seekBarArrayList.add(sb12);
 
         SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {

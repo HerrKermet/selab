@@ -67,7 +67,7 @@
             android:layout_height="wrap_content">
 
             <SeekBar
-                android:id="@+id/seekBar_Selbstwert2"
+                android:id="@+id/seekBar_Selbstwert_failure"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                 android:progress="0"
                 android:progressTint="@color/purple_500"
                 android:thumbTint="@color/purple_500"
-                app:layout_constraintStart_toStartOf="@+id/seekBar_Selbstwert"
+                app:layout_constraintStart_toStartOf="@+id/seekBar_Selbstwert_satisfied"
                 app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
             <TextView
@@ -92,7 +92,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <SeekBar
-                android:id="@+id/seekBar_Selbstwert"
+                android:id="@+id/seekBar_Selbstwert_satisfied"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -113,10 +113,10 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/not_at_all_true"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert"
-                app:layout_constraintEnd_toStartOf="@+id/seekBar_Selbstwert"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert_satisfied"
+                app:layout_constraintEnd_toStartOf="@+id/seekBar_Selbstwert_satisfied"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert" />
+                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert_satisfied" />
 
             <TextView
                 android:id="@+id/textView24"
@@ -126,10 +126,10 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/completely_true"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert_satisfied"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/seekBar_Selbstwert"
-                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert" />
+                app:layout_constraintStart_toEndOf="@+id/seekBar_Selbstwert_satisfied"
+                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert_satisfied" />
 
             <TextView
                 android:id="@+id/textView25"
@@ -141,7 +141,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seekBar_Selbstwert" />
+                app:layout_constraintTop_toBottomOf="@+id/seekBar_Selbstwert_satisfied" />
 
             <TextView
                 android:id="@+id/textView26"
@@ -151,10 +151,10 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/not_at_all_true"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert2"
-                app:layout_constraintEnd_toStartOf="@+id/seekBar_Selbstwert2"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert_failure"
+                app:layout_constraintEnd_toStartOf="@+id/seekBar_Selbstwert_failure"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert2"
+                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert_failure"
                 app:layout_constraintVertical_bias="1.0" />
 
             <TextView
@@ -165,10 +165,10 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/completely_true"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert2"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBar_Selbstwert_failure"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/seekBar_Selbstwert2"
-                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert2" />
+                app:layout_constraintStart_toEndOf="@+id/seekBar_Selbstwert_failure"
+                app:layout_constraintTop_toTopOf="@+id/seekBar_Selbstwert_failure" />
 
             <View
                 android:id="@+id/divider3"
@@ -179,7 +179,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textView25"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seekBar_Selbstwert" />
+                app:layout_constraintTop_toBottomOf="@+id/seekBar_Selbstwert_satisfied" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

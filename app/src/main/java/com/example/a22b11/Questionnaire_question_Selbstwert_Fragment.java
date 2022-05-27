@@ -47,8 +47,8 @@ public class Questionnaire_question_Selbstwert_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SeekBar sb = view.findViewById(R.id.seekBar_Selbstwert);
-        SeekBar sb2 = view.findViewById(R.id.seekBar_Selbstwert2);
+        SeekBar sb = view.findViewById(R.id.seekBar_Selbstwert_satisfied);
+        SeekBar sb2 = view.findViewById(R.id.seekBar_Selbstwert_failure);
 
 
 

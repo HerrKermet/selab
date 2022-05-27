@@ -1,9 +1,12 @@
 package com.example.a22b11;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.navigation.Navigation;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -19,7 +22,9 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -29,16 +34,39 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
     public Map<String,Boolean> question_progress_dict = new HashMap<>();
     public boolean social_situation_is_skipped = false;
+    FragmentContainerView fragmentContainerView;
+    ProgressBar progressBar;
+    TextView textViewProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire_welcome);
+        fragmentContainerView = findViewById(R.id.fragmentContainerView);
+        progressBar = findViewById(R.id.progressBarCircular);
+        textViewProgressBar = findViewById(R.id.tv_progressBar_circular);
+
 
         updateQuestionProgessBar();
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        int currentQuestionId = fragmentContainerView.getFragment().getId();
+        outState.putSerializable("question_progress", (Serializable) question_progress_dict);
+        outState.putInt("currentQuestion",currentQuestionId);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        fragmentContainerView.setId(savedInstanceState.getInt("currentQuestion"));
+        question_progress_dict = (Map<String, Boolean>) savedInstanceState.getSerializable("question_progress");
+        updateQuestionProgessBar();
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     private int getQuestionCount() {
         //TODO set this value to number of questions or make it dynamic

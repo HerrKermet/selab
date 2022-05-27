@@ -50,7 +50,7 @@ public class Questionnaire_question_Social_context_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        SeekBar sb = view.findViewById(R.id.sb_item_25);
+        SeekBar sb = view.findViewById(R.id.seekBar_social_context_1);
 
 
 
