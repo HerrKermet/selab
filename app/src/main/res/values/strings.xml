@@ -56,5 +56,6 @@
     <string name="question_Impulsivitaet_1">Since the last query, I have acted impulsively, i.e., I have acted without thinking about possible consequences</string>
     <string name="question_Impulsivitaet_2">Since the last query, I have behaved in an angry or aggressive manner towards another person, which
 which I felt sorry for afterwards</string>
+    <string name="finish">Finish</string>
 
 </resources>

@@ -166,10 +166,15 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_questionnaire_question_Impulsivitaet_Fragment_Next"
-            app:destination="@id/questionnaire_Welcome_Fragment"
+            app:destination="@id/questionnaire_Finished"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+    <activity
+        android:id="@+id/questionnaire_Finished"
+        android:name="com.example.a22b11.Questionnaire_Finished"
+        android:label="activity_questionnaire_finished"
+        tools:layout="@layout/activity_questionnaire_finished" />
 </navigation>
