@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.navigation.Navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -33,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
     public Map<String,Boolean> question_progress_dict = new HashMap<>();
+    public Map<String,Integer> question_answers = new HashMap<>();
     public boolean social_situation_is_skipped = false;
     FragmentContainerView fragmentContainerView;
     ProgressBar progressBar;
@@ -270,6 +272,12 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Impulsivitaet_Fragment_Back);
+    }
+
+    //TODO change MainActivity to latest activity before Questionnaire was opened
+    public void onBtnFinishClick (View view) {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 
 

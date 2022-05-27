@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Questionnaire_Finished">
+    tools:context=".Questionnaire_Finished_fragment"
+    android:id="@+id/frameLayout">
 
     <Button
-        android:id="@+id/button17"
+        android:id="@+id/button18"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_marginBottom="40dp"
@@ -17,10 +18,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_conversion_absoluteHeight="100dp"
+        tools:layout_conversion_absoluteWidth="200dp" />
 
     <TextView
-        android:id="@+id/textView28"
+        android:id="@+id/textView30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -29,16 +32,21 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="27dp"
+        tools:layout_conversion_absoluteWidth="281dp" />
 
     <TextView
-        android:id="@+id/textView29"
+        android:id="@+id/textView31"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="QUESTIONNAIRE DONE MESSAGE"
-        app:layout_constraintBottom_toTopOf="@+id/button17"
+        app:layout_constraintBottom_toTopOf="@+id/button18"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+        app:layout_constraintTop_toBottomOf="@+id/textView30"
+        tools:layout_conversion_absoluteHeight="19dp"
+        tools:layout_conversion_absoluteWidth="214dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
