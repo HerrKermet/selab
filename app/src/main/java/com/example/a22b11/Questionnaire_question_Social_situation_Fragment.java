@@ -2,11 +2,15 @@ package com.example.a22b11;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,7 +18,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Questionnaire_question_Social_situation_Fragment extends Fragment {
-
+    Button btnBack, btnNext;
 
     public Questionnaire_question_Social_situation_Fragment() {
         // Required empty public constructor
@@ -39,4 +43,33 @@ public class Questionnaire_question_Social_situation_Fragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_questionnaire_question__social_situation_, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnBack = getView().findViewById(R.id.button8);
+        btnNext = getView().findViewById(R.id.button7);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //set dict at question index to true on button next
+                QuestionnaireWelcome.question_progress_dict.put("question_Social_situation",true);
+
+                ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_situation_Fragment_Next);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_situation_Fragment_Back);
+
+            }
+        });
+
+    }
+
+
 }

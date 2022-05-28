@@ -5,10 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SeekBar;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class Questionnaire_question_Event_Appraisal_Fragment extends Fragment {
-
+    Button btnBack, btnNext;
 
 
     public Questionnaire_question_Event_Appraisal_Fragment() {
@@ -78,5 +80,26 @@ public class Questionnaire_question_Event_Appraisal_Fragment extends Fragment {
             sb.setOnSeekBarChangeListener(listener);
             sb.getThumb().setAlpha(0);
         }
+
+        btnNext = getView().findViewById(R.id.button4);
+        btnBack = getView().findViewById(R.id.button5);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //set dict at question index to true on button next
+                QuestionnaireWelcome.question_progress_dict.put("question_Event_Appraisal",true);
+                ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Event_Appraisal_Fragment_Next);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Event_Appraisal_Fragment_Back);
+            }
+        });
+
     }
 }

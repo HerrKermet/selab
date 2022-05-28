@@ -5,10 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 
 /**
@@ -17,7 +20,8 @@ import android.widget.SeekBar;
  * create an instance of this fragment.
  */
 public class Questionnaire_question_Social_context_Fragment extends Fragment {
-
+    Button btnBack, btnNext;
+    RadioButton rb_btn_item_24;
 
 
     public Questionnaire_question_Social_context_Fragment() {
@@ -75,5 +79,44 @@ public class Questionnaire_question_Social_context_Fragment extends Fragment {
         sb.setOnSeekBarChangeListener(listener);
         sb.getThumb().setAlpha(0);
 
+        btnBack = getView().findViewById(R.id.button6);
+        btnNext = getView().findViewById(R.id.button2);
+        rb_btn_item_24 = view.findViewById(R.id.rBtn_item_24_yes);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //set dict at question index to true on button next
+                QuestionnaireWelcome.question_progress_dict.put("question_Social_context",true);
+
+
+                // if answer to item 24 is yes then skip Social_situation question
+                if (rb_btn_item_24.isChecked()) {
+                    QuestionnaireWelcome.question_progress_dict.put("question_Social_situation",true);
+                    QuestionnaireWelcome.social_situation_is_skipped = true;
+                    ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
+                    Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next_skip);
+                }
+
+                else {
+                    QuestionnaireWelcome.question_progress_dict.put("question_Social_situation", false);
+                    QuestionnaireWelcome.social_situation_is_skipped = false;
+                    ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
+                    Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Next);
+                }
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_context_Fragment_Back);
+            }
+        });
+
     }
+
+
+
+
 }

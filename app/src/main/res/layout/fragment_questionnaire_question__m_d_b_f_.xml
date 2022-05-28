@@ -310,7 +310,6 @@
             android:id="@+id/button16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onBtnNextClick_question_MDBF_Fragment"
             android:text="@string/btn_next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

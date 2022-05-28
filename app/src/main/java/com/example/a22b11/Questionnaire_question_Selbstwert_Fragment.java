@@ -5,10 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SeekBar;
 
 /**
@@ -17,7 +19,7 @@ import android.widget.SeekBar;
  * create an instance of this fragment.
  */
 public class Questionnaire_question_Selbstwert_Fragment extends Fragment {
-
+    Button btnBack, btnNext;
 
 
     public Questionnaire_question_Selbstwert_Fragment() {
@@ -75,5 +77,29 @@ public class Questionnaire_question_Selbstwert_Fragment extends Fragment {
 
         sb2.setOnSeekBarChangeListener(listener);
         sb2.getThumb().setAlpha(0);
+
+        btnBack = getView().findViewById(R.id.button12);
+        btnNext = getView().findViewById(R.id.button11);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QuestionnaireWelcome.question_progress_dict.put("question_Selbstwert",true);
+
+                ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Selbstwert_Fragment_Next);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Selbstwert_Fragment_Back);
+
+            }
+        });
+
     }
+
+
 }

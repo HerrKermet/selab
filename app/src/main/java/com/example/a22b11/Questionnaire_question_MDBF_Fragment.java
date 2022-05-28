@@ -1,15 +1,19 @@
 package com.example.a22b11;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SeekBar;
+
 
 import java.util.ArrayList;
 
@@ -19,45 +23,25 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class Questionnaire_question_MDBF_Fragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Button btnBack, btnNext;
 
     public Questionnaire_question_MDBF_Fragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Questionnaire_question_MDBF_Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static Questionnaire_question_MDBF_Fragment newInstance(String param1, String param2) {
         Questionnaire_question_MDBF_Fragment fragment = new Questionnaire_question_MDBF_Fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -67,9 +51,28 @@ public class Questionnaire_question_MDBF_Fragment extends Fragment {
         return inflater.inflate(R.layout.fragment_questionnaire_question__m_d_b_f_, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        btnBack = getView().findViewById(R.id.button15);
+        btnNext = getView().findViewById(R.id.button16);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QuestionnaireWelcome.question_progress_dict.put("question_MDBF",true);
+                ((QuestionnaireWelcome) getActivity()).updateQuestionProgessBar();
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_MDBF_Fragment_Next);
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_MDBF_Fragment_Back);
+            }
+        });
         // create List of all SeekBars and define listener
 
         ArrayList<SeekBar> seekBarArrayList = new ArrayList<>();
@@ -111,5 +114,9 @@ public class Questionnaire_question_MDBF_Fragment extends Fragment {
             sb.setOnSeekBarChangeListener(listener);
             sb.getThumb().setAlpha(0);
         }
+       //TODO wQuestionnaireWelcome.question_progress_dict.put("1",true);
+
     }
+
+
 }
