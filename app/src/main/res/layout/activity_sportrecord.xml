@@ -6,4 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".Sportactivity_Record">
 
+
+    <Button
+        android:id="@+id/Start_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:onClick="startTimer"
+        android:text="@string/btn_Start"
+        app:layout_constraintBottom_toTopOf="@+id/Reset_Button"
+        app:layout_constraintEnd_toStartOf="@+id/Pause_Button"
+        app:layout_constraintHorizontal_bias="0.233"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/Pause_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="76dp"
+        android:layout_marginBottom="48dp"
+        android:onClick="StopTimer"
+        android:text="@string/Stop"
+        app:layout_constraintBottom_toBottomOf="@+id/Reset_Button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Chronometer
+        android:id="@+id/Chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Reset_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="168dp"
+        android:onClick="resetTimer"
+        android:text="@string/Reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
