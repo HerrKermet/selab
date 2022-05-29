@@ -11,31 +11,33 @@
         android:id="@+id/Start_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
         android:onClick="startTimer"
         android:text="@string/btn_Start"
         app:layout_constraintBottom_toTopOf="@+id/Reset_Button"
         app:layout_constraintEnd_toStartOf="@+id/Pause_Button"
-        app:layout_constraintHorizontal_bias="0.233"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/Pause_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="76dp"
-        android:layout_marginBottom="48dp"
         android:onClick="StopTimer"
         android:text="@string/Stop"
-        app:layout_constraintBottom_toBottomOf="@+id/Reset_Button"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/Start_Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Start_Button"
+        app:layout_constraintTop_toTopOf="@+id/Start_Button" />
 
     <Chronometer
         android:id="@+id/Chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/Start_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,12 +47,12 @@
         android:id="@+id/Reset_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="168dp"
+        android:layout_marginBottom="40dp"
         android:onClick="resetTimer"
         android:text="@string/Reset"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
 
