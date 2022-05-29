@@ -18,4 +18,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,QuestionnaireWelcome.class);
         startActivity(intent);
     }
+
+    public void buttonClickSPORTACTIVITYHOMEPLACEHOLDER(View view) {
+        Intent intent = new Intent(this, Sportactivity_Home.class);
+        startActivity(intent);
+    }
 }

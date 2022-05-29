@@ -2,6 +2,7 @@ package com.example.a22b11;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -21,6 +22,10 @@ public class Sportactivity_Record extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sportrecord);
     }
+
+
+
+
 
 
     public void startTimer(View view){
