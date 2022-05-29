@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.22B11">
         <activity
+            android:name=".Sportactivity_Record"
+            android:exported="false" />
+        <activity
+            android:name=".Sportactivity_Home"
+            android:exported="false" />
+        <activity
             android:name=".QuestionnaireWelcome"
             android:exported="false" />
         <activity

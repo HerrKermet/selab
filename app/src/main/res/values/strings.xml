@@ -57,7 +57,6 @@
     <string name="question_Impulsivitaet_2">Since the last query, I have behaved in an angry or aggressive manner towards another person, which
 which I felt sorry for afterwards</string>
     <string name="finish">Finish</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recordActivity">Record activity</string>
 
 </resources>
