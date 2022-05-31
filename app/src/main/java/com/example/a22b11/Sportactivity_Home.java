@@ -14,8 +14,8 @@ public class Sportactivity_Home extends AppCompatActivity {
         setContentView(R.layout.activity_sporthome);
     }
 
-    public void buttonRecordActivity(View view) {
-        Intent intent = new Intent(this,Sportactivity_Record.class);
+    public void buttonSelectActivity(View view) {
+        Intent intent = new Intent(this,Sportactivity_Selection.class);
         startActivity(intent);
     }
 
