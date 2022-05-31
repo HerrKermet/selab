@@ -11,17 +11,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.22B11">
         <activity
-            android:name=".Sportactivity_Record"
+            android:name=".Sportactivity_Selection"
             android:exported="false"
             android:parentActivityName=".Sportactivity_Home"/>
         <activity
+            android:name=".Sportactivity_Record"
+            android:exported="false"
+            android:parentActivityName=".Sportactivity_Selection" />
+        <activity
             android:name=".Sportactivity_Home"
             android:exported="false"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".QuestionnaireWelcome"
             android:exported="false"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
