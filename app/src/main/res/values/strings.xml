@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">22B11</string>
+    <string name="questionnaire_Button_Home">Questionnaire</string>
+
+
+    <string name="tv_calm">calm</string>
+    <string name="tv_uncomfortable">uncomfortable</string>
+    <string name="tv_comfortable">comfortable</string>
+    <string name="tv_relaxed">relaxed</string>
+    <string name="tv_tense">tense</string>
+    <string name="tv_energetic">energetic</string>
+    <string name="tv_lacking_energy">lacking energy</string>
+    <string name="tv_tired">tired</string>
+    <string name="tv_awake">awake</string>
+    <string name="tv_dissatisfied">dissatisfied</string>
+    <string name="tv_satisfied_q1">satisfied</string>
+    <string name="tv_restless_q1">restless</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_next">Next</string>
+    <string name="question_MDBF">In the last 24 hours, I felt on average...</string>
+    <string name="questionnaire_welcome_text">Next we will ask you a few questions.\n This wont take long.</string>
+    <string name="question_Event_Appraisal_no_event">no event</string>
+    <string name="question_Event_Appraisal_very_intense">very intense</string>
+    <string name="question_Event_Appraisal_item_22">Have you experienced one or more negative events since the last query?\n How intense was the most important negative event?</string>
+    <string name="question_Event_Appraisal_item_23">Have you experienced one or more positive events since the last query?\n How intense was the most important positive event?
+</string>
+    <string name="btn_Start">Start</string>
+    <string name="question_Social_context_item_24">Are you alone now?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="question_Social_context_item_25">When you think of the people you are surrounded, how does the following statement apply?\n I do not like these people!</string>
+    <string name="not_at_all_true">not at all true</string>
+    <string name="completely_true">completely true</string>
+    <string-array name="social_situation_list">
+        <item>select</item>
+        <item>Life partner</item>
+        <item>Family</item>
+        <item>Friends</item>
+        <item>Work colleagues</item>
+        <item>Strangers</item>
+    </string-array>
+    <string name="question_Social_situation_question">What kind of people are you surrounded by at the moment?</string>
+    <string-array name="context_list">
+        <item>select</item>
+        <item>Home</item>
+        <item>Work</item>
+        <item>Sport</item>
+        <item>other hobby</item>
+        <item>shopping</item>
+        <item>visit</item>
+        <item>other</item>
+    </string-array>
+    <string name="question_context_question">Where are you right now?</string>
+    <string name="question_selbstwert_question_1">At present I am satisfied with myself</string>
+    <string name="question_selbstwert_question_2">At the moment I consider myself a failure</string>
+    <string name="question_Impulsivitaet_1">Since the last query, I have acted impulsively, i.e., I have acted without thinking about possible consequences</string>
+    <string name="question_Impulsivitaet_2">Since the last query, I have behaved in an angry or aggressive manner towards another person, which
+which I felt sorry for afterwards</string>
+    <string name="finish">Finish</string>
+    <string name="recordActivity">Record activity</string>
+    <string name="Stop">Stop</string>
+    <string name="Reset">Reset</string>
+
+</resources>

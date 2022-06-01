@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable-v24/circle.xml" value="0.2985" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_finished.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_welcome.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.32065217391304346" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.32065217391304346" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportselection.xml" value="0.32608695652173914" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_dashboard.xml" value="0.32065217391304346" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire__finished_fragment.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire__welcome.xml" value="0.33" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__context.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__event__appraisal_.xml" value="0.33" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__impulsivitaet_.xml" value="0.33" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__m_d_b_f_.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__selbstwert_.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__social_context_.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__social_situation_.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.358695652173913" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

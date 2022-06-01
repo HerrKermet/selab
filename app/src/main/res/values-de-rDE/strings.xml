@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">22B11</string>
+    <string name="questionnaire_Button_Home">Fragebogen</string>
+    <string name="tv_calm">ruhig</string>
+    <string name="tv_uncomfortable">unwohl</string>
+    <string name="tv_comfortable">wohl</string>
+    <string name="tv_relaxed">entspannt</string>
+    <string name="tv_tense">angespannt</string>
+    <string name="tv_energetic">energiegeladen</string>
+    <string name="tv_lacking_energy">energielos</string>
+    <string name="tv_tired">müde</string>
+    <string name="tv_awake">wach</string>
+    <string name="tv_dissatisfied">unzufrieden</string>
+    <string name="tv_satisfied_q1">zufrieden</string>
+    <string name="tv_restless_q1">unruhig</string>
+    <string name="btn_next">Weiter</string>
+    <string name="btn_back">Zurück</string>
+    <string name="question_MDBF">"In den letzten 24 Stunden fühlte ich mich im Durchschnitt… "</string>
+    <string name="questionnaire_welcome_text">Als Nächstes werden wir Ihnen ein paar Fragen stellen. Das wird nicht lange dauern.</string>
+    <string name="question_Event_Appraisal_item_22">Haben Sie seit der letzten Abfrage eines oder mehrere negative Ereignisse erlebt?\n Wie intensiv war
+das bedeutendste negative Ereignis?</string>
+    <string name="question_Event_Appraisal_item_23">Haben Sie seit der letzten Abfrage eines oder mehrere positive Ereignisse erlebt?\n Wie intensiv war
+das bedeutendste positive Ereignis?</string>
+    <string name="question_Event_Appraisal_no_event">kein Ereignis</string>
+    <string name="question_Event_Appraisal_very_intense">sehr intensiv</string>
+    <string name="btn_Start">Start</string>
+    <string name="question_Social_context_item_24">Sind Sie im Moment alleine?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="question_Social_context_item_25">Wenn Sie an die Personen denken, die Sie gerade umgeben,\n inwiefern trifft folgende Aussage zu? Ich mag diese Leute nicht!</string>
+    <string name="not_at_all_true">trifft überhaupt nicht zu</string>
+    <string name="completely_true">trifft völlig zu</string>
+    <string-array name="social_situation_list">
+        <item>auswählen</item>
+        <item>Lebenspartner*in</item>
+        <item>Familie</item>
+        <item>Freunde</item>
+        <item>Arbeitskolleg*innen</item>
+        <item>Fremde</item>
+    </string-array>
+    <string name="question_Social_situation_question">Von welchen Menschen sind Sie momentan umgeben?</string>
+    <string-array name="context_list">
+        <item>auswählen</item>
+        <item>Zuhause</item>
+        <item>Arbeit</item>
+        <item>Sport</item>
+        <item>sonstiges Hobby</item>
+        <item>Einkaufen</item>
+        <item>Besuch</item>
+        <item>Sonstiges</item>
+    </string-array>
+    <string name="question_context_question">Wo befinden Sie sich grade?</string>
+    <string name="question_selbstwert_question_2">"Im Augenblick halte ich mich für einen Versager "</string>
+    <string name="question_selbstwert_question_1">"Gegenwärtig bin ich mit mir selbst zufrieden "</string>
+    <string name="question_Impulsivitaet_1">Seit der letzten Abfrage habe ich impulsiv gehandelt, d.h. ich habe gehandelt, ohne mir Gedanken über mögliche Konsequenzen zu machen</string>
+    <string name="question_Impulsivitaet_2">Seit der letzten Abfrage habe ich mich gegenüber einer anderen Person ärgerlich oder aggressiv verhalten, was mir danach leidtat</string>
+    <string name="finish">Fertig</string>
+    <string name="recordActivity">Aktivität aufnehmen</string>
+    <string name="Stop">Stopp</string>
+    <string name="Reset">Reset</string>
+    
+</resources>
