@@ -8,15 +8,33 @@ import java.time.Instant;
 
 @Entity(tableName = "moods")
 public class Mood {
+
+    public enum PeopleType {LIFE_PARTNER, FAMILY, FRIENDS, WORK_COLLEAGUES, STRANGERS}
+    public enum LocationType {HOME, WORK, SPORT, OTHER_HOBBY, SHOPPING, VISIT, OTHER}
+
     public Mood (
-            long userId,
+            Long userId,
             Instant assessment,
-            int satisfaction,
-            int calmness,
-            int comfort,
-            int relaxation,
-            int energy,
-            int wakefulness
+            Integer satisfaction,
+            Integer calmness,
+            Integer comfort,
+            Integer relaxation,
+            Integer energy,
+            Integer wakefulness,
+
+
+            Integer eventNegativeIntensity,
+            Integer eventPositiveIntensity,
+            Boolean alone,
+            Integer surroundingPeopleLiking,
+            PeopleType surroundingPeopleType,
+            LocationType location,
+            Integer satisfiedWithYourself,
+            Integer considerYourselfFailure,
+            Integer actedImpulsively,
+            Integer actedAggressively
+
+
     ) {
         this.userId = userId;
         this.lastModification = Instant.now();
@@ -27,6 +45,16 @@ public class Mood {
         this.relaxation = relaxation;
         this.energy = energy;
         this.wakefulness = wakefulness;
+        this.eventNegativeIntensity = eventNegativeIntensity;
+        this.eventPositiveIntensity = eventPositiveIntensity;
+        this.alone = alone;
+        this.surroundingPeopleLiking = surroundingPeopleLiking;
+        this.surroundingPeopleType = surroundingPeopleType;
+        this.location = location;
+        this.satisfiedWithYourself = satisfiedWithYourself;
+        this. considerYourselfFailure = considerYourselfFailure;
+        this.actedImpulsively = actedImpulsively;
+        this.actedAggressively = actedAggressively;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -37,26 +65,55 @@ public class Mood {
     public Long remoteId = null;
 
     @ColumnInfo(name = "user_id")
-    public long userId;
+    public Long userId;
 
     // Whether the mood has been modified since the last synchronization
     @ColumnInfo(name = "is_modified")
-    public boolean isModified = true;
+    public Boolean isModified = true;
 
     @ColumnInfo(name = "last_modification")
     public Instant lastModification;
 
     public Instant assessment;
 
-    public int satisfaction;
+    public Integer satisfaction;
 
-    public int calmness;
+    public Integer calmness;
 
-    public int comfort;
+    public Integer comfort;
 
-    public int relaxation;
+    public Integer relaxation;
 
-    public int energy;
+    public Integer energy;
 
-    public int wakefulness;
+    public Integer wakefulness;
+
+    @ColumnInfo(name = "event_negative_intensity")
+    public Integer eventNegativeIntensity;
+
+    @ColumnInfo(name = "event_positive_intensity")
+    public Integer eventPositiveIntensity;
+
+    public Boolean alone;
+
+    @ColumnInfo(name = "surrounding_people_liking")
+    public Integer surroundingPeopleLiking;
+
+    @ColumnInfo(name = "surrounding_people_type")
+    public PeopleType surroundingPeopleType;
+
+    public LocationType location;
+
+    @ColumnInfo(name = "satisfied_with_yourself")
+    public Integer satisfiedWithYourself;
+
+    @ColumnInfo(name = "consider_yourself_failure")
+    public Integer considerYourselfFailure;
+
+    @ColumnInfo(name = "acted_impulsively")
+    public Integer actedImpulsively;
+
+    @ColumnInfo(name = "acted_aggressively")
+    public Integer actedAggressively;
+
 }
