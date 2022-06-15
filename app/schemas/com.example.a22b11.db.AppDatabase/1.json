@@ -6,13 +6,13 @@
     "entities": [
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `creation` INTEGER, `password` TEXT, `last_sync_sqn` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `creation` INTEGER, `password` TEXT, `last_sync_sqn` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "creation",
@@ -30,7 +30,7 @@
             "fieldPath": "lastSyncSqn",
             "columnName": "last_sync_sqn",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -44,8 +44,14 @@
       },
       {
         "tableName": "activities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER NOT NULL, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT)",
         "fields": [
+          {
+            "fieldPath": "localId",
+            "columnName": "local_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
@@ -53,22 +59,16 @@
             "notNull": false
           },
           {
-            "fieldPath": "remoteId",
-            "columnName": "remote_id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "userId",
             "columnName": "user_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "isModified",
             "columnName": "is_modified",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "lastModification",
@@ -97,7 +97,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "local_id"
           ],
           "autoGenerate": true
         },
