@@ -13,12 +13,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.db.Mood;
 import com.example.a22b11.db.MoodDao;
 import com.example.a22b11.db.User;
 import com.example.a22b11.db.UserDao;
+import com.example.a22b11.moodscore.MoodScore;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -27,6 +29,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,15 +37,23 @@ import java.util.concurrent.ExecutionException;
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
     public static Map<String,Boolean> question_progress_dict = new HashMap<>();
-    public Map<String,Integer> question_answers = new HashMap<>();
+    //public Map<String,Integer> question_answers = new HashMap<>();
     public static boolean social_situation_is_skipped = false;
     FragmentContainerView fragmentContainerView;
     static ProgressBar progressBar;
     TextView textViewProgressBar;
+    static Mood mood;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mood = new Mood();
+
+        question_progress_dict = new HashMap<>();
+        //question_answers = new HashMap<>();
+        social_situation_is_skipped = false;
+
         setContentView(R.layout.activity_questionnaire_welcome);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         progressBar = findViewById(R.id.progressBarCircular);
@@ -94,6 +105,70 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
     public void onBtnNextClick_Questionnaire_Welcome_Fragment(View view) throws ExecutionException, InterruptedException {
+//TODO Delete test code
+        // Begin of testcode
+        /*
+        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+
+        // create and add test mood
+        MoodDao moodDao = db.moodDao();
+        Mood mood1 = new Mood(2L,Instant.now(),10,10,10,10,10,10,5,5,true,5, Mood.PeopleType.FAMILY,Mood.LocationType.HOME,5,5,5,5);
+
+        ListenableFuture<Void> moodinsert = moodDao.insert(mood1);
+
+        List<Mood> moodList;
+        ListenableFuture<List<Mood>> futuremood = moodDao.getAll();
+        Futures.addCallback(
+                futuremood,
+                new FutureCallback<List<Mood>>() {
+                    @Override
+                    public void onSuccess(List<Mood> result) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
+        moodList = futuremood.get();
+        System.out.println("Moods:" + moodList);
+
+
+        //create and add test user
+        UserDao userDao = db.userDao();
+        User user = new User(1, Instant.now(),"test123");
+        User user2 = new User(2,Instant.now(),"hello");
+        ListenableFuture<Void> future = userDao.insertAll(user,user2);
+
+
+        // get test user from Database
+        List<User> userlist;
+        ListenableFuture<List<User>> future2 = userDao.getAll();
+        Futures.addCallback(
+                future2,
+                new FutureCallback<List<User>>() {
+
+
+                    @Override
+                    public void onSuccess(List<User> result) {
+
+                    }
+
+                    public void onFailure(Throwable thrown) {
+                        // handle failure
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
+        userlist = future2.get();
+        System.out.println(userlist.get(0).password);
+        */
+        // End of Testcode
 
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_Welcome_Fragment_Next);
     }
@@ -108,13 +183,34 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     public void onBtnFinishClick (View view) {
         //TODO save question answers here
 
+        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+        MoodDao moodDao = db.moodDao();
+
+        mood.userId = 1L;
+        mood.assessment = Instant.now();
+        int mood_score = MoodScore.calculate(mood);
+
+        ListenableFuture<Void> moodinsert = moodDao.insert(mood);
+
         //TODO initialize new Questionnaire data
+
+        mood = new Mood(); // reset mood for future questionnaires
+
         question_progress_dict = new HashMap<>();
         updateQuestionProgessBar();
 
 
         Intent intent = new Intent(this,MainActivity.class);
+        //TODO make successful message a translatable string
+        intent.putExtra("questionnaireSaved"," successful");
         startActivity(intent);
+
+        if (intent.hasExtra("questionnaireSaved"))
+        {
+            Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
 
     }
 

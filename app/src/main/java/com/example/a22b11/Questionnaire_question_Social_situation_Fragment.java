@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
+
+import com.example.a22b11.db.Mood;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +22,7 @@ import android.widget.Button;
  */
 public class Questionnaire_question_Social_situation_Fragment extends Fragment {
     Button btnBack, btnNext;
+    Spinner spinner;
 
     public Questionnaire_question_Social_situation_Fragment() {
         // Required empty public constructor
@@ -49,12 +53,26 @@ public class Questionnaire_question_Social_situation_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btnBack = getView().findViewById(R.id.button8);
         btnNext = getView().findViewById(R.id.button7);
+        spinner = getView().findViewById(R.id.spinner_social_situation);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //set dict at question index to true on button next
                 QuestionnaireWelcome.question_progress_dict.put("question_Social_situation",true);
+
+                // start of saving data
+                int selectedItemPosition = spinner.getSelectedItemPosition();
+
+                    // if no data is selected then skip
+                if (selectedItemPosition != 0)
+                {
+                    QuestionnaireWelcome.mood.surroundingPeopleType = Mood.PeopleType.values()[selectedItemPosition - 1];  // index shift because of the "select" which is not stored in the Mood enum type
+                }
+                // end of saving data
+
+
+
 
                 ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
                 Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Social_situation_Fragment_Next);
