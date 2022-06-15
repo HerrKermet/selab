@@ -19,7 +19,7 @@ public class Mood {
     public Mood (
             Long userId,
             Instant assessment,
-            Integer satisfaction,
+            Integer satisfaction,             // each 0 - 100
             Integer calmness,
             Integer comfort,
             Integer relaxation,
@@ -27,16 +27,16 @@ public class Mood {
             Integer wakefulness,
 
 
-            Integer eventNegativeIntensity,
-            Integer eventPositiveIntensity,
+            Integer eventNegativeIntensity,    // 0 - 100
+            Integer eventPositiveIntensity,    // 0 - 100
             Boolean alone,
-            Integer surroundingPeopleLiking,
+            Integer surroundingPeopleLiking,   // 0 - 100
             PeopleType surroundingPeopleType,
             LocationType location,
-            Integer satisfiedWithYourself,
-            Integer considerYourselfFailure,
-            Integer actedImpulsively,
-            Integer actedAggressively
+            Integer satisfiedWithYourself,     // 0 - 9
+            Integer considerYourselfFailure,   // 0 - 9
+            Integer actedImpulsively,          // 0 - 7
+            Integer actedAggressively          // 0 - 7
 
 
     ) {

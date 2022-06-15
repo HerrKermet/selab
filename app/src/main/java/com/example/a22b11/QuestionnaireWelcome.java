@@ -20,6 +20,7 @@ import com.example.a22b11.db.Mood;
 import com.example.a22b11.db.MoodDao;
 import com.example.a22b11.db.User;
 import com.example.a22b11.db.UserDao;
+import com.example.a22b11.moodscore.MoodScore;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -187,6 +188,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         mood.userId = 1L;
         mood.assessment = Instant.now();
+        int mood_score = MoodScore.calculate(mood);
 
         ListenableFuture<Void> moodinsert = moodDao.insert(mood);
 
@@ -205,7 +207,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         if (intent.hasExtra("questionnaireSaved"))
         {
-            Toast toast = Toast.makeText(this," Saved successfully",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
             toast.show();
         }
 
