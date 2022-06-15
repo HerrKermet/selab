@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
+
+import com.example.a22b11.db.Mood;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +23,7 @@ import android.widget.Button;
  */
 public class Questionnaire_question_Context_Fragment extends Fragment {
     Button btnBack,btnNext;
+    Spinner spinner;
 
 
     public Questionnaire_question_Context_Fragment() {
@@ -52,11 +56,22 @@ public class Questionnaire_question_Context_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btnBack = getView().findViewById(R.id.button10);
         btnNext = getView().findViewById(R.id.button9);
+        spinner = getView().findViewById(R.id.location_spinner);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 QuestionnaireWelcome.question_progress_dict.put("question_Context",true);
+
+                // start of saving data
+                int selectedItemPosition = spinner.getSelectedItemPosition();
+
+                // if no data is selected then skip
+                if (selectedItemPosition != 0)
+                {
+                    QuestionnaireWelcome.mood.location = Mood.LocationType.values()[selectedItemPosition - 1];  // index shift because of the "select" which is not stored in the Mood enum type
+                }
+                // end of saving data
 
                 ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
                 Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Context_Next);

@@ -9,6 +9,10 @@ import java.time.Instant;
 @Entity(tableName = "moods")
 public class Mood {
 
+    public Mood() {
+
+    }
+
     public enum PeopleType {LIFE_PARTNER, FAMILY, FRIENDS, WORK_COLLEAGUES, STRANGERS}
     public enum LocationType {HOME, WORK, SPORT, OTHER_HOBBY, SHOPPING, VISIT, OTHER}
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.db.Mood;
@@ -27,6 +28,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,15 +36,23 @@ import java.util.concurrent.ExecutionException;
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
     public static Map<String,Boolean> question_progress_dict = new HashMap<>();
-    public Map<String,Integer> question_answers = new HashMap<>();
+    //public Map<String,Integer> question_answers = new HashMap<>();
     public static boolean social_situation_is_skipped = false;
     FragmentContainerView fragmentContainerView;
     static ProgressBar progressBar;
     TextView textViewProgressBar;
+    static Mood mood;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mood = new Mood();
+
+        question_progress_dict = new HashMap<>();
+        //question_answers = new HashMap<>();
+        social_situation_is_skipped = false;
+
         setContentView(R.layout.activity_questionnaire_welcome);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         progressBar = findViewById(R.id.progressBarCircular);
@@ -172,13 +182,33 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     public void onBtnFinishClick (View view) {
         //TODO save question answers here
 
+        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+        MoodDao moodDao = db.moodDao();
+
+        mood.userId = 1L;
+        mood.assessment = Instant.now();
+
+        ListenableFuture<Void> moodinsert = moodDao.insert(mood);
+
         //TODO initialize new Questionnaire data
+
+        mood = new Mood(); // reset mood for future questionnaires
+
         question_progress_dict = new HashMap<>();
         updateQuestionProgessBar();
 
 
         Intent intent = new Intent(this,MainActivity.class);
+        //TODO make successful message a translatable string
+        intent.putExtra("questionnaireSaved"," successful");
         startActivity(intent);
+
+        if (intent.hasExtra("questionnaireSaved"))
+        {
+            Toast toast = Toast.makeText(this," Saved successfully",Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
 
     }
 
