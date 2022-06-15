@@ -59,20 +59,6 @@ public class Questionnaire_question_MDBF_Fragment extends Fragment {
         btnBack = getView().findViewById(R.id.button15);
         btnNext = getView().findViewById(R.id.button16);
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                QuestionnaireWelcome.question_progress_dict.put("question_MDBF",true);
-                ((QuestionnaireWelcome) getActivity()).updateQuestionProgessBar();
-                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_MDBF_Fragment_Next);
-            }
-        });
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_MDBF_Fragment_Back);
-            }
-        });
         // create List of all SeekBars and define listener
 
         ArrayList<SeekBar> seekBarArrayList = new ArrayList<>();
@@ -104,6 +90,7 @@ public class Questionnaire_question_MDBF_Fragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //seekBar.getThumb().setAlpha(0);
+
             }
         };
 
@@ -113,8 +100,44 @@ public class Questionnaire_question_MDBF_Fragment extends Fragment {
         for (SeekBar sb : seekBarArrayList) {
             sb.setOnSeekBarChangeListener(listener);
             sb.getThumb().setAlpha(0);
+
         }
-       //TODO wQuestionnaireWelcome.question_progress_dict.put("1",true);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QuestionnaireWelcome.question_progress_dict.put("question_MDBF",true);
+                ((QuestionnaireWelcome) getActivity()).updateQuestionProgessBar();
+                // start of saving data
+                //Save data only if seekbar has been touched    else let it stay null
+                if (sb7.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.satisfaction = sb7.getProgress();
+                else QuestionnaireWelcome.mood.satisfaction = null;
+
+                if (sb8.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.calmness = sb8.getProgress();
+                else QuestionnaireWelcome.mood.calmness = null;
+
+                if (sb9.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.comfort = sb9.getProgress();
+                else QuestionnaireWelcome.mood.comfort = null;
+
+                if (sb10.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.relaxation = sb10.getProgress();
+                else QuestionnaireWelcome.mood.relaxation = null;
+
+                if (sb11.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.energy = sb11.getProgress();
+                else QuestionnaireWelcome.mood.energy = null;
+
+                if (sb12.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.wakefulness = sb12.getProgress();
+                else QuestionnaireWelcome.mood.wakefulness = null;
+                //end of saving data
+
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_MDBF_Fragment_Next);
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_MDBF_Fragment_Back);
+            }
+        });
 
     }
 

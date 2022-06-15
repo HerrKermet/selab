@@ -90,6 +90,16 @@ public class Questionnaire_question_Event_Appraisal_Fragment extends Fragment {
                 //set dict at question index to true on button next
                 QuestionnaireWelcome.question_progress_dict.put("question_Event_Appraisal",true);
                 ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
+
+                //start of saving data
+                if (sb1.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.eventNegativeIntensity = sb1.getProgress();
+                else QuestionnaireWelcome.mood.eventNegativeIntensity = null;
+
+                if (sb2.getThumb().getAlpha() != 0) QuestionnaireWelcome.mood.eventPositiveIntensity = sb2.getProgress();
+                else QuestionnaireWelcome.mood.eventPositiveIntensity = null;
+
+                //end of saving data
+
                 Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Event_Appraisal_Fragment_Next);
             }
         });

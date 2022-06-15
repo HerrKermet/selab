@@ -26,8 +26,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".QuestionnaireWelcome"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

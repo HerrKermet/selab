@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a22b11.db.Mood;
+
 import java.util.ArrayList;
 
 /**
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class Questionnaire_Welcome_Fragment extends Fragment {
-
+    Mood mood = new Mood();
 
     public Questionnaire_Welcome_Fragment() {
         // Required empty public constructor

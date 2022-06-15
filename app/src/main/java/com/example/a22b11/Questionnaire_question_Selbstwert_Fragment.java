@@ -20,6 +20,7 @@ import android.widget.SeekBar;
  */
 public class Questionnaire_question_Selbstwert_Fragment extends Fragment {
     Button btnBack, btnNext;
+    SeekBar sb1, sb2;
 
 
     public Questionnaire_question_Selbstwert_Fragment() {
@@ -49,8 +50,9 @@ public class Questionnaire_question_Selbstwert_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SeekBar sb = view.findViewById(R.id.seekBar_Selbstwert_satisfied);
-        SeekBar sb2 = view.findViewById(R.id.seekBar_Selbstwert_failure);
+        sb1 = view.findViewById(R.id.seekBar_Selbstwert_satisfied);
+        sb2 = view.findViewById(R.id.seekBar_Selbstwert_failure);
+
 
 
 
@@ -72,8 +74,8 @@ public class Questionnaire_question_Selbstwert_Fragment extends Fragment {
         };
 
         //Initialize all seekBars to hide Thumb and add listener
-        sb.setOnSeekBarChangeListener(listener);
-        sb.getThumb().setAlpha(0);
+        sb1.setOnSeekBarChangeListener(listener);
+        sb1.getThumb().setAlpha(0);
 
         sb2.setOnSeekBarChangeListener(listener);
         sb2.getThumb().setAlpha(0);
@@ -85,6 +87,19 @@ public class Questionnaire_question_Selbstwert_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 QuestionnaireWelcome.question_progress_dict.put("question_Selbstwert",true);
+
+                // start of saving data
+                if (sb1.getThumb().getAlpha() != 0){
+                    QuestionnaireWelcome.mood.satisfiedWithYourself = sb1.getProgress();
+                }
+                else QuestionnaireWelcome.mood.satisfiedWithYourself = null;
+
+
+                if (sb2.getThumb().getAlpha() != 0) {
+                    QuestionnaireWelcome.mood.considerYourselfFailure = sb2.getProgress();
+                }
+                else QuestionnaireWelcome.mood.considerYourselfFailure = null;
+                // end of saving data
 
                 ((QuestionnaireWelcome)getActivity()).updateQuestionProgessBar();
                 Navigation.findNavController(view).navigate(R.id.action_questionnaire_question_Selbstwert_Fragment_Next);

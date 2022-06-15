@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a672dbb157014343d49c2e8ac424db55",
+    "identityHash": "5b9fb94d106810929bbab815991fb480",
     "entities": [
       {
         "tableName": "users",
@@ -106,7 +106,7 @@
       },
       {
         "tableName": "moods",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER NOT NULL, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `assessment` INTEGER, `satisfaction` INTEGER NOT NULL, `calmness` INTEGER NOT NULL, `comfort` INTEGER NOT NULL, `relaxation` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `wakefulness` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `assessment` INTEGER, `satisfaction` INTEGER, `calmness` INTEGER, `comfort` INTEGER, `relaxation` INTEGER, `energy` INTEGER, `wakefulness` INTEGER, `event_negative_intensity` INTEGER, `event_positive_intensity` INTEGER, `alone` INTEGER, `surrounding_people_liking` INTEGER, `surrounding_people_type` TEXT, `location` TEXT, `satisfied_with_yourself` INTEGER, `consider_yourself_failure` INTEGER, `acted_impulsively` INTEGER, `acted_aggressively` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -124,13 +124,13 @@
             "fieldPath": "userId",
             "columnName": "user_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "isModified",
             "columnName": "is_modified",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "lastModification",
@@ -148,37 +148,97 @@
             "fieldPath": "satisfaction",
             "columnName": "satisfaction",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "calmness",
             "columnName": "calmness",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "comfort",
             "columnName": "comfort",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "relaxation",
             "columnName": "relaxation",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "energy",
             "columnName": "energy",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "wakefulness",
             "columnName": "wakefulness",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
+          },
+          {
+            "fieldPath": "eventNegativeIntensity",
+            "columnName": "event_negative_intensity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "eventPositiveIntensity",
+            "columnName": "event_positive_intensity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "alone",
+            "columnName": "alone",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "surroundingPeopleLiking",
+            "columnName": "surrounding_people_liking",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "surroundingPeopleType",
+            "columnName": "surrounding_people_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location",
+            "columnName": "location",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "satisfiedWithYourself",
+            "columnName": "satisfied_with_yourself",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "considerYourselfFailure",
+            "columnName": "consider_yourself_failure",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "actedImpulsively",
+            "columnName": "acted_impulsively",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "actedAggressively",
+            "columnName": "acted_aggressively",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -194,7 +254,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a672dbb157014343d49c2e8ac424db55')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b9fb94d106810929bbab815991fb480')"
     ]
   }
 }
