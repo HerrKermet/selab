@@ -53,6 +53,10 @@ public class Sportactivity_Record extends AppCompatActivity {
     }
 
     public void resetTimer(View view){
+        if(running){
+            chronometer.stop();
+            running = false;
+        }
 
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.stop();
