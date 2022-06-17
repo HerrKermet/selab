@@ -59,5 +59,6 @@ das bedeutendste positive Ereignis?</string>
     <string name="recordActivity">Aktivität aufnehmen</string>
     <string name="Stop">Stopp</string>
     <string name="Reset">Reset</string>
-    
+    <string name="resume">Weiter</string>
+
 </resources>

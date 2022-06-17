@@ -60,5 +60,6 @@ which I felt sorry for afterwards</string>
     <string name="recordActivity">Record activity</string>
     <string name="Stop">Stop</string>
     <string name="Reset">Reset</string>
+    <string name="resume">Resume</string>
 
 </resources>
