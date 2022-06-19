@@ -8,6 +8,7 @@ import android.os.LocaleList;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -35,11 +36,16 @@ public class Sportactivity_Selection extends AppCompatActivity {
 
     public void buttonRecordActivity(View view) {
         Intent intent = new Intent(this,Sportactivity_Record.class);
-        System.out.println(selectedActivity);
-        intent.putExtra("selectedActivity",selectedActivity);
+
+        //TODO change toast message to local string
+        Toast toast = Toast.makeText(this,"PLEASE SELECT AN ACTIVITY", Toast.LENGTH_SHORT);
+        if (selectedActivity == null) toast.show();
+        else {
+            intent.putExtra("selectedActivity", selectedActivity);
 
 
-        startActivity(intent);
+            startActivity(intent);
+        }
     }
 
 
