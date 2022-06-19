@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.TextView;
 
 public class Sportactivity_Record extends AppCompatActivity {
 
@@ -18,6 +19,9 @@ public class Sportactivity_Record extends AppCompatActivity {
     Button button, finishButton;
     private long pauseOffset;
     int buttonState = 0;  // initial state  0 = ready to start / 1 = ready to stop / 2 = stopped ready to resume or finish
+    TextView textView;
+
+    String selectedActivity;
 
 
     @Override
@@ -26,6 +30,10 @@ public class Sportactivity_Record extends AppCompatActivity {
         setContentView(R.layout.activity_sportrecord);
         button = findViewById(R.id.Start_Button);
         finishButton = findViewById(R.id.button20);
+        textView = findViewById(R.id.testView);
+
+        if(getIntent().hasExtra("selectedActivity")) textView.setText(getString(R.string.selected) +": " + getIntent().getStringExtra("selectedActivity"));
+
 
 
 

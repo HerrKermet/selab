@@ -60,5 +60,6 @@ das bedeutendste positive Ereignis?</string>
     <string name="Stop">Stopp</string>
     <string name="Reset">Reset</string>
     <string name="resume">Weiter</string>
+    <string name="selected">Ausgewählt</string>
 
 </resources>
