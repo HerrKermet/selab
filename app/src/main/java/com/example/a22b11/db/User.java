@@ -2,6 +2,7 @@ package com.example.a22b11.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.Instant;
@@ -10,6 +11,7 @@ import java.time.Instant;
 public class User {
     public User() {}
 
+    @Ignore
     public User(long id, String password) {
         this.id = id;
         this.password = password;

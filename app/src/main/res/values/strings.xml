@@ -17,13 +17,12 @@
     <string name="tv_restless_q1">restless</string>
     <string name="btn_back">Back</string>
     <string name="btn_next">Next</string>
-    <string name="question_MDBF">In the last 24 hours, I felt on average...</string>
+    <string name="question_MDBF">In the last 24 hours, I felt on average…</string>
     <string name="questionnaire_welcome_text">Next we will ask you a few questions.\n This wont take long.</string>
     <string name="question_Event_Appraisal_no_event">no event</string>
     <string name="question_Event_Appraisal_very_intense">very intense</string>
     <string name="question_Event_Appraisal_item_22">Have you experienced one or more negative events since the last query?\n How intense was the most important negative event?</string>
-    <string name="question_Event_Appraisal_item_23">Have you experienced one or more positive events since the last query?\n How intense was the most important positive event?
-</string>
+    <string name="question_Event_Appraisal_item_23">Have you experienced one or more positive events since the last query?\n How intense was the most important positive event?</string>
     <string name="btn_Start">Start</string>
     <string name="question_Social_context_item_24">Are you alone now?</string>
     <string name="yes">Yes</string>
@@ -54,11 +53,22 @@
     <string name="question_selbstwert_question_1">At present I am satisfied with myself</string>
     <string name="question_selbstwert_question_2">At the moment I consider myself a failure</string>
     <string name="question_Impulsivitaet_1">Since the last query, I have acted impulsively, i.e., I have acted without thinking about possible consequences</string>
-    <string name="question_Impulsivitaet_2">Since the last query, I have behaved in an angry or aggressive manner towards another person, which
-which I felt sorry for afterwards</string>
+    <string name="question_Impulsivitaet_2">Since the last query, I have behaved in an angry or aggressive manner towards another person, which I felt sorry for afterwards</string>
     <string name="finish">Finish</string>
     <string name="recordActivity">Record activity</string>
     <string name="Stop">Stop</string>
     <string name="Reset">Reset</string>
-
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_userid">User ID</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="or">or</string>
+    <string name="action_sign_up">Create a new account</string>
+    <string name="action_sign_up_short">Sign up</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_userid">Not a valid user ID</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="registration_failed">"Registration failed"</string>
 </resources>

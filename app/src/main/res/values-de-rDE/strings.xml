@@ -59,5 +59,18 @@ das bedeutendste positive Ereignis?</string>
     <string name="recordActivity">Aktivität aufnehmen</string>
     <string name="Stop">Stopp</string>
     <string name="Reset">Reset</string>
-    
+    <string name="title_activity_login">Einloggen</string>
+    <string name="prompt_userid">Nutzer ID</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Einloggen</string>
+    <string name="action_sign_in_short">Einloggen</string>
+    <string name="or">oder</string>
+    <string name="action_sign_up">Neues Konto erstellen</string>
+    <string name="action_sign_up_short">Registrieren</string>
+    <string name="welcome">Willkommen !</string>
+    <string name="invalid_userid">Nutzer ID ungültig</string>
+    <string name="invalid_password">Password muss länger als 5 Zeichen sein</string>
+    <string name="login_failed">Login fehlgeschlagen</string>
+    <string name="registration_failed">"Registrierung fehlgeschlagen"</string>
+
 </resources>

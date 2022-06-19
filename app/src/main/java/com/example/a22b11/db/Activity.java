@@ -2,6 +2,7 @@ package com.example.a22b11.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.Instant;
@@ -10,6 +11,7 @@ import java.time.Instant;
 public class Activity {
     public Activity() {}
 
+    @Ignore
     public Activity(long userId, Instant start, Instant end, String type) {
         this.userId = userId;
         this.lastModification = Instant.now();
