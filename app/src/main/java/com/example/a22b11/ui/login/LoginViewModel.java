@@ -8,7 +8,6 @@ import android.util.Patterns;
 
 import com.example.a22b11.MyApplication;
 import com.example.a22b11.api.FitnessApiClient;
-import com.example.a22b11.data.LoginRepository;
 import com.example.a22b11.data.Result;
 import com.example.a22b11.data.model.LoggedInUser;
 import com.example.a22b11.R;
@@ -22,10 +21,13 @@ public class LoginViewModel extends ViewModel {
 
     final private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     final private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    final private LoginRepository loginRepository;
+    // final private LoginRepository loginRepository;
 
-    LoginViewModel(LoginRepository loginRepository) {
+    /* LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
+    } */
+
+    LoginViewModel() {
     }
 
     LiveData<LoginFormState> getLoginFormState() {
