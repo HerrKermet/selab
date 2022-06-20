@@ -71,5 +71,8 @@ which I felt sorry for afterwards</string>
     <string name="dieing">Dieing</string>
     <string name="yoga">Yoga</string>
     <string name="meditation">Meditation</string>
+    <string name="addActivity">Add activity</string>
+    <string name="editActivity">Edit activity</string>
+
 
 </resources>

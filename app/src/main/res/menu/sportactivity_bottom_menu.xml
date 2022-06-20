@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/addActivity"
+        android:icon="@drawable/ic_baseline_add_24"
+        android:menuCategory="secondary"
+        android:title="Add activity"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/editActivity"
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:menuCategory="container"
+        android:title="Edit activity"
+        app:showAsAction="ifRoom" />
+
+</menu>

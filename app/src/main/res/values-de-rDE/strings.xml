@@ -70,5 +70,7 @@ das bedeutendste positive Ereignis?</string>
     <string name="dieing">Sterben</string>
     <string name="yoga">Yoga</string>
     <string name="meditation">Meditation</string>
+    <string name="addActivity">Aktivität hinzufügen</string>
+    <string name="editActivity">Aktivität ändern</string>
 
 </resources>
