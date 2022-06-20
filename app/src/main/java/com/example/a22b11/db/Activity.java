@@ -15,6 +15,9 @@ public class Activity {
         this.end = end;
         this.type = type;
     }
+    public Activity() {
+
+    }
 
     @PrimaryKey(autoGenerate = true)
     public Long id = null;

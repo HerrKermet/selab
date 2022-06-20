@@ -25,6 +25,8 @@ public class Sportactivity_Record extends AppCompatActivity {
     int buttonState = 0;  // initial state  0 = ready to start / 1 = ready to stop / 2 = stopped ready to resume or finish
     TextView textView;
 
+    long startedAt;
+    long pausedAt;
     String selectedActivity;
     Integer selectedActivityNumber;
     Instant startTime;
@@ -41,11 +43,18 @@ public class Sportactivity_Record extends AppCompatActivity {
         button = findViewById(R.id.Start_Button);
         finishButton = findViewById(R.id.button20);
         textView = findViewById(R.id.testView);
+        chronometer = findViewById(R.id.Chronometer);
 
 
 
 
-        if(getIntent().hasExtra("selectedActivity")) textView.setText(getString(R.string.selected) +": " + getIntent().getStringExtra("selectedActivity"));
+
+        if(getIntent().hasExtra("selectedActivity"))
+        {
+            textView.setText(getString(R.string.selected) +": " + getIntent().getStringExtra("selectedActivity"));
+            selectedActivity = getIntent().getStringExtra("selectedActivity");
+        }
+
         if(getIntent().hasExtra("selectedActivityNumber")) selectedActivityNumber = getIntent().getIntExtra("selectedActivityNumber", -1); //TODO -1 means error
 
 
@@ -93,24 +102,28 @@ public class Sportactivity_Record extends AppCompatActivity {
     }
 
     public void startTimer(View view){
-        chronometer = findViewById(R.id.Chronometer);
+
 
         startTime = Instant.now();
 
         if(!running){
-            chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
             chronometer.start();
+            chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+
+
             running = true;
         }
 
     }
 
     public void stopTimer(View view) {
-        chronometer = findViewById(R.id.Chronometer);
+
 
         if (running) {
-            chronometer.stop();
+
             pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+            chronometer.stop();
+            pausedAt = SystemClock.elapsedRealtime();
             running = false;
         }
 
@@ -136,16 +149,16 @@ public class Sportactivity_Record extends AppCompatActivity {
     //
     public void buttonClickFinish(View view){
 
-       duration = Math.round((chronometer.getBase() / 1000000000) ); //TODO getting the duration in minutes, remember to bring back /60
+       duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) ); //TODO getting the duration in minutes, remember to bring back /60
 
-        Log.e("this is the error we are looking for ", String.valueOf(chronometer.getBase()- pauseOffset));
+        Log.e("this is the error we are looking for ", String.valueOf(duration));
 
         Intent intent = new Intent(this, Sportactivity_Finish.class);
 
         intent.putExtra("selectedActivity", selectedActivity);
         intent.putExtra("selectedActivityNumber", selectedActivityNumber);
-        intent.putExtra("startTime", startTime);
-        intent.putExtra("endTime", endTime);
+        intent.putExtra("startTime", String.valueOf(startTime));
+        intent.putExtra("endTime", String.valueOf(endTime));
         intent.putExtra("duration", duration);
 
         startActivity(intent);
