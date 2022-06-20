@@ -62,5 +62,14 @@ which I felt sorry for afterwards</string>
     <string name="Reset">Reset</string>
     <string name="resume">Resume</string>
     <string name="selected">Selected</string>
+    <string name="selected_nothing">No activity selected</string>
+    <string name="please_select_activity">Please select an activity</string>
+    <string name="running">Running</string>
+    <string name="walking">Walking</string>
+    <string name="swimming">Swimming</string>
+    <string name="hiking">Hiking</string>
+    <string name="dieing">Dieing</string>
+    <string name="yoga">Yoga</string>
+    <string name="meditation">Meditation</string>
 
 </resources>

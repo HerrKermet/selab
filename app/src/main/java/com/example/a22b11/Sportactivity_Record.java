@@ -4,13 +4,17 @@ package com.example.a22b11;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
+import java.time.Instant;
 
 public class Sportactivity_Record extends AppCompatActivity {
 
@@ -22,6 +26,12 @@ public class Sportactivity_Record extends AppCompatActivity {
     TextView textView;
 
     String selectedActivity;
+    Integer selectedActivityNumber;
+    Instant startTime;
+    Instant endTime;
+    Integer duration;
+    enum activityType {RUNNING, WALKING, SWIMMING, HIKING, DIEING, YOGA, MEDITATION};
+
 
 
     @Override
@@ -32,13 +42,11 @@ public class Sportactivity_Record extends AppCompatActivity {
         finishButton = findViewById(R.id.button20);
         textView = findViewById(R.id.testView);
 
+
+
+
         if(getIntent().hasExtra("selectedActivity")) textView.setText(getString(R.string.selected) +": " + getIntent().getStringExtra("selectedActivity"));
-
-
-
-
-
-
+        if(getIntent().hasExtra("selectedActivityNumber")) selectedActivityNumber = getIntent().getIntExtra("selectedActivityNumber", -1); //TODO -1 means error
 
 
         if (buttonState != 2) {
@@ -87,6 +95,7 @@ public class Sportactivity_Record extends AppCompatActivity {
     public void startTimer(View view){
         chronometer = findViewById(R.id.Chronometer);
 
+        startTime = Instant.now();
 
         if(!running){
             chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
@@ -105,6 +114,8 @@ public class Sportactivity_Record extends AppCompatActivity {
             running = false;
         }
 
+        endTime = Instant.now();
+
     }
 
     public void resetTimer(View view){
@@ -121,4 +132,25 @@ public class Sportactivity_Record extends AppCompatActivity {
 
 
 
+
+    //
+    public void buttonClickFinish(View view){
+
+       duration = Math.round((chronometer.getBase() / 1000000000) ); //TODO getting the duration in minutes, remember to bring back /60
+
+        Log.e("this is the error we are looking for ", String.valueOf(chronometer.getBase()- pauseOffset));
+
+        Intent intent = new Intent(this, Sportactivity_Finish.class);
+
+        intent.putExtra("selectedActivity", selectedActivity);
+        intent.putExtra("selectedActivityNumber", selectedActivityNumber);
+        intent.putExtra("startTime", startTime);
+        intent.putExtra("endTime", endTime);
+        intent.putExtra("duration", duration);
+
+        startActivity(intent);
+    }
+
+
 }
+

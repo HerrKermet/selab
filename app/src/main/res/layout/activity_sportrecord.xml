@@ -39,6 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:onClick="buttonClickFinish"
         android:text="@string/finish"
         app:layout_constraintBottom_toTopOf="@+id/Start_Button"
         app:layout_constraintEnd_toEndOf="@+id/Start_Button"

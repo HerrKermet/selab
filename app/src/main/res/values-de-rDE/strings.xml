@@ -61,5 +61,14 @@ das bedeutendste positive Ereignis?</string>
     <string name="Reset">Reset</string>
     <string name="resume">Weiter</string>
     <string name="selected">Ausgewählt</string>
+    <string name="selected_nothing">Keine Aktivität ausgewählt</string>
+    <string name="please_select_activity">Bitte wähle eine Aktivität aus</string>
+    <string name="running">Laufen</string>
+    <string name="hiking">Wandern</string>
+    <string name="swimming">Schwimmen</string>
+    <string name="walking">Spazieren</string>
+    <string name="dieing">Sterben</string>
+    <string name="yoga">Yoga</string>
+    <string name="meditation">Meditation</string>
 
 </resources>
