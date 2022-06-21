@@ -61,7 +61,7 @@ public class Sportactivity_Selection extends AppCompatActivity {
         }
     }
 
-
+    //TODO: create other activity type
     //TODO: change the buttons from hard coding to translatable String
 
 

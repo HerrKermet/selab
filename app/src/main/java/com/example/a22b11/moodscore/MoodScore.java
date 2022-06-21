@@ -43,15 +43,19 @@ public class MoodScore {
         list.addAll(ImmutableSet.of(satisfaction, calmness,comfort,relaxation,energy,wakefulness,eventNegativeIntensity,
                     eventPositiveIntensity,surroundingPeopleLiking,satisfiedWithYourself,considerYourselfFailure,actedImpulsively,actedAggressively));
 
+        //TODO change remove
         // delete null values
+        /*
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i) == -1) list.remove(i);
         }
+        */
+
 
         // calculates average
         if (!list.isEmpty()) {
             for (int value : list) {
-                score += value;
+                if (value != -1) score += value;
             }
             score = (int) Math.ceil(score / list.size());
         }

@@ -72,5 +72,6 @@ das bedeutendste positive Ereignis?</string>
     <string name="meditation">Meditation</string>
     <string name="addActivity">Aktivität hinzufügen</string>
     <string name="editActivity">Aktivität ändern</string>
+    <string name="notNow">Nicht jetzt</string>
 
 </resources>

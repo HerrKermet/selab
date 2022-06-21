@@ -3,6 +3,8 @@ package com.example.a22b11;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
@@ -176,7 +178,15 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
 
+    public void onBtnNotNowClick(View view) {
+        Intent backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
+        finish();  // delete questionnaire from backstack so prevent going back from recording into questionnaire
+
+        startActivity(backToCallingActivity);
+
+
+    }
 
 
     //TODO change MainActivity to latest activity before Questionnaire was opened

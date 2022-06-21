@@ -15,7 +15,19 @@ public class Sportactivity_Home extends AppCompatActivity {
     }
 
     public void buttonSelectActivity(View view) {
-        Intent intent = new Intent(this,Sportactivity_Selection.class);
+
+        Intent intentToSportActivity = new Intent(this,Sportactivity_Record.class);
+        Intent intentToQuestionnaire = new Intent(this,QuestionnaireWelcome.class);
+
+
+        intentToQuestionnaire.putExtra(Intent.EXTRA_INTENT,intentToSportActivity);
+
+        startActivity(intentToQuestionnaire);
+
+    }
+
+    public void buttonEditActivity(View view) {
+        Intent intent = new Intent(this, Sportactivity_Edit_Selection.class);
         startActivity(intent);
     }
 
