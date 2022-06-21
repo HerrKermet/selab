@@ -210,12 +210,13 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         updateQuestionProgessBar();
 
 
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
         //TODO make successful message a translatable string
-        intent.putExtra("questionnaireSaved"," successful");
-        startActivity(intent);
+        backToCallingActivity.putExtra("questionnaireSaved"," successful");
+        finish();
+        startActivity(backToCallingActivity);
 
-        if (intent.hasExtra("questionnaireSaved"))
+        if (backToCallingActivity.hasExtra("questionnaireSaved"))
         {
             Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
             toast.show();
