@@ -1,17 +1,21 @@
 package com.example.a22b11.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a22b11.MyApplication;
 import com.example.a22b11.R;
+import com.example.a22b11.Sportactivity_Edit;
 import com.example.a22b11.Sportactivity_Edit_Selection;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
@@ -70,8 +74,8 @@ class itemViewHolder extends RecyclerView.ViewHolder {
     TextView name;
     TextView duration;
     TextView date;
-    ImageButton delete;
     ActivityDao activityDao;
+    CardView cardItem;
     Toast toast;
 
     android.app.Activity callingActivity;
@@ -87,7 +91,19 @@ class itemViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.itemName);
         duration = itemView.findViewById(R.id.itemDuration);
         date = itemView.findViewById(R.id.itemDate);
+        cardItem = itemView.findViewById(R.id.cardItem);
 
+        //on click for CardItem
+        cardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(callingActivity, Sportactivity_Edit.class);
+                intent.putExtra("databaseActivity",adapter.items.get(getAdapterPosition()));
+                callingActivity.startActivity(intent);
+            }
+        });
+
+        //on click for Delete button
         itemView.findViewById(R.id.itemDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +115,7 @@ class itemViewHolder extends RecyclerView.ViewHolder {
             }
         } );
 
+        //on long click for Delete button
         itemView.findViewById(R.id.itemDelete).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
