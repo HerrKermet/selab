@@ -73,5 +73,7 @@ das bedeutendste positive Ereignis?</string>
     <string name="addActivity">Aktivität hinzufügen</string>
     <string name="editActivity">Aktivität ändern</string>
     <string name="notNow">Nicht jetzt</string>
+    <string name="deletedSuccessful">Erfolgreich gelöscht</string>
+    <string name="holdForDeletion">Halten zum Löschen</string>
 
 </resources>

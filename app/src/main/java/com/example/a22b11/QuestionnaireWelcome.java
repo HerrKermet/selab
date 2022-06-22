@@ -209,18 +209,18 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         question_progress_dict = new HashMap<>();
         updateQuestionProgessBar();
 
-
-        Intent backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
+        Intent backToCallingActivity = new Intent(this, MainActivity.class);
+        if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
         //TODO make successful message a translatable string
-        backToCallingActivity.putExtra("questionnaireSaved"," successful");
+        //backToCallingActivity.putExtra("questionnaireSaved"," successful");
         finish();
         startActivity(backToCallingActivity);
 
-        if (backToCallingActivity.hasExtra("questionnaireSaved"))
-        {
-            Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
-            toast.show();
-        }
+        //if (backToCallingActivity.hasExtra("questionnaireSaved"))
+        //{
+        Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
+        toast.show();
+        //}
 
 
     }

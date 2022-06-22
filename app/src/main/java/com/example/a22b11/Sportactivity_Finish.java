@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
-import com.example.a22b11.db.ActivityDao_Impl;
 import com.example.a22b11.db.AppDatabase;
+import com.google.common.util.concurrent.ListenableFuture;
 
 
 import java.time.Instant;
@@ -53,12 +53,9 @@ public class Sportactivity_Finish extends AppCompatActivity {
                                 "  \nstartTime: " + startTime + "  \nendTime: " + endTime + "  \nduration: " + duration + "s");
 
         //creating database object
-        Activity activity = new Activity();
+        Activity activity = new Activity(1L,startTime,endTime,selectedActivity,duration);
         //TODO create enum in activity type
-        activity.userId = 1L;
-        activity.end = endTime;
-        activity.start = startTime;
-        //activity.type = selectedActivityNumber;
+
 
         ActivityDao activityDao =  db.activityDao();
         activityDao.insert(activity);
@@ -66,10 +63,5 @@ public class Sportactivity_Finish extends AppCompatActivity {
     }
 
 
-
-    public void creatingActivity(){
-
-        //act = [startTime, endTime, duration, selectedActivity];
-    }
 
 }
