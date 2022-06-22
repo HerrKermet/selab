@@ -179,7 +179,9 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
     public void onBtnNotNowClick(View view) {
-        Intent backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
+        Intent backToCallingActivity = new Intent(this, Sportactivity_Home.class);
+        if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
+
 
         finish();  // delete questionnaire from backstack so prevent going back from recording into questionnaire
 
@@ -211,6 +213,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         Intent backToCallingActivity = new Intent(this, MainActivity.class);
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
+
         //TODO make successful message a translatable string
         //backToCallingActivity.putExtra("questionnaireSaved"," successful");
         finish();

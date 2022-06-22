@@ -22,5 +22,6 @@ public class Sportactivity_Edit extends AppCompatActivity {
         textView.setText(activity.type + "\n" + activity.duration + "\n");
 
 
+
     }
 }
