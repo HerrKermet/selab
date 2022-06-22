@@ -1,5 +1,6 @@
 package com.example.a22b11;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -25,6 +26,13 @@ public class Sportactivity_Selection extends AppCompatActivity {
         button = findViewById(R.id.button);
         textView = findViewById(R.id.textView29);
         textView.setText(getString(R.string.selected_nothing));
+
+
+        if(savedInstanceState != null){
+                selectedActivityNumber = savedInstanceState.getInt("selectedActivityNumber");
+                selectedActivity = savedInstanceState.getString("selectedActivity");
+                textView.setText(getString(R.string.selected)+": " + selectedActivity);
+        }
     }
 
 
@@ -60,6 +68,24 @@ public class Sportactivity_Selection extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+
+
+    //to save states when the device is rotated, the activtiy isn't created anew with null in selectedActivityNumber
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState); //takes care of the default
+        outState.putInt("selectedActivityNumber" ,selectedActivityNumber);
+        outState.putString("selectedActivity" ,selectedActivity);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+
 
     //TODO: create other activity type
     //TODO: change the buttons from hard coding to translatable String
