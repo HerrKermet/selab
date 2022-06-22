@@ -37,6 +37,7 @@
                 android:layout_marginStart="50dp"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/addActivity"
+                android:onClick="buttonAddActivity"
                 android:src="@drawable/ic_baseline_add_40"
                 android:textAlignment="gravity"
                 android:tooltipText="Test"

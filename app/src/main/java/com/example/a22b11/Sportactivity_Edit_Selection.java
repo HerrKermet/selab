@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.a22b11.adapter.itemAdapter;
 import com.example.a22b11.db.Activity;
@@ -62,8 +63,15 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
         //done with database query
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        itemAdapter adapter = new itemAdapter(items, activityDao, this);
-        recyclerView.setAdapter(adapter);
+        if (!items.isEmpty()) {
+            itemAdapter adapter = new itemAdapter(items, activityDao, this);
+            recyclerView.setAdapter(adapter);
+        }
+        else {
+
+            Toast toast = Toast.makeText(this, "NO ACTIVITIES TRY TO ADD SOME",Toast.LENGTH_SHORT);
+            toast.show();
+        }
 
     }
 

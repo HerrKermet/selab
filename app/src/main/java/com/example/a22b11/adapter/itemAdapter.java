@@ -98,7 +98,7 @@ class itemViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(callingActivity, Sportactivity_Edit.class);
-                intent.putExtra("databaseActivity",adapter.items.get(getAdapterPosition()));
+                intent.putExtra("databaseActivityEdit",adapter.items.get(getAdapterPosition()));
                 callingActivity.startActivity(intent);
             }
         });

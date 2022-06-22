@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.a22b11.db.Activity;
+
 public class Sportactivity_Home extends AppCompatActivity {
 
     @Override
@@ -28,6 +30,16 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     public void buttonEditActivity(View view) {
         Intent intent = new Intent(this, Sportactivity_Edit_Selection.class);
+        startActivity(intent);
+    }
+
+    public void buttonAddActivity(View view) {
+        //create new Activity to pass to Edit screen
+        Activity newActivity = new Activity();
+
+        Intent intent = new Intent(this, Sportactivity_Edit.class);
+        intent.putExtra("databaseActivityAdd", newActivity);
+
         startActivity(intent);
     }
 
