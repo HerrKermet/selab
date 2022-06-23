@@ -4,7 +4,7 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {User.class, Activity.class, Mood.class}, version = 3)
+@Database(entities = {User.class, Activity.class, Mood.class}, version = 4)
 @TypeConverters({Converter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

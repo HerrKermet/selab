@@ -2,6 +2,7 @@ package com.example.a22b11;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,6 +24,7 @@ import com.example.a22b11.db.MoodDao;
 import com.example.a22b11.db.User;
 import com.example.a22b11.db.UserDao;
 import com.example.a22b11.moodscore.MoodScore;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -45,12 +47,14 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     static ProgressBar progressBar;
     TextView textViewProgressBar;
     static Mood mood;
+    String notes;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mood = new Mood();
+        notes = "";
 
         question_progress_dict = new HashMap<>();
         //question_answers = new HashMap<>();
@@ -192,7 +196,16 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
     //TODO change MainActivity to latest activity before Questionnaire was opened
-    public void onBtnFinishClick (View view) {
+     public void onBtnFinishClick (View view) {
+        TextInputEditText textInputEditText = fragmentContainerView.getFragment().getView().findViewById(R.id.textInputEditText);
+        notes = textInputEditText.getText().toString();
+        //get notes from Questionnaire
+
+
+
+         if (notes.replaceAll(" ","").equals("")) notes = "";
+         Log.e("NOTES","STRING NOTE IS:" + notes +"END");
+
         //TODO save question answers here
 
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
@@ -200,6 +213,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         mood.userId = 1L;
         mood.assessment = Instant.now();
+        mood.notes = notes;
         int mood_score = MoodScore.calculate(mood);
 
         ListenableFuture<Void> moodinsert = moodDao.insert(mood);

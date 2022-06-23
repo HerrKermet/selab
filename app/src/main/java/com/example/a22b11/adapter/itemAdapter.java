@@ -51,9 +51,17 @@ public class itemAdapter extends RecyclerView.Adapter<itemViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull itemViewHolder holder, int position) {
+        int seconds;
+        int minutes;
+        String duration;
 
         holder.name.setText(String.valueOf(items.get(position).type));
-        holder.duration.setText(String.valueOf(items.get(position).duration) + "s");
+
+        seconds = items.get(position).duration % 60;
+        minutes = items.get(position).duration / 60;
+        duration = (minutes > 0) ? minutes + "m " + seconds + "s" : seconds + "s";
+        holder.duration.setText((duration));
+        //holder.duration.setText(String.valueOf(items.get(position).duration) + "s");
 
 
 

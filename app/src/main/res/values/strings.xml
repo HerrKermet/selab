@@ -76,6 +76,7 @@ which I felt sorry for afterwards</string>
     <string name="notNow">Not now</string>
     <string name="deletedSuccessful">Deleted successful</string>
     <string name="holdForDeletion">Hold to delete</string>
+    <string name="doYouWantToAddSomeNotes">Add some notes ?</string>
 
 
 </resources>
