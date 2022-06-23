@@ -77,6 +77,8 @@ which I felt sorry for afterwards</string>
     <string name="deletedSuccessful">Deleted successful</string>
     <string name="holdForDeletion">Hold to delete</string>
     <string name="doYouWantToAddSomeNotes">Add some notes ?</string>
+    <string name="recentActivities">Recent activities</string>
+    <string name="noActivitiesRecorded">There are no recorded Activities</string>
 
 
 </resources>

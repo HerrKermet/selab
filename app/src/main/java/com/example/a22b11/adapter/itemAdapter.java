@@ -51,6 +51,7 @@ public class itemAdapter extends RecyclerView.Adapter<itemViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull itemViewHolder holder, int position) {
+        // convert duration to minute:second format  or just second when under one minute
         int seconds;
         int minutes;
         String duration;

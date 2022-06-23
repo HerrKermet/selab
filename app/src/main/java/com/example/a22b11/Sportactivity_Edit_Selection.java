@@ -15,6 +15,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -64,12 +65,13 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (!items.isEmpty()) {
+            Collections.reverse(items);
             itemAdapter adapter = new itemAdapter(items, activityDao, this);
             recyclerView.setAdapter(adapter);
         }
         else {
 
-            Toast toast = Toast.makeText(this, "NO ACTIVITIES TRY TO ADD SOME",Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, R.string.noActivitiesRecorded, Toast.LENGTH_SHORT);
             toast.show();
         }
 

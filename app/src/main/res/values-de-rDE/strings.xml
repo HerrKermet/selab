@@ -76,5 +76,7 @@ das bedeutendste positive Ereignis?</string>
     <string name="deletedSuccessful">Erfolgreich gelöscht</string>
     <string name="holdForDeletion">Halten zum Löschen</string>
     <string name="doYouWantToAddSomeNotes">Notizen hinzufügen ?</string>
+    <string name="recentActivities">Aktuellste Aktivitäten</string>
+    <string name="noActivitiesRecorded">Keine aufgezeichneten Aktivitäten gefunden</string>
 
 </resources>
