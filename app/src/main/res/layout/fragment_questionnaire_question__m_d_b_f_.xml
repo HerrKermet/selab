@@ -29,9 +29,9 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="@color/purple_500"
+
                 android:splitTrack="false"
-                android:thumbTint="@color/purple_500"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/seekBar_m_d_b_f_calm" />
@@ -44,9 +44,9 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="@color/purple_500"
+
                 android:splitTrack="false"
-                android:thumbTint="@color/purple_500"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/seekBar_m_d_b_f_comfortable" />
@@ -59,9 +59,9 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="@color/purple_500"
+
                 android:splitTrack="false"
-                android:thumbTint="@color/purple_500"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/seekBar_m_d_b_f_relaxed" />
@@ -74,9 +74,9 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="@color/purple_500"
+
                 android:splitTrack="false"
-                android:thumbTint="@color/purple_500"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/seekBar_m_d_b_f_energetic" />
@@ -89,9 +89,9 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="@color/purple_500"
+
                 android:splitTrack="false"
-                android:thumbTint="@color/purple_500"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/seekBar_m_d_b_f_satisfied" />
@@ -261,9 +261,9 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="@color/purple_500"
+
                 android:splitTrack="false"
-                android:thumbTint="@color/purple_500"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />

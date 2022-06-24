@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -53,6 +55,9 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
+        setTheme(theme);
         mood = new Mood();
         notes = "";
 
@@ -67,6 +72,8 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
         updateQuestionProgessBar();
+
+
 
     }
 

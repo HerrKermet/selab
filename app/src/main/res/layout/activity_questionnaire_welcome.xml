@@ -28,7 +28,7 @@
         android:indeterminateOnly="false"
         android:max="8"
         android:progress="0"
-        android:progressDrawable="@drawable/circle"
+        android:progressDrawable="@drawable/circularprogessbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"

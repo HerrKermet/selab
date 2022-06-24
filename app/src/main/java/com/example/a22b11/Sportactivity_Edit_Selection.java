@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -27,6 +29,9 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
+        setTheme(theme);
         setContentView(R.layout.activity_sportedit_selection);
         recyclerView = findViewById(R.id.recyclerView);
 

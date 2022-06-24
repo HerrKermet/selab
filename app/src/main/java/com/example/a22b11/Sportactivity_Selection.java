@@ -3,7 +3,9 @@ package com.example.a22b11;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.view.View;
@@ -22,6 +24,9 @@ public class Sportactivity_Selection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
+        setTheme(theme);
         setContentView(R.layout.activity_sportselection);
         button = findViewById(R.id.button);
         textView = findViewById(R.id.textView29);

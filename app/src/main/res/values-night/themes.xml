@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.22B11" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
@@ -12,5 +12,123 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:progressTint">@color/purple_500</item>
+        <item name="android:thumbTint">@color/purple_500</item>
+        <item name="android:buttonTint">@color/purple_500</item>
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
     </style>
+
+    <style name="Theme.Pumpkin_Spice" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryVariant">@color/orangeVariant</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:progressTint">@color/orange</item>
+        <item name="android:thumbTint">@color/orange</item>
+        <item name="android:buttonTint">@color/orange</item>
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+    </style>
+
+    <style name="Theme.Candy_Apple" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/redVariant</item>
+        <item name="colorPrimaryVariant">@color/red</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:progressTint">@color/red</item>
+        <item name="android:thumbTint">@color/red</item>
+        <item name="android:buttonTint">@color/red</item>
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+    </style>
+
+    <style name="Theme.Mamba_Munch" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/greenVariant</item>
+        <item name="colorPrimaryVariant">@color/green</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:progressTint">@color/greenVariant</item>
+        <item name="android:thumbTint">@color/greenVariant</item>
+        <item name="android:buttonTint">@color/greenVariant</item>
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+    </style>
+
+    <style name="Theme.Aspect_Moss" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/cyanVariant</item>
+        <item name="colorPrimaryVariant">@color/cyan</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:progressTint">@color/cyanVariant</item>
+        <item name="android:thumbTint">@color/cyanVariant</item>
+        <item name="android:buttonTint">@color/cyanVariant</item>
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+    </style>
+
+    <style name="Theme.Deep_Blue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blueVariant</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:progressTint">@color/blueVariant</item>
+        <item name="android:thumbTint">@color/blueVariant</item>
+        <item name="android:buttonTint">@color/blueVariant</item>
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+    </style>
+
+    <style name="Theme.Penguin_Butler" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/darkBlueVariant</item>
+        <item name="colorPrimaryVariant">@color/darkBlue</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:progressTint">@color/darkBlueVariant</item>
+        <item name="android:thumbTint">@color/darkBlueVariant</item>
+        <item name="android:buttonTint">@color/darkBlueVariant</item>
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+    </style>
+
 </resources>
