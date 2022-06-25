@@ -45,7 +45,8 @@
         </activity>
         <activity
             android:name=".QuestionnaireWelcome"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:exported="false" />

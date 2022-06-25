@@ -123,5 +123,19 @@ public class Color_Choose_Theme extends AppCompatActivity {
         recreate();
     }
 
+    public void setThemeAppleMunch(View view) {
+        selectedTheme = R.style.Theme_Apple_Munch;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("selectedTheme", selectedTheme);
+        editor.commit();
+
+        TaskStackBuilder.create(this)
+                .addNextIntent(new Intent(this, Sportactivity_Home.class))
+                .addNextIntent(this.getIntent())
+                .startActivities();
+
+        recreate();
+    }
+
 
 }

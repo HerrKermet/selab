@@ -78,5 +78,6 @@ das bedeutendste positive Ereignis?</string>
     <string name="doYouWantToAddSomeNotes">Notizen hinzufügen ?</string>
     <string name="recentActivities">Aktuellste Aktivitäten</string>
     <string name="noActivitiesRecorded">Keine aufgezeichneten Aktivitäten gefunden</string>
+    <string name="selectTheme">Wähle ein Theme</string>
 
 </resources>

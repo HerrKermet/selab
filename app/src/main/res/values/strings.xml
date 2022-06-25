@@ -79,6 +79,7 @@ which I felt sorry for afterwards</string>
     <string name="doYouWantToAddSomeNotes">Add some notes ?</string>
     <string name="recentActivities">Recent activities</string>
     <string name="noActivitiesRecorded">There are no recorded Activities</string>
+    <string name="selectTheme">Select a Theme</string>
 
 
 </resources>
