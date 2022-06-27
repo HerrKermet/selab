@@ -67,7 +67,7 @@ das bedeutendste positive Ereignis?</string>
     <string name="hiking">Wandern</string>
     <string name="swimming">Schwimmen</string>
     <string name="walking">Spazieren</string>
-    <string name="dieing">Sterben</string>
+    <string name="other">Andere</string>
     <string name="yoga">Yoga</string>
     <string name="meditation">Meditation</string>
     <string name="addActivity">Aktivität hinzufügen</string>
@@ -79,5 +79,11 @@ das bedeutendste positive Ereignis?</string>
     <string name="recentActivities">Aktuellste Aktivitäten</string>
     <string name="noActivitiesRecorded">Keine aufgezeichneten Aktivitäten gefunden</string>
     <string name="selectTheme">Wähle ein Theme</string>
+    <string name="apply">Übernehmen</string>
+    <string name="start">Start</string>
+    <string name="end">Ende</string>
+    <string name="duration">Dauer</string>
+    <string name="type">Art</string>
+    <string name="selectDate">Datum auswählen</string>
 
 </resources>

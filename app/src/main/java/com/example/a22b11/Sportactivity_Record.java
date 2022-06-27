@@ -1,6 +1,7 @@
 package com.example.a22b11;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -52,6 +53,15 @@ public class Sportactivity_Record extends AppCompatActivity {
 
 
 
+        //TODO finish all the state saves
+        if(savedInstanceState != null){
+            selectedActivity = savedInstanceState.getString("selectedActivity");
+            textView.setText(getString(R.string.selected)+": " + selectedActivity);
+
+            //startTime = (String) savedInstanceState.getString("startTime");
+            //endTime = savedInstanceState.getString("endTime");
+            duration = savedInstanceState.getInt("duration");
+        }
 
 
         if(getIntent().hasExtra("selectedActivity"))
@@ -67,6 +77,9 @@ public class Sportactivity_Record extends AppCompatActivity {
             finishButton.setVisibility(View.GONE);
         }
         else finishButton.setVisibility(View.VISIBLE);
+
+
+
     }
 
 
@@ -151,7 +164,7 @@ public class Sportactivity_Record extends AppCompatActivity {
 
 
 
-    //
+    //Saving SelectedActivity, SelectedActivityNumber, StartTime,EndTime and Duration in intent and passing them into next page
     public void buttonClickFinish(View view){
 
        duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) ); //TODO getting the duration in minutes, remember to bring back /60
@@ -168,6 +181,26 @@ public class Sportactivity_Record extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+
+
+    //to save states when the device is rotated,
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState); //takes care of the default
+        outState.putString("selectedActivity", selectedActivity);
+        outState.putInt("selectedActivityNumber" ,selectedActivityNumber);
+        outState.putString("startTime", String.valueOf(startTime));
+        outState.putString("endTime", String.valueOf(endTime));
+        outState.putInt("duration", duration);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
 
 
 }

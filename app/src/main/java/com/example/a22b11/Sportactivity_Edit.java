@@ -28,13 +28,13 @@ public class Sportactivity_Edit extends AppCompatActivity implements DatePickerD
         setTheme(theme);
         setContentView(R.layout.activity_sportedit);
 
-        textView = findViewById(R.id.textView32);
-        dateView = findViewById(R.id.editTextDate);
+        //textView = findViewById(R.id.textView32);
+        //dateView = findViewById(R.id.editTextDate);
 
         if (getIntent().hasExtra("databaseActivityEdit")) activity = getIntent().getParcelableExtra("databaseActivityEdit");
         else if(getIntent().hasExtra("databaseActivityAdd")) activity = getIntent().getParcelableExtra("databaseActivityAdd");
 
-        setViews(activity);
+        //setViews(activity);
 
 
 
