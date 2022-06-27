@@ -71,4 +71,5 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="registration_failed">"Registration failed"</string>
+    <string name="account_created_text">A new account has been automatically created for you!\n\nPlease store the following information in a safe place.</string>
 </resources>

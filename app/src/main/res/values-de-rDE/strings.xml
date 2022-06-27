@@ -72,5 +72,5 @@ das bedeutendste positive Ereignis?</string>
     <string name="invalid_password">Password muss länger als 5 Zeichen sein</string>
     <string name="login_failed">Login fehlgeschlagen</string>
     <string name="registration_failed">"Registrierung fehlgeschlagen"</string>
-
+    <string name="account_created_text">Ein neues Konto wurde für Sie automatisch erstellt!\n\nBitte speichern Sie die folgenden Daten an einem sicheren Ort ab.</string>
 </resources>

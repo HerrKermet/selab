@@ -21,6 +21,7 @@ public class LoginViewModel extends ViewModel {
 
     final private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     final private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    final private MutableLiveData<RegisterResult> registerResult = new MutableLiveData<>();
     // final private LoginRepository loginRepository;
 
     /* LoginViewModel(LoginRepository loginRepository) {
@@ -36,6 +37,10 @@ public class LoginViewModel extends ViewModel {
 
     LiveData<LoginResult> getLoginResult() {
         return loginResult;
+    }
+
+    LiveData<RegisterResult> getRegisterResult() {
+        return registerResult;
     }
 
     public void login(String userId, String password) {
@@ -78,16 +83,21 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    loginResult.setValue(new LoginResult(new LoggedInUserView(response.body().id)));
+                    User user = response.body();
+                    if (user.id == null || user.password == null) {
+                        registerResult.setValue(new RegisterResult(R.string.registration_failed));
+                        return;
+                    }
+                    registerResult.setValue(new RegisterResult(user));
                 }
                 else {
-                    loginResult.setValue(new LoginResult(R.string.registration_failed));
+                    registerResult.setValue(new RegisterResult(R.string.registration_failed));
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                loginResult.setValue(new LoginResult(R.string.registration_failed));
+                registerResult.setValue(new RegisterResult(R.string.registration_failed));
             }
         });
     }
