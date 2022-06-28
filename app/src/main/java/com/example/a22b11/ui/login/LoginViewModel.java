@@ -1,5 +1,6 @@
 package com.example.a22b11.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,7 +12,17 @@ import com.example.a22b11.api.FitnessApiClient;
 import com.example.a22b11.data.Result;
 import com.example.a22b11.data.model.LoggedInUser;
 import com.example.a22b11.R;
+import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.db.User;
+import com.example.a22b11.db.UserDao;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +33,7 @@ public class LoginViewModel extends ViewModel {
     final private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     final private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     final private MutableLiveData<RegisterResult> registerResult = new MutableLiveData<>();
+    final private MutableLiveData<Boolean> rememberResult = new MutableLiveData<>();
     // final private LoginRepository loginRepository;
 
     /* LoginViewModel(LoginRepository loginRepository) {
@@ -43,18 +55,41 @@ public class LoginViewModel extends ViewModel {
         return registerResult;
     }
 
+    LiveData<Boolean> getRememberResult() {
+        return rememberResult;
+    }
+
+    public void remember(User user, Executor executor) {
+        UserDao userDao = MyApplication.getInstance().getAppDatabase().userDao();
+        Futures.addCallback(
+                userDao.insert(user),
+                new FutureCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        rememberResult.setValue(true);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        rememberResult.setValue(false);
+                    }
+                },
+                executor
+        );
+    }
+
     public void login(String userId, String password) {
         // can be launched in a separate asynchronous job
         // Result<LoggedInUser> result = loginRepository.login(userId, password);
 
-        User user = new User(Long.parseLong(userId), password);
+        final User user = new User(Long.parseLong(userId), password);
 
         FitnessApiClient apiClient = MyApplication.getInstance().getFitnessApiClient();
         apiClient.login(user).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    loginResult.setValue(new LoginResult(new LoggedInUserView(user.id)));
+                    loginResult.setValue(new LoginResult(user));
                 }
                 else {
                     loginResult.setValue(new LoginResult(R.string.login_failed));

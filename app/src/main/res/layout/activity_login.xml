@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
         android:autofillHints="@string/prompt_userid"
+        android:enabled="false"
         android:hint="@string/prompt_userid"
         android:inputType="number"
         android:selectAllOnFocus="true"
@@ -30,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:autofillHints="@string/prompt_password"
+        android:enabled="false"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
@@ -40,18 +42,24 @@
         app:layout_constraintTop_toBottomOf="@+id/userid" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/button_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
         app:layout_constraintVertical_bias="0.2">
+
+        <CheckBox
+            android:id="@+id/rememberLoginCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/remember_login" />
 
         <Button
             android:id="@+id/login"

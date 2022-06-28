@@ -75,14 +75,26 @@
 
     </TableLayout>
 
-    <Button
-        android:id="@+id/accountCreatedOkButton"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@android:string/ok"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.75">
+
+        <CheckBox
+            android:id="@+id/accountCreatedRememberLoginCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/remember_login" />
+
+        <Button
+            android:id="@+id/accountCreatedOkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
