@@ -9,10 +9,11 @@ import androidx.room.PrimaryKey;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity(tableName = "activities")
-public class Activity implements Parcelable {
+public class Activity implements Serializable {
 
 
     public Activity(Long userId, Instant start, Instant end, String type, Integer duration) {
@@ -55,75 +56,5 @@ public class Activity implements Parcelable {
 
     public Integer duration;
 
-    protected Activity(Parcel in) {
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readLong();
-        }
-        if (in.readByte() == 0) {
-            remoteId = null;
-        } else {
-            remoteId = in.readLong();
-        }
-        if (in.readByte() == 0) {
-            userId = null;
-        } else {
-            userId = in.readLong();
-        }
-        isModified = in.readByte() != 0;
-        type = in.readString();
-        if (in.readByte() == 0) {
-            duration = null;
-        } else {
-            duration = in.readInt();
-        }
-    }
 
-    public static final Creator<Activity> CREATOR = new Creator<Activity>() {
-        @Override
-        public Activity createFromParcel(Parcel in) {
-            return new Activity(in);
-        }
-
-        @Override
-        public Activity[] newArray(int size) {
-            return new Activity[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        if (id == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(id);
-        }
-        if (remoteId == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(remoteId);
-        }
-        if (userId == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(userId);
-        }
-        parcel.writeByte((byte) (isModified ? 1 : 0));
-        parcel.writeString(type);
-        if (duration == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeInt(duration);
-        }
-    }
 }

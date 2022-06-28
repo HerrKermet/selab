@@ -1,6 +1,7 @@
 package com.example.a22b11.adapter;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,6 @@ public class itemAdapter extends RecyclerView.Adapter<itemViewHolder>{
         duration = (minutes > 0) ? minutes + "m " + seconds + "s" : seconds + "s";
         holder.duration.setText((duration));
         //holder.duration.setText(String.valueOf(items.get(position).duration) + "s");
-
 
 
         holder.date.setText(String.valueOf(formatter.format(Date.from(items.get(position).start))));

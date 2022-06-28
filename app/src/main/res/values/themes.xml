@@ -15,7 +15,6 @@
         <item name="android:progressTint">@color/design_default_color_primary</item>
         <item name="android:thumbTint">@color/design_default_color_primary</item>
         <item name="android:buttonTint">@color/design_default_color_primary</item>
-        <item name="android:datePickerStyle">@style/Theme.22B11</item>
 
 
     </style>
@@ -36,8 +35,6 @@
         <item name="android:progressTint">@color/orange</item>
         <item name="android:thumbTint">@color/orange</item>
         <item name="android:buttonTint">@color/orange</item>
-        <item name="android:datePickerStyle">@style/Theme.Pumpkin_Spice</item>
-
     </style>
 
     <style name="Theme.Candy_Apple" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -56,7 +53,6 @@
         <item name="android:progressTint">@color/red</item>
         <item name="android:thumbTint">@color/red</item>
         <item name="android:buttonTint">@color/red</item>
-        <item name="android:datePickerStyle">@style/Theme.Candy_Apple</item>
 
     </style>
 
@@ -76,7 +72,6 @@
         <item name="android:progressTint">@color/greenVariant</item>
         <item name="android:thumbTint">@color/green</item>
         <item name="android:buttonTint">@color/green</item>
-        <item name="android:datePickerStyle">@style/Theme.Mamba_Munch</item>
 
     </style>
 
@@ -96,7 +91,6 @@
         <item name="android:progressTint">@color/cyan</item>
         <item name="android:thumbTint">@color/cyan</item>
         <item name="android:buttonTint">@color/cyan</item>
-        <item name="android:datePickerStyle">@style/Theme.Aspect_Moss</item>
     </style>
 
     <style name="Theme.Deep_Blue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -115,7 +109,6 @@
         <item name="android:progressTint">@color/blue</item>
         <item name="android:thumbTint">@color/blue</item>
         <item name="android:buttonTint">@color/blue</item>
-        <item name="android:datePickerStyle">@style/Theme.Deep_Blue</item>
 
     </style>
 
@@ -135,7 +128,6 @@
         <item name="android:progressTint">@color/darkBlue</item>
         <item name="android:thumbTint">@color/darkBlue</item>
         <item name="android:buttonTint">@color/darkBlue</item>
-        <item name="android:datePickerStyle">@style/Theme.Penguin_Butler</item>
     </style>
 
     <style name="Theme.Apple_Munch" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -154,7 +146,6 @@
         <item name="android:progressTint">@color/greenVariant</item>
         <item name="android:thumbTint">@color/red</item>
         <item name="android:buttonTint">@color/green</item>
-        <item name="android:datePickerStyle">@style/Theme.Apple_Munch</item>
     </style>
 
 </resources>

@@ -169,6 +169,7 @@ public class Sportactivity_Home extends AppCompatActivity {
     public void buttonAddActivity(View view) {
         //create new Activity to pass to Edit screen
         Activity newActivity = new Activity();
+        newActivity.type = null;
 
         Intent intent = new Intent(this, Sportactivity_Edit.class);
         intent.putExtra("databaseActivityAdd", newActivity);

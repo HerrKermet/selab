@@ -16,7 +16,6 @@
         <item name="android:thumbTint">@color/purple_500</item>
         <item name="android:buttonTint">@color/purple_500</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.22B11</item>
 
     </style>
 
@@ -36,7 +35,6 @@
         <item name="android:thumbTint">@color/orange</item>
         <item name="android:buttonTint">@color/orange</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.Pumpkin_Spice</item>
 
     </style>
 
@@ -57,7 +55,6 @@
         <item name="android:thumbTint">@color/red</item>
         <item name="android:buttonTint">@color/red</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.Candy_Apple</item>
 
     </style>
 
@@ -78,7 +75,6 @@
         <item name="android:thumbTint">@color/green</item>
         <item name="android:buttonTint">@color/greenVariant</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.Mamba_Munch</item>
 
     </style>
 
@@ -99,7 +95,6 @@
         <item name="android:thumbTint">@color/cyanVariant</item>
         <item name="android:buttonTint">@color/cyanVariant</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.Aspect_Moss</item>
 
     </style>
 
@@ -120,7 +115,6 @@
         <item name="android:thumbTint">@color/blueVariant</item>
         <item name="android:buttonTint">@color/blueVariant</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.Deep_Blue</item>
 
     </style>
 
@@ -141,7 +135,6 @@
         <item name="android:thumbTint">@color/darkBlueVariant</item>
         <item name="android:buttonTint">@color/darkBlueVariant</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.Penguin_Butler</item>
 
     </style>
 
@@ -162,7 +155,7 @@
         <item name="android:thumbTint">@color/red</item>
         <item name="android:buttonTint">@color/greenVariant</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-        <item name="android:datePickerStyle">@style/Theme.Apple_Munch</item>
+
     </style>
 
 </resources>

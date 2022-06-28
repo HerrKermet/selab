@@ -91,5 +91,13 @@ which I felt sorry for afterwards</string>
     <string name="AppRequiresPermission">This app requires permission to be granted in order to work properly</string>
 
 
+    <string-array name="activity_list">
+        <item>@string/please_select_activity</item>
+        <item>@string/running</item>
+        <item>@string/walking</item>
+        <item>@string/swimming</item>
+        <item>@string/hiking</item>
+        <item>@string/other</item>
+    </string-array>
 
 </resources>
