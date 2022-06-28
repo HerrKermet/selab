@@ -42,6 +42,7 @@ public class Sportactivity_Edit extends AppCompatActivity  {
     ImageButton imageButtonStart;
     ImageButton imageButtonEnd;
     Calendar calendar;
+
     int yearStart;
     int yearEnd;
     int monthStart;
@@ -193,20 +194,21 @@ public class Sportactivity_Edit extends AppCompatActivity  {
     }
 
     private void setActivitySpinner(Activity activity, boolean skip) {
-        if (!skip) {
+        if (!skip) {   // skip if function is not launched at oncreate
             String type = activity.type;
             List<String> spinnerItems = new ArrayList<>(activitySpinner.getCount());
             for (int i = 0; i < activitySpinner.getCount(); i++) {
                 spinnerItems.add(i, (String) activitySpinner.getItemAtPosition(i));
             }
-            if (spinnerItems.contains(type))
+            if (spinnerItems.contains(type))  // set spinner to type if it contains type
                 activitySpinner.setSelection(spinnerItems.indexOf(type), true);
-            else activitySpinner.setSelection(0, true);
+            else if (type != null) activitySpinner.setSelection(activitySpinner.getCount() - 1); // if type is custom (means not null) then set spinner to "Other"
+            else activitySpinner.setSelection(0, true);                           // if type is null then spinner starts at "Select"
 
         }
 
-
-        if(activitySpinner.getSelectedItemPosition() == activitySpinner.getCount() - 1 || activity.type == null) textViewType.setVisibility(View.VISIBLE);
+        // if Other is selected then type definiton view is shown  otherwise it stays invisible
+        if(activitySpinner.getSelectedItemPosition() == activitySpinner.getCount() - 1) textViewType.setVisibility(View.VISIBLE);
         else textViewType.setVisibility(View.INVISIBLE);
     }
 

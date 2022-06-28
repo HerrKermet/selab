@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.db.Mood;
 import com.google.common.util.concurrent.ListenableFuture;
 
 
@@ -58,7 +59,7 @@ public class Sportactivity_Finish extends AppCompatActivity {
                                 "  \nstartTime: " + startTime + "  \nendTime: " + endTime + "  \nduration: " + duration + "s");
 
         //creating database object
-        Activity activity = new Activity(1L,startTime,endTime,selectedActivity,duration);
+        Activity activity = new Activity(1L, startTime, endTime, selectedActivity, duration, Activity.ActivityType.values()[selectedActivityNumber]);
         //TODO create enum in activity type
 
 
