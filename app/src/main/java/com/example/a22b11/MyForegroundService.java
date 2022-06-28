@@ -17,6 +17,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.a22b11.db.Activity;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,10 +28,12 @@ import java.util.TimerTask;
 public class MyForegroundService extends Service  {
     int counter = 0;
     int threshold = 150;
+    int threshholddelay = 16;
     Accelerometer accelerometer = new Accelerometer();
     int steps = accelerometer.getStepCount();
     int stepCount;
     double MagnitudePrevious;
+    boolean recording = false;
 
     SensorManager sensorManager;
     Sensor sensor;
@@ -78,16 +84,30 @@ public class MyForegroundService extends Service  {
         TimerTask timerTaskObj = new TimerTask() {
 
             public void run() {
-                //perform your action here
-                Log.d("funktionier endlich","sahne");
-                Log.d("zahlen", String.valueOf(counter));
+                //was gemacht werden soll
+                Log.d("Time counter", String.valueOf(counter));
                 Log.d("Steps", String.valueOf(steps));
-                counter+=1;
+                if (!recording) counter+=1;
+                if (counter ==  threshholddelay) {
+                    counter = 0 ;
+                    if (stepCount >= threshold){
+                        recording = true;
+                        // TODO:start activity and add the steps onto the newly started activity
+                        Instant instant = Instant.now();
+                        Activity activity = new Activity();
+                        activity.start = instant.minus( threshholddelay-1, ChronoUnit.SECONDS);
+
+
+                    } else{
+                        stepCount = 0;
+                    }
+                }
             }
         };
         //Timer start
         timerObj.schedule(timerTaskObj, 0, 1000);
 
+        //thresholdFunction
 
         new Thread(
 
