@@ -111,9 +111,9 @@ public class Sportactivity_Record extends AppCompatActivity {
         }
         else finishButton.setVisibility(View.VISIBLE);
 
-        updateGPS();
+        //TODO updateGPS();
     }
-
+    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -130,6 +130,8 @@ public class Sportactivity_Record extends AppCompatActivity {
                 break;
         }
     }
+
+     */
 
 
     public void toggleButton(View view)
@@ -226,7 +228,7 @@ public class Sportactivity_Record extends AppCompatActivity {
 
         startActivity(intent);
     }
-
+/*
     public void updateGPS() {
         //get permission from user here
         //get current location from fused client
@@ -256,7 +258,7 @@ public class Sportactivity_Record extends AppCompatActivity {
         tv_labelLocation.setVisibility(View.VISIBLE);
         tv_location.setText("Longitude: "+ location.getLongitude() + "\n"+"Latitude: " + location.getLatitude());
     }
-
+*/
 
 
     //to save states when the device is rotated,

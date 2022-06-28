@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class Sportactivity_Home extends AppCompatActivity {
 
         ActivityDao activityDao = db.activityDao();
         ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getAll();
+        final Sportactivity_Home mythis = this;
         Futures.addCallback(
                 future2,
                 new FutureCallback<List<Activity>>() {
@@ -64,42 +66,35 @@ public class Sportactivity_Home extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(List<Activity> result) {
+                        items = result;
+                        if(items != null) {
+                            if (!items.isEmpty()) {
 
+
+                                Collections.reverse(items);
+                                while (items.size() > 5) items.remove(items.size() - 1);
+
+                                itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
+                                recyclerView.setAdapter(adapter);
+
+                            }
+                        }
                     }
 
                     public void onFailure(Throwable thrown) {
-                        // handle failure
+                        Log.e("Failure to retrieve activities",thrown.getMessage());
                     }
                 },
                 // causes the callbacks to be executed on the main (UI) thread
                 this.getMainExecutor()
         );
-        try {
-            items = future2.get();
-            System.out.println(items);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         //done with database query
-
-        if (!items.isEmpty()) {
-
-
-
-            Collections.reverse(items);
-            while (items.size() > 5) items.remove(items.size() - 1);
-
-            itemAdapter adapter = new itemAdapter(items, activityDao, this);
-            recyclerView.setAdapter(adapter);
-
-        }
 
 
 
     }
-
+    //TODO change items to result
     @Override
     protected void onResume() {
         super.onResume();
@@ -108,6 +103,7 @@ public class Sportactivity_Home extends AppCompatActivity {
 
         ActivityDao activityDao = db.activityDao();
         ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getAll();
+        final Sportactivity_Home mythis = this;
         Futures.addCallback(
                 future2,
                 new FutureCallback<List<Activity>>() {
@@ -115,37 +111,31 @@ public class Sportactivity_Home extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(List<Activity> result) {
+                        items = result;
+                        if(items != null) {
+                            if (!items.isEmpty()) {
 
+
+                                Collections.reverse(items);
+                                while (items.size() > 5) items.remove(items.size() - 1);
+
+                                itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
+                                recyclerView.setAdapter(adapter);
+
+                            }
+                        }
                     }
 
                     public void onFailure(Throwable thrown) {
-                        // handle failure
+                        Log.e("Failure to retrieve activities",thrown.getMessage());
                     }
                 },
                 // causes the callbacks to be executed on the main (UI) thread
                 this.getMainExecutor()
         );
-        try {
-            items = future2.get();
-            System.out.println(items);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         //done with database query
 
-        if (!items.isEmpty()) {
-
-
-
-            Collections.reverse(items);
-            while (items.size() > 5) items.remove(items.size() - 1);
-
-            itemAdapter adapter = new itemAdapter(items, activityDao, this);
-            recyclerView.setAdapter(adapter);
-
-        }
 
     }
 
