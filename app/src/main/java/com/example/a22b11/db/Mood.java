@@ -36,7 +36,9 @@ public class Mood {
             Integer satisfiedWithYourself,     // 0 - 9
             Integer considerYourselfFailure,   // 0 - 9
             Integer actedImpulsively,          // 0 - 7
-            Integer actedAggressively          // 0 - 7
+            Integer actedAggressively,          // 0 - 7
+
+            String notes
 
 
     ) {
@@ -59,6 +61,7 @@ public class Mood {
         this. considerYourselfFailure = considerYourselfFailure;
         this.actedImpulsively = actedImpulsively;
         this.actedAggressively = actedAggressively;
+        this.notes = notes;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -119,5 +122,8 @@ public class Mood {
 
     @ColumnInfo(name = "acted_aggressively")
     public Integer actedAggressively;
+
+    @ColumnInfo(name = "notes")
+    public String notes;
 
 }

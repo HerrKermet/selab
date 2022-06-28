@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "5b9fb94d106810929bbab815991fb480",
+    "version": 4,
+    "identityHash": "234c7d8a049cfe343e1ded2dc446a417",
     "entities": [
       {
         "tableName": "users",
@@ -30,7 +30,7 @@
             "fieldPath": "lastSyncSqn",
             "columnName": "last_sync_sqn",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -44,17 +44,17 @@
       },
       {
         "tableName": "activities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT, `duration` INTEGER)",
         "fields": [
           {
-            "fieldPath": "localId",
-            "columnName": "local_id",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -68,7 +68,7 @@
             "fieldPath": "isModified",
             "columnName": "is_modified",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "lastModification",
@@ -103,7 +103,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "local_id"
+            "id"
           ],
           "autoGenerate": true
         },
@@ -112,7 +112,7 @@
       },
       {
         "tableName": "moods",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `assessment` INTEGER, `satisfaction` INTEGER, `calmness` INTEGER, `comfort` INTEGER, `relaxation` INTEGER, `energy` INTEGER, `wakefulness` INTEGER, `event_negative_intensity` INTEGER, `event_positive_intensity` INTEGER, `alone` INTEGER, `surrounding_people_liking` INTEGER, `surrounding_people_type` TEXT, `location` TEXT, `satisfied_with_yourself` INTEGER, `consider_yourself_failure` INTEGER, `acted_impulsively` INTEGER, `acted_aggressively` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `assessment` INTEGER, `satisfaction` INTEGER, `calmness` INTEGER, `comfort` INTEGER, `relaxation` INTEGER, `energy` INTEGER, `wakefulness` INTEGER, `event_negative_intensity` INTEGER, `event_positive_intensity` INTEGER, `alone` INTEGER, `surrounding_people_liking` INTEGER, `surrounding_people_type` TEXT, `location` TEXT, `satisfied_with_yourself` INTEGER, `consider_yourself_failure` INTEGER, `acted_impulsively` INTEGER, `acted_aggressively` INTEGER, `notes` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -245,6 +245,12 @@
             "columnName": "acted_aggressively",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -260,7 +266,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b9fb94d106810929bbab815991fb480')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '234c7d8a049cfe343e1ded2dc446a417')"
     ]
   }
 }

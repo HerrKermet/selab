@@ -2,10 +2,15 @@ package com.example.a22b11;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -21,6 +26,7 @@ import com.example.a22b11.db.MoodDao;
 import com.example.a22b11.db.User;
 import com.example.a22b11.db.UserDao;
 import com.example.a22b11.moodscore.MoodScore;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -43,12 +49,17 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     static ProgressBar progressBar;
     TextView textViewProgressBar;
     static Mood mood;
+    String notes;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
+        setTheme(theme);
         mood = new Mood();
+        notes = "";
 
         question_progress_dict = new HashMap<>();
         //question_answers = new HashMap<>();
@@ -61,6 +72,8 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
         updateQuestionProgessBar();
+
+
 
     }
 
@@ -176,11 +189,30 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
 
+    public void onBtnNotNowClick(View view) {
+        Intent backToCallingActivity = new Intent(this, Sportactivity_Home.class);
+        if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
+
+        finish();  // delete questionnaire from backstack so prevent going back from recording into questionnaire
+
+        startActivity(backToCallingActivity);
+
+
+    }
 
 
     //TODO change MainActivity to latest activity before Questionnaire was opened
-    public void onBtnFinishClick (View view) {
+     public void onBtnFinishClick (View view) {
+        TextInputEditText textInputEditText = fragmentContainerView.getFragment().getView().findViewById(R.id.textInputEditText);
+        notes = textInputEditText.getText().toString();
+        //get notes from Questionnaire
+
+
+
+         if (notes.replaceAll(" ","").equals("")) notes = "";
+         Log.e("NOTES","STRING NOTE IS:" + notes +"END");
+
         //TODO save question answers here
 
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
@@ -188,6 +220,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         mood.userId = 1L;
         mood.assessment = Instant.now();
+        mood.notes = notes;
         int mood_score = MoodScore.calculate(mood);
 
         ListenableFuture<Void> moodinsert = moodDao.insert(mood);
@@ -199,17 +232,19 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         question_progress_dict = new HashMap<>();
         updateQuestionProgessBar();
 
+        Intent backToCallingActivity = new Intent(this, MainActivity.class);
+        if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
-        Intent intent = new Intent(this,MainActivity.class);
         //TODO make successful message a translatable string
-        intent.putExtra("questionnaireSaved"," successful");
-        startActivity(intent);
+        //backToCallingActivity.putExtra("questionnaireSaved"," successful");
+        finish();
+        startActivity(backToCallingActivity);
 
-        if (intent.hasExtra("questionnaireSaved"))
-        {
-            Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
-            toast.show();
-        }
+        //if (backToCallingActivity.hasExtra("questionnaireSaved"))
+        //{
+        Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
+        toast.show();
+        //}
 
 
     }

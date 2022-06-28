@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.time.Instant;
 import java.util.List;
 
 @Dao
@@ -16,6 +17,9 @@ public interface MoodDao {
 
     @Query("SELECT * FROM moods WHERE user_id = :userId")
     ListenableFuture<List<Mood>> getAllByUserId(long userId);
+
+    @Query("SELECT * FROM moods WHERE user_id = :userId AND assessment > :assessMin AND assessment < :assessMax")
+    ListenableFuture<List<Mood>> getAllByUserIdAndAssessmentRange(long userId, Instant assessMin, Instant assessMax);
 
     /**
      * Insert a new mood

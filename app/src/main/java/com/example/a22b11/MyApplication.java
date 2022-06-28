@@ -26,7 +26,8 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
         appDatabase = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database-name").build();
+                AppDatabase.class, "database-name")
+                .fallbackToDestructiveMigration().build();
 
         fitnessApiClient = FitnessApiClientBuilder.build();
 

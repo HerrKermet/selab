@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Color_Choose_Theme">
+
+    <ScrollView
+        android:id="@+id/scrollView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:fadeScrollbars="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider13">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/button30"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/darkBlueVariant"
+                android:onClick="setThemeDarkBlue"
+                android:text="Penguin Butler"
+                app:layout_constraintStart_toStartOf="@+id/button26"
+                app:layout_constraintTop_toBottomOf="@+id/button26" />
+
+            <Button
+                android:id="@+id/button26"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/cyan"
+                android:onClick="setThemeCyan"
+                android:text="Aspect Moss"
+                app:layout_constraintStart_toStartOf="@+id/button23"
+                app:layout_constraintTop_toBottomOf="@+id/button23" />
+
+            <Button
+                android:id="@+id/button29"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/red"
+                android:onClick="setThemeAppleMunch"
+                android:text="Apple Munch"
+                android:textColor="@color/greenVariant"
+                app:layout_constraintBottom_toBottomOf="@+id/button30"
+                app:layout_constraintStart_toStartOf="@+id/button27"
+                app:layout_constraintTop_toTopOf="@+id/button30" />
+
+            <Button
+                android:id="@+id/button22"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/orange"
+                android:onClick="setThemeOrange"
+                android:text="Pumpkin Spice"
+                app:layout_constraintBottom_toBottomOf="@+id/button21"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button21"
+                app:layout_constraintTop_toTopOf="@+id/button21" />
+
+            <Button
+                android:id="@+id/button21"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/purple_500"
+                android:onClick="setThemeDefault"
+                android:text="Perky Plum"
+                app:layout_constraintEnd_toStartOf="@+id/button22"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button25"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green"
+                android:onClick="setThemeGreen"
+                android:text="Mamba Munch"
+                app:layout_constraintBottom_toBottomOf="@+id/button23"
+                app:layout_constraintStart_toStartOf="@+id/button22"
+                app:layout_constraintTop_toTopOf="@+id/button23" />
+
+            <Button
+                android:id="@+id/button23"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/red"
+                android:onClick="setThemeRed"
+                android:text="Candy Apple"
+                app:layout_constraintStart_toStartOf="@+id/button21"
+                app:layout_constraintTop_toBottomOf="@+id/button21" />
+
+            <Button
+                android:id="@+id/button27"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blueVariant"
+                android:onClick="setThemeBlue"
+                android:text="Deep Blue"
+                app:layout_constraintBottom_toBottomOf="@+id/button26"
+                app:layout_constraintStart_toStartOf="@+id/button25"
+                app:layout_constraintTop_toTopOf="@+id/button26" />
+
+            <Button
+                android:id="@+id/button28"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/button30"
+                app:layout_constraintTop_toBottomOf="@+id/button30"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/button32"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="@+id/button28"
+                app:layout_constraintStart_toStartOf="@+id/button29"
+                app:layout_constraintTop_toTopOf="@+id/button28" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/divider13"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:text="@string/selectTheme"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

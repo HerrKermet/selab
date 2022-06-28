@@ -94,14 +94,14 @@
                     android:id="@+id/rBtn_item_24_yes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/purple_500"
+
                     android:text="@string/yes" />
 
                 <RadioButton
                     android:id="@+id/rBtn_item_24_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/purple_500"
+
                     android:text="@string/no" />
 
             </RadioGroup>
@@ -126,9 +126,9 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="@color/purple_500"
+
                 android:splitTrack="false"
-                android:thumbTint="@color/purple_500"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_item_25" />
@@ -163,7 +163,7 @@
                 android:layout_width="409dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:backgroundTint="@color/purple_200"
+
                 app:layout_constraintBottom_toTopOf="@+id/tv_item_25"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

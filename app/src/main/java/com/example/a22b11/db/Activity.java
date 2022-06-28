@@ -2,20 +2,26 @@ package com.example.a22b11.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity(tableName = "activities")
-public class Activity {
+public class Activity implements Serializable {
     public Activity() {}
 
-    public Activity(long userId, Instant start, Instant end, String type) {
+    @Ignore
+    public Activity(long userId, Instant start, Instant end, String type, Integer duration) {
         this.userId = userId;
         this.lastModification = Instant.now();
         this.start = start;
         this.end = end;
         this.type = type;
+        this.duration = duration;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -44,4 +50,8 @@ public class Activity {
 
     @ColumnInfo(name = "type")
     public String type;
+
+    public Integer duration;
+
+
 }
