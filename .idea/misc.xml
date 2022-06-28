@@ -15,8 +15,6 @@
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_finished.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_welcome.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportedit.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportedit_selection.xml" value="0.3432971014492754" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportselection.xml" value="0.32608695652173914" />
@@ -37,7 +35,12 @@
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportfinish.xml" value="0.33" />
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.358695652173913" />
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportselection.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12335359675785208" />
+        <entry key="app/src/main/res/layout/activity_sportedit.xml" value="0.12335359675785208" />
+        <entry key="app/src/main/res/layout/activity_sportedit_selection.xml" value="0.12335359675785208" />
+        <entry key="app/src/main/res/layout/activity_sporthome.xml" value="0.12335359675785208" />
+        <entry key="app/src/main/res/layout/activity_sportrecord.xml" value="0.7587476979742173" />
+        <entry key="app/src/main/res/layout/activity_sportselection.xml" value="0.12335359675785208" />
       </map>
     </option>
   </component>

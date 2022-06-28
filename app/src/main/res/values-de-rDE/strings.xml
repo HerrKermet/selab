@@ -79,6 +79,9 @@ das bedeutendste positive Ereignis?</string>
     <string name="recentActivities">Aktuellste Aktivitäten</string>
     <string name="noActivitiesRecorded">Keine aufgezeichneten Aktivitäten gefunden</string>
     <string name="selectTheme">Wähle ein Theme</string>
+    <string name="yourCurrentLocation">Deine aktuelle Position:</string>
+    <string name="CurrentLocationNotAvailable">Aktuelle Position kann nicht abgerufen werden</string>
+    <string name="AppRequiresPermission">Die App benötigt Berechtigungen um korrekt zu funktionieren</string>
     <string name="apply">Übernehmen</string>
     <string name="start">Start</string>
     <string name="end">Ende</string>
