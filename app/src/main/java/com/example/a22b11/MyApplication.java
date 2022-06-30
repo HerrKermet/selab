@@ -64,7 +64,7 @@ public class MyApplication extends Application {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://fitness.nandlab.com/")
+                .baseUrl("http://fitness.ax24.net/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
