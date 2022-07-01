@@ -108,6 +108,7 @@ public class MyApplication extends Application {
 
     public boolean isLoggedIn() {
         for (Cookie cookie : cookieCache) {
+            Log.d("Cookie", cookie.name());
             if (cookie.name().equals("PHPSESSID"))
                 return true;
         }

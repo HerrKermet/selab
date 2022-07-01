@@ -42,7 +42,7 @@ public class AccountCreatedActivity extends AppCompatActivity {
             user.id = bundle.getLong("userid");
             user.password = bundle.getString("password");
             binding.createdUserId.setText(String.format(locale, "%d", user.id));
-            binding.createdPassword.setText(bundle.getString(user.password));
+            binding.createdPassword.setText(user.password);
         }
 
         final UserDao userDao = MyApplication.getInstance().getAppDatabase().userDao();
