@@ -89,4 +89,21 @@ das bedeutendste positive Ereignis?</string>
     <string name="type">Art</string>
     <string name="selectDate">Datum auswählen</string>
 
+    <string name="title_activity_login">Einloggen</string>
+    <string name="prompt_userid">Nutzer ID</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Einloggen</string>
+    <string name="action_sign_in_short">Einloggen</string>
+    <string name="or">oder</string>
+    <string name="action_sign_up">Neues Konto erstellen</string>
+    <string name="action_sign_up_short">Registrieren</string>
+    <string name="welcome">Willkommen !</string>
+    <string name="invalid_userid">Nutzer ID ungültig</string>
+    <string name="invalid_password">Password muss länger als 5 Zeichen sein</string>
+    <string name="login_failed">Login fehlgeschlagen</string>
+    <string name="registration_failed">Registrierung fehlgeschlagen</string>
+    <string name="account_created_text">Ein neues Konto wurde für Sie automatisch erstellt!\n\nBitte speichern Sie die folgenden Daten an einem sicheren Ort ab.</string>
+    <string name="remember_login">Login und Passwort merken</string>
+    <string name="credentials_saved">Anmeldedaten wurden gespeichert</string>
+    <string name="credentials_not_saved">Anmeldedaten konnten nicht gespeichert werden</string>
 </resources>

@@ -15,6 +15,9 @@ public interface UserDao {
     @Query("SELECT * FROM users")
     ListenableFuture<List<User>> getAll();
 
+    @Query("DELETE FROM users")
+    ListenableFuture<Void> deleteAll();
+
     @Insert
     ListenableFuture<Void> insert(User user);
 
