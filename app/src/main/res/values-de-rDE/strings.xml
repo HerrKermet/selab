@@ -88,5 +88,11 @@ das bedeutendste positive Ereignis?</string>
     <string name="duration">Dauer</string>
     <string name="type">Art</string>
     <string name="selectDate">Datum auswählen</string>
+    <string name="yourMoodScore">Dein MoodScore beträgt</string>
+    <string name="invalidMoodScore">Fragebogen verworfen da zu wenig Daten angegeben wurden</string>
+    <string name="thanksForTakingTheTime">Vielen Dank, dass Sie sich die Zeit genommen haben.\n Wenn Sie möchten, können Sie Ihrem Fragebogen noch Anmerkungen hinzufügen.</string>
+    <string name="invalidDate">Ungültiges Datum</string>
+    <string name="startBeforeEnd">Das Enddatum muss nach dem Startdatum liegen</string>
+    <string name="selectAnActivity">Bitte wähle eine Aktivität aus</string>
 
 </resources>

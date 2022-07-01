@@ -99,5 +99,11 @@ which I felt sorry for afterwards</string>
         <item>@string/hiking</item>
         <item>@string/other</item>
     </string-array>
+    <string name="yourMoodScore">Your MoodScore is</string>
+    <string name="invalidMoodScore">Questionnaire discarded because too little data was provided</string>
+    <string name="thanksForTakingTheTime">Thank you for taking the time. \n If you wish, you can add some notes to your questionnaire</string>
+    <string name="invalidDate">Invalid date</string>
+    <string name="startBeforeEnd">The end date must be after the start date</string>
+    <string name="selectAnActivity">Please select an activity</string>
 
 </resources>

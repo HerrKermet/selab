@@ -239,12 +239,14 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         //backToCallingActivity.putExtra("questionnaireSaved"," successful");
         finish();
         startActivity(backToCallingActivity);
+        Toast toast;
+        if (mood_score == -1)
+            toast = Toast.makeText(this, R.string.invalidMoodScore, Toast.LENGTH_SHORT);
+        else
+            toast = Toast.makeText(this, getString(R.string.yourMoodScore) + ": " + mood_score, Toast.LENGTH_SHORT);
 
-        //if (backToCallingActivity.hasExtra("questionnaireSaved"))
-        //{
-        Toast toast = Toast.makeText(this, "Your Moodscore is: " + mood_score, Toast.LENGTH_SHORT);
         toast.show();
-        //}
+
 
 
     }
