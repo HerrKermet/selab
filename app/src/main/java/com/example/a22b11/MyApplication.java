@@ -10,13 +10,10 @@ import android.util.Log;
 import androidx.room.Room;
 
 import com.example.a22b11.api.FitnessApiClient;
-import com.example.a22b11.api.FitnessApiClientBuilder;
 import com.example.a22b11.api.InstantAdapter;
 import com.example.a22b11.db.AppDatabase;
-import com.example.a22b11.MyForegroundService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.thomasbouvier.persistentcookiejar.ClearableCookieJar;
 import com.thomasbouvier.persistentcookiejar.PersistentCookieJar;
 import com.thomasbouvier.persistentcookiejar.cache.CookieCache;
 import com.thomasbouvier.persistentcookiejar.cache.SetCookieCache;
@@ -44,8 +41,6 @@ public class MyApplication extends Application {
         instance = this;
         appDatabase = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name").build();
-
-        fitnessApiClient = FitnessApiClientBuilder.build();
 
         Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
 
