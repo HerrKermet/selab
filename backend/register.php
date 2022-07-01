@@ -15,6 +15,12 @@ function random_str(
     return $str;
 }
 
+function datef(string $field): string {
+    return "DATE_FORMAT($field, '%Y-%m-%dT%TZ') as $field";
+}
+
+$df = 'datef';
+
 try {
     if (!session_start()) {
         throw new RuntimeException("Cannot start session");
@@ -28,25 +34,35 @@ try {
     $dbh = require 'connect.php';
 
     $dbh->beginTransaction();
-
+    
     $dbh->exec('set time_zone = "+00:00";');
     $sql = "insert into users (password) values (?);";
     $sth = $dbh->prepare($sql);
     $sth->execute([$user_password_hash]);
-    $user_id = intval($dbh->lastInsertId());
+    $user_id = $dbh->lastInsertId();
 
-    $_SESSION['user_id'] = $user_id;
-    $_SESSION['last_access'] = time();
+    $sth = $dbh->prepare("select id, {$df('creation')} from users where id = ?");
+    $sth->execute([$user_id]);
+    $user_row = $sth->fetch(PDO::FETCH_ASSOC);
+    if ($user_row === false) {
+        throw new RuntimeException("Cannot get inserted user row");
+    }
+
     $response = [
-        "userId" => $user_id,
-        "password" => $user_password
+        "id" => $user_row['id'],
+        "password" => $user_password,
+        "creation" => $user_row['creation']
     ];
 
     $json = json_encode($response, JSON_THROW_ON_ERROR);
-
+    
     $dbh->commit();
+
+    $_SESSION['user_id'] = $user_id;
+    $_SESSION['last_access'] = time();
 }
 catch (Throwable $e) {
+    http_response_code(500);
     $json = json_encode(['error' => [
         'msg' => $e->getMessage(),
         'code' => $e->getCode()

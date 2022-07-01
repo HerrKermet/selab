@@ -17,10 +17,11 @@ CREATE TABLE IF NOT EXISTS `activities` (
  `start` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
  `end` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
  `type` varchar(255) DEFAULT NULL,
- PRIMARY KEY (`id`)
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `moods` (
+CREATE TABLE IF NOT EXISTS `moods` (
  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  `user_id` bigint(20) unsigned NOT NULL,
  `last_sync_sqn` bigint(20) unsigned NOT NULL,
@@ -32,7 +33,18 @@ CREATE TABLE `moods` (
  `relaxation` tinyint(4) DEFAULT NULL,
  `energy` tinyint(4) DEFAULT NULL,
  `wakefulness` tinyint(4) DEFAULT NULL,
- PRIMARY KEY (`id`)
+ `event_negative_intensity` tinyint(4) DEFAULT NULL,
+ `event_positive_intensity` tinyint(4) DEFAULT NULL,
+ `alone` boolean DEFAULT NULL,
+ `surrounding_people_liking` tinyint(4) DEFAULT NULL,
+ `surrounding_people_type` varchar(255) DEFAULT NULL,
+ `location` varchar(255) DEFAULT NULL,
+ `satisfied_with_yourself` tinyint(4) DEFAULT NULL,
+ `consider_yourself_failure` tinyint(4) DEFAULT NULL,
+ `acted_impulsively` tinyint(4) DEFAULT NULL,
+ `acted_aggressively` tinyint(4) DEFAULT NULL,
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ";
 
@@ -45,6 +57,7 @@ try {
     $json = "{}";
 }
 catch (Exception $e) {
+    http_response_code(500);
     $json = json_encode(['error' => [
         'msg' => $e->getMessage(),
         'code' => $e->getCode()

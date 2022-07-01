@@ -24,6 +24,7 @@ try {
     $json = "{}";
 }
 catch (Throwable $e) {
+    http_response_code(500);
     $json = json_encode(['error' => [
         'msg' => $e->getMessage(),
         'code' => $e->getCode()
