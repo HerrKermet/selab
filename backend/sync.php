@@ -2,6 +2,12 @@
 
 require_once "snake_to_camel.php";
 
+function datef(string $field): string {
+    return "DATE_FORMAT($field, '%Y-%m-%dT%TZ') as $field";
+}
+
+$df = "datef";
+
 function to_bool($val) {
     return filter_var($val, FILTER_VALIDATE_BOOLEAN);
 }
@@ -61,19 +67,19 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
 
     $act_id_map = [];
 
-    $client_acts_new = $client_acts['new'] ?? null;
-    if (isset($client_acts_new)) {
-        assert_is_array($client_acts_new, "activities.new");
+    $client_acts_created = $client_acts['created'] ?? null;
+    if (isset($client_acts_created)) {
+        assert_is_array($client_acts_created, "activities.created");
         $sth = $dbh->prepare($sql_sync_activities_insert);
-        foreach ($client_acts_new as $new_act) {
-            assert_is_array($new_act, "activities.new[x]");
+        foreach ($client_acts_created as $created_act) {
+            assert_is_array($created_act, "activities.created[x]");
             $sth->execute([
                 "user_id" => $user_id,
                 "sync_sqn" => $sync_sqn,
-                "last_modification" => $new_act['lastModification'] ?? null,
-                "start" => $new_act['start'] ?? null,
-                "end" => $new_act['end'] ?? null,
-                "type" => $new_act['type'] ?? null
+                "last_modification" => $created_act['lastModification'] ?? null,
+                "start" => $created_act['start'] ?? null,
+                "end" => $created_act['end'] ?? null,
+                "type" => $created_act['type'] ?? null
             ]);
             $act_id_map[] = [
                 "id" => $dbh->lastInsertId()
@@ -100,14 +106,14 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
             ]);
         }
     }
-
+    
     return $act_id_map;
 }
 
 // Note it is missing a semicolon at the end.
 // An additional condition can be appended.
-$sql_get_updated_activities = <<<'EOD'
-select id, last_modification, start, end, type
+$sql_get_updated_activities = <<<EOD
+select id, {$df('last_modification')}, {$df('start')}, {$df('end')}, type
 from activities
 where user_id = :user_id
 EOD;
@@ -134,10 +140,15 @@ function get_updated_activities(PDO $dbh, int $user_id, ?int $last_sync_sqn): ar
 
 $sql_sync_moods_insert = <<<'EOD'
 insert into moods (user_id, last_sync_sqn, last_modification,
-assessment, satisfaction, calmness, comfort, relaxation, energy, wakefulness)
+assessment, satisfaction, calmness, comfort, relaxation, energy, wakefulness,
+event_negative_intensity, event_positive_intensity, alone, surrounding_people_liking,
+surrounding_people_type, location, satisfied_with_yourself, consider_yourself_failure,
+acted_impulsively, acted_aggressively)
 
 values (:user_id, :sync_sqn, :last_modification,
-:assessment, :satisfaction, :calmness, :comfort, :relaxation, :energy, :wakefulness);
+:assessment, :satisfaction, :calmness, :comfort, :relaxation, :energy, :wakefulness,
+:event_negative_intensity, :event_positive_intensity, :alone, :surrounding_people_liking,
+:surrounding_people_type, :location, :satisfied_with_yourself, :consider_yourself_failure, :acted_impulsively, :acted_aggressively);
 EOD;
 
 $sql_sync_moods_update = <<<'EOD'
@@ -152,8 +163,18 @@ comfort = :comfort,
 relaxation = :relaxation,
 energy = :energy,
 wakefulness = :wakefulness,
+event_negative_intensity = :event_negative_intensity,
+event_positive_intensity = :event_positive_intensity,
+alone = :alone,
+surrounding_people_liking = :surrounding_people_liking,
+surrounding_people_type = :surrounding_people_type,
+location = :location,
+satisfied_with_yourself = :satisfied_with_yourself,
+consider_yourself_failure = :consider_yourself_failure,
+acted_impulsively = :acted_impulsively,
+acted_aggressively = :acted_aggressively
 
-where user_id = :user_id and id = :mood_id and last_modification < :last_modification;
+where user_id = :user_id and id = :id and last_modification < :last_modification;
 EOD;
 
 function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods): array {
@@ -161,23 +182,37 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
 
     $mood_id_map = [];
 
-    $client_moods_new = $client_moods['new'] ?? null;
-    if (isset($client_moods_new)) {
-        assert_is_array($client_moods_new, "moods.new");
+    $client_moods_created = $client_moods['created'] ?? null;
+    if (isset($client_moods_created)) {
+        assert_is_array($client_moods_created, "moods.created");
         $sth = $dbh->prepare($sql_sync_moods_insert);
-        foreach ($client_moods_new as $new_mood) {
-            assert_is_array($new_mood, "moods.new[x]");
+        foreach ($client_moods_created as $created_mood) {
+            assert_is_array($created_mood, "moods.created[x]");
+            $subst_arr = $created_mood;
+            arr_snake_to_camel($subst_arr);
+            $subst_arr['user_id'] = $user_id;
+            $subst_arr['sync_sqn'] = $sync_sqn;
             $sth->execute([
                 "user_id" => $user_id,
                 "sync_sqn" => $sync_sqn,
-                "last_modification" => $new_mood['lastModification'] ?? null,
-                "assessment" => $new_mood['assessment'] ?? null,
-                "satisfaction" => $new_mood['satisfaction'] ?? null,
-                "calmness" => $new_mood['calmness'] ?? null,
-                "comfort" => $new_mood['comfort'] ?? null,
-                "relaxation" => $new_mood['relaxation'] ?? null,
-                "energy" => $new_mood['energy'] ?? null,
-                "wakefulness" => $new_mood['wakefulness'] ?? null,
+                "last_modification" => $created_mood['lastModification'] ?? null,
+                "assessment" => $created_mood['assessment'] ?? null,
+                "satisfaction" => $created_mood['satisfaction'] ?? null,
+                "calmness" => $created_mood['calmness'] ?? null,
+                "comfort" => $created_mood['comfort'] ?? null,
+                "relaxation" => $created_mood['relaxation'] ?? null,
+                "energy" => $created_mood['energy'] ?? null,
+                "wakefulness" => $created_mood['wakefulness'] ?? null,
+                "event_negative_intensity" => $created_mood['event_negative_intensity'] ?? null,
+                "event_positive_intensity" => $created_mood['event_positive_intensity'] ?? null,
+                "alone" => $created_mood['alone'] ?? null,
+                "surrounding_people_liking" => $created_mood['surrounding_people_liking'] ?? null,
+                "surrounding_people_type" => $created_mood['surrounding_people_type'] ?? null,
+                "location" => $created_mood['location'] ?? null,
+                "satisfied_with_yourself" => $created_mood['satisfied_with_yourself'] ?? null,
+                "consider_yourself_failure" => $created_mood['consider_yourself_failure'] ?? null,
+                "acted_impulsively" => $created_mood['acted_impulsively'] ?? null,
+                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null
             ]);
             $mood_id_map[] = [
                 "id" => $dbh->lastInsertId()
@@ -194,29 +229,39 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
             assert_is_numeric($mod_mood['id'], "moods.modified[x]['id']");
             // $mod_mood['id'] = intval($mod_mood['id']);
             $sth->execute([
+                "id" => $mod_mood['id'],
                 "user_id" => $user_id,
-                "mood_id" => $mod_mood['id'],
                 "sync_sqn" => $sync_sqn,
-                "last_modification" => $mod_mood['lastModification'] ?? null,
-                "assessment" => $mod_mood['assessment'] ?? null,
-                "satisfaction" => $mod_mood['satisfaction'] ?? null,
-                "calmness" => $mod_mood['calmness'] ?? null,
-                "comfort" => $mod_mood['comfort'] ?? null,
-                "relaxation" => $mod_mood['relaxation'] ?? null,
-                "energy" => $mod_mood['energy'] ?? null,
-                "wakefulness" => $mod_mood['wakefulness'] ?? null,
+                "last_modification" => $created_mood['lastModification'] ?? null,
+                "assessment" => $created_mood['assessment'] ?? null,
+                "satisfaction" => $created_mood['satisfaction'] ?? null,
+                "calmness" => $created_mood['calmness'] ?? null,
+                "comfort" => $created_mood['comfort'] ?? null,
+                "relaxation" => $created_mood['relaxation'] ?? null,
+                "energy" => $created_mood['energy'] ?? null,
+                "wakefulness" => $created_mood['wakefulness'] ?? null,
+                "event_negative_intensity" => $created_mood['event_negative_intensity'] ?? null,
+                "event_positive_intensity" => $created_mood['event_positive_intensity'] ?? null,
+                "alone" => $created_mood['alone'] ?? null,
+                "surrounding_people_liking" => $created_mood['surrounding_people_liking'] ?? null,
+                "surrounding_people_type" => $created_mood['surrounding_people_type'] ?? null,
+                "location" => $created_mood['location'] ?? null,
+                "satisfied_with_yourself" => $created_mood['satisfied_with_yourself'] ?? null,
+                "consider_yourself_failure" => $created_mood['consider_yourself_failure'] ?? null,
+                "acted_impulsively" => $created_mood['acted_impulsively'] ?? null,
+                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null
             ]);
         }
     }
-
+    
     return $mood_id_map;
 }
 
 // Note it is missing a semicolon at the end.
 // An additional condition can be appended.
-$sql_get_updated_moods = <<<'EOD'
-select id, last_modification,
-assessment, satisfaction, calmness, comfort, relaxation, energy, wakefulness
+$sql_get_updated_moods = <<<EOD
+select id, {$df('last_modification')},
+{$df('assessment')}, satisfaction, calmness, comfort, relaxation, energy, wakefulness
 
 from moods
 where user_id = :user_id
@@ -277,14 +322,14 @@ try {
     }
 
     $response = [
-        "sync_sqn" => $sync_sqn,
+        "last_sync_sqn" => $sync_sqn,
         "last_access" => $last_access,
         "activities" => [
-            "new" => [],
+            "created" => [],
             "modified" => []
         ],
         "moods" => [
-            "new" => [],
+            "created" => [],
             "modified" => []
         ]
 
@@ -292,13 +337,13 @@ try {
 
     $client_acts = $request['activities'] ?? null;
     if (isset($client_acts)) {
-        $response['activities']['new'] = sync_activities($dbh, $user_id, $sync_sqn, $client_acts);
+        $response['activities']['created'] = sync_activities($dbh, $user_id, $sync_sqn, $client_acts);
     }
     $response['activities']['modified'] = get_updated_activities($dbh, $user_id, $last_sync_sqn);
 
     $client_moods = $request['moods'] ?? null;
     if (isset($client_moods)) {
-        $response['moods']['new'] = sync_moods($dbh, $user_id, $sync_sqn, $client_moods);
+        $response['moods']['created'] = sync_moods($dbh, $user_id, $sync_sqn, $client_moods);
     }
     $response['moods']['modified'] = get_updated_moods($dbh, $user_id, $last_sync_sqn);
 
@@ -312,10 +357,11 @@ try {
     }
 
     $json = json_encode($response, $json_flags);
-
+    
     $dbh->commit();
 }
 catch (Throwable $e) {
+    http_response_code(500);
     $json = json_encode(['error' => [
         'msg' => $e->getMessage(),
         'code' => $e->getCode()
