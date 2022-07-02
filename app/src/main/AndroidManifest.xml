@@ -25,9 +25,6 @@
             android:name=".Sportactivity_Edit_Selection"
             android:exported="false" />
         <activity
-            android:name=".Sportactivity_Finish"
-            android:exported="false" />
-        <activity
             android:name=".Sportactivity_Selection"
             android:exported="false"
             android:parentActivityName=".Sportactivity_Home" />

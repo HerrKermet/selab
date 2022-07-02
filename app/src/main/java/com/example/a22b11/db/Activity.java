@@ -29,7 +29,7 @@ public class Activity implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "local_id")
-    transient public Long localId = null;
+    public Long localId = null;
 
     // ID assigned to the activity by the server
     @ColumnInfo(name = "id")

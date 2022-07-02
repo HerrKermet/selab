@@ -49,8 +49,6 @@ public class Sportactivity_Edit extends AppCompatActivity  {
     TextView textViewStartDate;
     TextView textViewEndDate;
     TextView textViewDuration;
-    TextView textViewTest;
-    Button buttonTest;
     ImageButton imageButtonStart;
     ImageButton imageButtonEnd;
     Calendar calendar;
@@ -92,13 +90,17 @@ public class Sportactivity_Edit extends AppCompatActivity  {
 
         if (getIntent().hasExtra("databaseActivityEdit")) {
             activity = (Activity) getIntent().getSerializableExtra("databaseActivityEdit");
+            Log.d("local Id passed by intent EDIT", String.valueOf(activity.localId));
+            Log.d("type passed by intent EDIT", String.valueOf(activity.type));
             isNewActivity = false;
             startInst = activity.start;
             endInst = activity.end;
+            textViewType.setText(activity.type);
 
         }
         else if(getIntent().hasExtra("databaseActivityAdd")) {
             activity = (Activity) getIntent().getSerializableExtra("databaseActivityAdd");
+            Log.d("local Id passed by intent ADD", String.valueOf(activity.localId));
             isNewActivity = true;
             startInst = activity.start == null ? null : activity.start;
             endInst = activity.end == null ? null : activity.end;
@@ -198,7 +200,7 @@ public class Sportactivity_Edit extends AppCompatActivity  {
                         timePickerDialog = new TimePickerDialog(Sportactivity_Edit.this, new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-                                textViewEndDate.setText(addLeadingZero(day) + "." + addLeadingZero(month) + "." + addLeadingZero(year));
+                                textViewEndDate.setText(addLeadingZero(day) + "." + addLeadingZero(month + 1) + "." + addLeadingZero(year));
                                 dayOfMonthEnd = day;
                                 monthEnd = month + 1;
                                 yearEnd = year;
@@ -282,7 +284,7 @@ public class Sportactivity_Edit extends AppCompatActivity  {
             textViewStartDate.setText(dateTimeFormatter.format(activity.start));
             textViewEndDate.setText(dateTimeFormatter.format(activity.end));
             duration = Duration.between(activity.start, activity.end).getSeconds();
-            textViewDuration.setText(String.valueOf(duration) + " s");
+            textViewDuration.setText(secondsToTimeString(duration));
         }
     }
 
@@ -346,7 +348,6 @@ public class Sportactivity_Edit extends AppCompatActivity  {
         }
 
         if(passedChecks) {
-            //TODO save data here with update / insert
 
             Log.d("onClickApply", "passed all checks");
             textViewDuration.setText(secondsToTimeString(duration));
@@ -365,19 +366,21 @@ public class Sportactivity_Edit extends AppCompatActivity  {
 
             if (isNewActivity) {
                 Log.d("Activity state", "is new activity");
-                //TODO Insert activity
+                //Insert activity
                 activityDao.insert(activity);
             }
 
             else {
                 Log.d("Activity state", "is existing activity");
-                //TODO Update activity
-                activityDao.insert(activity);
+                Log.d("local id", String.valueOf(activity.localId));
+                ListenableFuture<Integer> test = activityDao.update(activity);
+                Log.d("onClickApply", "updated activity");
             }
 
 
             // get back to home screen after clicking apply
             Intent intent = new Intent(this, Sportactivity_Home.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
 
