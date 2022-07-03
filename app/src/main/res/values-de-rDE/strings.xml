@@ -94,5 +94,7 @@ das bedeutendste positive Ereignis?</string>
     <string name="invalidDate">Ungültiges Datum</string>
     <string name="startBeforeEnd">Das Enddatum muss nach dem Startdatum liegen</string>
     <string name="selectAnActivity">Bitte wähle eine Aktivität aus</string>
+    <string name="needMoreQuestionnaires">Du musst noch %d tägliche Fragebögen abschließen um dieses Theme freizuschalten</string>
+
 
 </resources>

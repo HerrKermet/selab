@@ -20,8 +20,5 @@
     <color name="blueVariant">#686de0</color>
     <color name="darkBlue">#130f40</color>
     <color name="darkBlueVariant">#30336b</color>
-
-
-
-
+    <color name="grey">#70757d</color>
 </resources>

@@ -10,7 +10,7 @@ import java.util.Collections;
 
 public class MoodScore {
 
-    //TODO replace placeholder values with formula
+
     /***
      *
      * @param mood takes a mood object as parameter

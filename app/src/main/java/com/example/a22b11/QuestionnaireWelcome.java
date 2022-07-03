@@ -2,30 +2,25 @@ package com.example.a22b11;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.db.Mood;
 import com.example.a22b11.db.MoodDao;
-import com.example.a22b11.db.User;
-import com.example.a22b11.db.UserDao;
 import com.example.a22b11.moodscore.MoodScore;
+
+import com.github.mikephil.charting.charts.BarChart;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -33,23 +28,26 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
     public static Map<String,Boolean> question_progress_dict = new HashMap<>();
-    //public Map<String,Integer> question_answers = new HashMap<>();
     public static boolean social_situation_is_skipped = false;
     FragmentContainerView fragmentContainerView;
     static ProgressBar progressBar;
     TextView textViewProgressBar;
     static Mood mood;
     String notes;
+
+    SharedPreferences sharedPreferences;
+
+    List<Mood> items;
 
 
     @Override
@@ -62,13 +60,13 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         notes = "";
 
         question_progress_dict = new HashMap<>();
-        //question_answers = new HashMap<>();
         social_situation_is_skipped = false;
 
         setContentView(R.layout.activity_questionnaire_welcome);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         progressBar = findViewById(R.id.progressBarCircular);
         textViewProgressBar = findViewById(R.id.tv_progressBar_circular);
+
 
 
         updateQuestionProgessBar();
@@ -194,7 +192,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
 
-        finish();  // delete questionnaire from backstack so prevent going back from recording into questionnaire
+        finish();  // delete questionnaire from backstack to prevent going back from recording into questionnaire
 
         startActivity(backToCallingActivity);
 
@@ -202,7 +200,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     }
 
 
-    //TODO change MainActivity to latest activity before Questionnaire was opened
+
      public void onBtnFinishClick (View view) {
         TextInputEditText textInputEditText = fragmentContainerView.getFragment().getView().findViewById(R.id.textInputEditText);
         notes = textInputEditText.getText().toString();
@@ -213,7 +211,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
          if (notes.replaceAll(" ","").equals("")) notes = "";
          Log.e("NOTES","STRING NOTE IS:" + notes +"END");
 
-        //TODO save question answers here
+
 
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
         MoodDao moodDao = db.moodDao();
@@ -223,9 +221,52 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         mood.notes = notes;
         int mood_score = MoodScore.calculate(mood);
 
-        ListenableFuture<Void> moodinsert = moodDao.insert(mood);
+        // only insert mood when questionnaire is valid and not only null
+        if (mood_score != -1){
+            ListenableFuture<Void> moodinsert = moodDao.insert(mood);
+        }
 
-        //TODO initialize new Questionnaire data
+        //TODO Calculate Questionnaire Streak
+         // get test user from Database
+
+         ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getAll();
+         Futures.addCallback(
+                 future2,
+                 new FutureCallback<List<Mood>>() {
+
+
+                     @Override
+                     public void onSuccess(List<Mood> result) {
+                         items = result;
+                         ArrayList<Instant> differentDates = new ArrayList<>();
+                         int numberOfDifferentDates = 0;
+                         for (Mood questionnaire : items) {
+                             // count number of different days of questionnaires
+                             if (differentDates.contains(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS))) continue;
+                             differentDates.add(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS));
+                         }
+                         numberOfDifferentDates = differentDates.size();
+
+                         //save number of different dates where a questionnaire was taken into shared preferences
+                         sharedPreferences = getApplicationContext().getSharedPreferences("QuestionnaireData", Context.MODE_PRIVATE);
+                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                         editor.putInt("DailyQuestionnaireCount", numberOfDifferentDates);
+                         editor.commit();
+                     }
+
+                     public void onFailure(Throwable thrown) {
+                         Log.e("Failure to retrieve questionnaire data",thrown.getMessage());
+                     }
+                 },
+                 // causes the callbacks to be executed on the main (UI) thread
+                 this.getMainExecutor()
+         );
+
+         //done with database query
+
+
+
+        //initialize new Questionnaire data
 
         mood = new Mood(); // reset mood for future questionnaires
 
@@ -235,19 +276,17 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         Intent backToCallingActivity = new Intent(this, MainActivity.class);
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
-        //TODO make successful message a translatable string
-        //backToCallingActivity.putExtra("questionnaireSaved"," successful");
+
         finish();
         startActivity(backToCallingActivity);
         Toast toast;
         if (mood_score == -1)
             toast = Toast.makeText(this, R.string.invalidMoodScore, Toast.LENGTH_SHORT);
         else
-            toast = Toast.makeText(this, getString(R.string.yourMoodScore) + ": " + mood_score, Toast.LENGTH_SHORT);
+            if(mood_score == 69)toast = Toast.makeText(this, getString(R.string.yourMoodScore) + ": " + mood_score + " ,nice", Toast.LENGTH_SHORT);
+            else toast = Toast.makeText(this, getString(R.string.yourMoodScore) + ": " + mood_score, Toast.LENGTH_SHORT);
 
         toast.show();
-
-
 
     }
 

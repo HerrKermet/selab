@@ -94,7 +94,7 @@ public class Sportactivity_Home extends AppCompatActivity {
 
 
     }
-    //TODO change items to result
+
     @Override
     protected void onResume() {
         super.onResume();

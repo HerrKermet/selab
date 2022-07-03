@@ -89,7 +89,12 @@ which I felt sorry for afterwards</string>
     <string name="yourCurrentLocation">Your current Location:</string>
     <string name="CurrentLocationNotAvailable">Location currently not available</string>
     <string name="AppRequiresPermission">This app requires permission to be granted in order to work properly</string>
-
+    <string name="yourMoodScore">Your MoodScore is</string>
+    <string name="invalidMoodScore">Questionnaire discarded because too little data was provided</string>
+    <string name="thanksForTakingTheTime">Thank you for taking the time. \n If you wish, you can add some notes to your questionnaire</string>
+    <string name="invalidDate">Invalid date</string>
+    <string name="startBeforeEnd">The end date must be after the start date</string>
+    <string name="selectAnActivity">Please select an activity</string>
 
     <string-array name="activity_list">
         <item>@string/please_select_activity</item>
@@ -99,11 +104,7 @@ which I felt sorry for afterwards</string>
         <item>@string/hiking</item>
         <item>@string/other</item>
     </string-array>
-    <string name="yourMoodScore">Your MoodScore is</string>
-    <string name="invalidMoodScore">Questionnaire discarded because too little data was provided</string>
-    <string name="thanksForTakingTheTime">Thank you for taking the time. \n If you wish, you can add some notes to your questionnaire</string>
-    <string name="invalidDate">Invalid date</string>
-    <string name="startBeforeEnd">The end date must be after the start date</string>
-    <string name="selectAnActivity">Please select an activity</string>
+    <string name="needMoreQuestionnaires">You need to do %d more Daily Questionnaires to unlock this theme</string>
+
 
 </resources>

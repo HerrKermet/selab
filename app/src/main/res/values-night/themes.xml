@@ -155,7 +155,6 @@
         <item name="android:thumbTint">@color/red</item>
         <item name="android:buttonTint">@color/greenVariant</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
-
     </style>
 
 </resources>
