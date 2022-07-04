@@ -283,7 +283,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         if (mood_score == -1)
             toast = Toast.makeText(this, R.string.invalidMoodScore, Toast.LENGTH_SHORT);
         else
-            if(mood_score == 69)toast = Toast.makeText(this, getString(R.string.yourMoodScore) + ": " + mood_score + " ,nice", Toast.LENGTH_SHORT);
+            if(mood_score == 69)toast = Toast.makeText(this, getString(R.string.yourMoodScore) + ": " + mood_score + ", nice!", Toast.LENGTH_SHORT);
             else toast = Toast.makeText(this, getString(R.string.yourMoodScore) + ": " + mood_score, Toast.LENGTH_SHORT);
 
         toast.show();

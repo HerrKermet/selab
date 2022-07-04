@@ -70,7 +70,6 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (!items.isEmpty()) {
-            Collections.reverse(items);
             itemAdapter adapter = new itemAdapter(items, activityDao, this);
             recyclerView.setAdapter(adapter);
         }

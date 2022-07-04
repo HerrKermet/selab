@@ -19,7 +19,7 @@ import java.util.List;
 public class Color_Choose_Theme extends AppCompatActivity {
 
 
-    Button unlockableButton00, unlockableButton0, unlockableButton1, unlockableButton2;
+    Button unlockableButton00, unlockableButton0, unlockableButton1, unlockableButton2, unlockableButton3;
     Toast toastUnlockReq;
 
     SharedPreferences sharedPreferences;
@@ -54,14 +54,19 @@ public class Color_Choose_Theme extends AppCompatActivity {
         buttonList.add(unlockableButton0);
 
         unlockableButton1 = findViewById(R.id.buttonUnlockable1);
-        unlockableButton1.setTag(R.id.unlockCount,9);
+        unlockableButton1.setTag(R.id.unlockCount,10);
         unlockableButton1.setTag(R.id.isLocked,0);
         buttonList.add(unlockableButton1);
 
         unlockableButton2 = findViewById(R.id.buttonUnlockable2);
         unlockableButton2.setTag(R.id.unlockCount, 15);
-        unlockableButton1.setTag(R.id.isLocked,0);
+        unlockableButton2.setTag(R.id.isLocked,0);
         buttonList.add(unlockableButton2);
+
+        unlockableButton3 = findViewById(R.id.buttonUnlockable3);
+        unlockableButton3.setTag(R.id.unlockCount, 20);
+        unlockableButton3.setTag(R.id.isLocked,0);
+        buttonList.add(unlockableButton3);
 
         //check if buttons are unlocked  if not set lock state
         for (Button button : buttonList) {
@@ -203,6 +208,66 @@ public class Color_Choose_Theme extends AppCompatActivity {
         recreate();
     }
 
+    public void setThemeOceanBanana(View view) {
+        Button button = (Button) view;
+
+        if((Integer) button.getTag(R.id.isLocked) == 1){
+            showUnlockRequirementToast(button, differentDailyQuestionnaireCount, toastUnlockReq);
+            return;
+        }
+        selectedTheme = R.style.Theme_Ocean_Banana;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("selectedTheme", selectedTheme);
+        editor.commit();
+
+        TaskStackBuilder.create(this)
+                .addNextIntent(new Intent(this, Sportactivity_Home.class))
+                .addNextIntent(this.getIntent())
+                .startActivities();
+
+        recreate();
+    }
+
+    public void setThemeMellowSunset(View view) {
+        Button button = (Button) view;
+
+        if((Integer) button.getTag(R.id.isLocked) == 1){
+            showUnlockRequirementToast(button, differentDailyQuestionnaireCount, toastUnlockReq);
+            return;
+        }
+        selectedTheme = R.style.Theme_Mellow_Sunset;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("selectedTheme", selectedTheme);
+        editor.commit();
+
+        TaskStackBuilder.create(this)
+                .addNextIntent(new Intent(this, Sportactivity_Home.class))
+                .addNextIntent(this.getIntent())
+                .startActivities();
+
+        recreate();
+    }
+
+    public void setThemeBloomingHortensia(View view) {
+        Button button = (Button) view;
+
+        if((Integer) button.getTag(R.id.isLocked) == 1){
+            showUnlockRequirementToast(button, differentDailyQuestionnaireCount, toastUnlockReq);
+            return;
+        }
+        selectedTheme = R.style.Theme_Blooming_Hortensia;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("selectedTheme", selectedTheme);
+        editor.commit();
+
+        TaskStackBuilder.create(this)
+                .addNextIntent(new Intent(this, Sportactivity_Home.class))
+                .addNextIntent(this.getIntent())
+                .startActivities();
+
+        recreate();
+    }
+
     // methods for unlockable buttons
     public void setThemePLACEHOLDER1(View view) {
         Button button = (Button) view;
@@ -235,6 +300,7 @@ public class Color_Choose_Theme extends AppCompatActivity {
         buttonToLock.setCompoundDrawables(img_locked, null, null, null);
         buttonToLock.setText(differentDailyQuestionnaireCount + " / " + countToUnlock);
         buttonToLock.setBackgroundColor(getResources().getColor(R.color.grey));
+        buttonToLock.setTextColor(getResources().getColor(R.color.white));
         buttonToLock.setTag(R.id.isLocked, 1);
     }
 

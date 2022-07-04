@@ -22,6 +22,8 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -57,7 +59,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
         ActivityDao activityDao = db.activityDao();
-        ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getAll();
+        ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getLatestNActivities(5);
         final Sportactivity_Home mythis = this;
         Futures.addCallback(
                 future2,
@@ -71,11 +73,9 @@ public class Sportactivity_Home extends AppCompatActivity {
                             if (!items.isEmpty()) {
 
 
-                                Collections.reverse(items);
-                                while (items.size() > 5) items.remove(items.size() - 1);
-
                                 itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
                                 recyclerView.setAdapter(adapter);
+                                Log.d("Activities from Database", String.valueOf(items));
 
                             }
                         }
@@ -102,7 +102,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
         ActivityDao activityDao = db.activityDao();
-        ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getAll();
+        ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getLatestNActivities(5);
         final Sportactivity_Home mythis = this;
         Futures.addCallback(
                 future2,
@@ -112,18 +112,11 @@ public class Sportactivity_Home extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<Activity> result) {
                         items = result;
-                        if(items != null) {
-                            if (!items.isEmpty()) {
 
+                        itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
+                        recyclerView.setAdapter(adapter);
+                        Log.d("Activities from Database", String.valueOf(items));
 
-                                Collections.reverse(items);
-                                while (items.size() > 5) items.remove(items.size() - 1);
-
-                                itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
-                                recyclerView.setAdapter(adapter);
-
-                            }
-                        }
                     }
 
                     public void onFailure(Throwable thrown) {

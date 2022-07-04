@@ -26,7 +26,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:backgroundTint="@color/design_default_color_primary"
             android:backgroundTintMode="screen"
             android:foregroundTint="@color/design_default_color_primary">
 
