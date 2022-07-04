@@ -32,7 +32,10 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<Activity> items;
+    List<Activity> activitiesBetween;
     TextView textViewRecentActivities;
+
+    Instant start, end;
 
 
     @Override
@@ -51,11 +54,14 @@ public class Sportactivity_Home extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView2);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
+        //TODO initialize start and end here to default values if user has not picked any
+        end = Instant.now();                                                // instant at start time
+        start = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+        /////////////////////////////////////////////////////////////////////////////////
 
 
 
-
-        // get test user from Database
+        // get recent activites from Database
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
         ActivityDao activityDao = db.activityDao();
@@ -89,7 +95,38 @@ public class Sportactivity_Home extends AppCompatActivity {
                 this.getMainExecutor()
         );
 
+        // get activites between start, end
+        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(start, end);
+        Futures.addCallback(
+                future3,
+                new FutureCallback<List<Activity>>() {
+
+
+                    @Override
+                    public void onSuccess(List<Activity> result) {
+                        activitiesBetween = result;
+                        Log.d("activity count between", "start:" + start.toString() + "  end:" + end.toString() + " count: " + String.valueOf(activitiesBetween.size()));
+                        for (Activity activity :
+                                activitiesBetween) {
+                            Log.d("activities retrieved between", activity.type + "  " + activity.duration + "  " + activity.start.toString());
+
+                        }
+
+                    }
+
+                    public void onFailure(Throwable thrown) {
+                        Log.e("Failure to retrieve activities",thrown.getMessage());
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
+
         //done with database query
+
+
+        //TODO  activitiesBetween ist initialisiert und die activities sollten aufsteigend sortiert sein
+        //TODO check if list is null
 
 
 
@@ -116,6 +153,26 @@ public class Sportactivity_Home extends AppCompatActivity {
                         itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
                         recyclerView.setAdapter(adapter);
                         Log.d("Activities from Database", String.valueOf(items));
+
+                    }
+
+                    public void onFailure(Throwable thrown) {
+                        Log.e("Failure to retrieve activities",thrown.getMessage());
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
+
+        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(start, end);
+        Futures.addCallback(
+                future3,
+                new FutureCallback<List<Activity>>() {
+
+
+                    @Override
+                    public void onSuccess(List<Activity> result) {
+                        activitiesBetween = result;
 
                     }
 
