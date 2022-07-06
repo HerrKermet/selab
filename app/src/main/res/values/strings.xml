@@ -95,6 +95,7 @@ which I felt sorry for afterwards</string>
     <string name="invalidDate">Invalid date</string>
     <string name="startBeforeEnd">The end date must be after the start date</string>
     <string name="selectAnActivity">Please select an activity</string>
+    <string name="barChartActivities">Activities</string>
 
     <string-array name="activity_list">
         <item>@string/please_select_activity</item>

@@ -45,8 +45,12 @@ public class Sportactivity_Home extends AppCompatActivity {
     List<Activity> items;
     List<Activity> activitiesBetween;
     TextView textViewRecentActivities;
+    BarChart barChart;
+    BarData barData;
+    BarDataSet barDataSet;
+    List<BarEntry> entries;
 
-    Instant start, end;
+    Instant in_startDate, in_endDate;
 
 
     @Override
@@ -59,37 +63,9 @@ public class Sportactivity_Home extends AppCompatActivity {
         setContentView(R.layout.activity_sporthome);
 
         //BarChart
-        {
-            BarChart barChart = findViewById(R.id.barChart);
+        barChart = findViewById(R.id.barChart);
+        entries = new ArrayList<>();
 
-            List<BarEntry> entries = new ArrayList<>();
-            LocalDate [] dates = exampleDates();        //Later from database
-            long [] durations = exampleDurations();     //Later from database
-            fillYValues(entries, dates, durations);
-            /*
-            fills y-values with duration and sets x-values with
-            numbers in float from 0-<days between start and enddate>
-            */
-
-
-            BarDataSet set = new BarDataSet(entries, "Data");
-
-            set.setColors(ColorTemplate.MATERIAL_COLORS);
-            set.setValueTextColor(android.R.color.black);
-            //set.setValueTextSize(16f);
-
-            BarData barData = new BarData(set);
-
-            barChart.setFitBars(true);
-            barChart.setData(barData); //If no data is available a message is on the screen: "No chart data available"
-            barChart.getDescription().setText("Bar Chart tolli");
-            barChart.animateY(2000);
-            fillXValues(barChart, dates[0], entries.size());
-            /*
-            replaces numbers of x-values with dates from start to enddate
-             */
-
-        }
         textViewRecentActivities = findViewById(R.id.textView31);
 
 
@@ -97,8 +73,8 @@ public class Sportactivity_Home extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         //TODO initialize start and end here to default values if user has not picked any
-        end = Instant.now();                                                // instant at start time
-        start = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+        in_endDate = Instant.now();                                                // instant at start time
+        in_startDate = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
         /////////////////////////////////////////////////////////////////////////////////
 
 
@@ -138,7 +114,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         );
 
         // get activites between start, end
-        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(start, end);
+        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(in_startDate, in_endDate);
         Futures.addCallback(
                 future3,
                 new FutureCallback<List<Activity>>() {
@@ -147,13 +123,13 @@ public class Sportactivity_Home extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<Activity> result) {
                         activitiesBetween = result;
-                        Log.d("activity count between", "start:" + start.toString() + "  end:" + end.toString() + " count: " + String.valueOf(activitiesBetween.size()));
+                        Log.d("activity count between", "start:" + in_startDate.toString() + "  end:" + in_endDate.toString() + " count: " + String.valueOf(activitiesBetween.size()));
                         for (Activity activity :
                                 activitiesBetween) {
                             Log.d("activities retrieved between", activity.type + "  " + activity.duration + "  " + activity.start.toString());
 
                         }
-
+                        plotActivities(true, barChart);
                     }
 
                     public void onFailure(Throwable thrown) {
@@ -173,20 +149,31 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     }
 
-    private void fillYValues(List<BarEntry> entryList, LocalDate[] dates, long [] durations) {
-        long [] mergedResults = mergeActivities(dates, durations);
-        LocalDate startDate = dates[0];
-        List<LocalDate> mergedDates = dateList(startDate, startDate.plusDays(mergedResults.length));
+    private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
+        int [] mergedResults = mergeActivities(activitiesList, durations, startDate, endDate);
+
         for(int i=0; i<mergedResults.length; i++){
             entryList.add(new BarEntry((float) i,mergedResults[i]));
         }
+        barDataSet = new BarDataSet(entries, "Data");
+
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(android.R.color.black);
+        //set.setValueTextSize(16f);
+
+        barData = new BarData(barDataSet);
+
+        barChart.setFitBars(true);
+        barChart.setData(barData); //If no data is available a message is on the screen: "No chart data available"
+        barChart.getDescription().setText(getString(R.string.barChartActivities));
+        barChart.animateY(2000);
     }
 
     private void fillXValues(BarChart chart, LocalDate startDate, int length){
 
         String[] naming = new String[length+1];
         for (int i = 0; i<length; i++){
-            naming[i] = String.valueOf(startDate.plusDays(i).format(DateTimeFormatter.ofPattern("dd.MM")));
+            naming[i] = String.valueOf(startDate.plusDays(i).format(DateTimeFormatter.ofPattern("dd.MM.")));
         }
 
         ValueFormatter formatter = new ValueFormatter() {
@@ -201,9 +188,6 @@ public class Sportactivity_Home extends AppCompatActivity {
     }
     public static List<LocalDate> dateList(LocalDate startDate, LocalDate endDate) {
 
-        System.out.println("Starting from " + startDate);
-        System.out.println("Ending at " + endDate);
-
         List<LocalDate> days = new ArrayList<>(25);
         while (startDate.isBefore(endDate) || startDate.equals(endDate)) {
             days.add(startDate);
@@ -216,33 +200,50 @@ public class Sportactivity_Home extends AppCompatActivity {
     that happened on the same day.
     returns long-Array with durations only
      */
-    public static long[] mergeActivities(LocalDate[] dates, long[] duration){
-        LocalDate startDate = dates[0];
-        LocalDate endDate = dates[dates.length-1];
-        int daysBetween = (int) ChronoUnit.DAYS.between(startDate, endDate);
-        long result [] = new long[daysBetween+1];
+    public static int[] mergeActivities(List<Activity> activitiesList, int[] duration, LocalDate startDate, LocalDate endDate){
 
+        int daysBetween = (int) ChronoUnit.DAYS.between(startDate, endDate);
+        int result [] = new int[daysBetween+1];
+        LocalDate temp;
 
         for(int i = 0; i < result.length; i++){
-            for(int m = 0; m < dates.length; m++){
-                if(startDate.plusDays(i).isEqual(dates[m])) result[i]+=duration[m];
+            for(int m = 0; m < activitiesList.size(); m++){
+                temp = LocalDate.from(LocalDateTime.ofInstant(activitiesList.get(m).start,ZoneId.systemDefault()));
+                if(startDate.plusDays(i).isEqual(temp)) result[i]+=duration[m]/60;
             }
         }
         return result;
     }
-    /*
-    testing later we won't need that. it's only for testing.
-    creates two arrays, one LocalDate (dates), one long (durations on each date)
 
-     */
+    //Implementation
+    private void plotActivities (boolean checkOpenPage, BarChart bChart){
+            List<Activity> activities;
+            LocalDate lo_startDate;
+            LocalDate lo_endDate;
 
-        public static LocalDate[] exampleDates () {
-        LocalDate[] dates = {LocalDate.parse("1970-01-01"), LocalDate.parse("1970-01-02"), LocalDate.parse("1970-01-04"), LocalDate.parse("1970-01-04"), LocalDate.parse("1970-01-06"), LocalDate.parse("1970-01-07"), LocalDate.parse("1970-01-11"), LocalDate.parse("1970-01-12"), LocalDate.parse("1970-01-13"), LocalDate.parse("1970-01-14"), LocalDate.parse("1970-01-17"), LocalDate.parse("1970-01-18")};
-        return dates;
+            if(checkOpenPage) {
+                activities = activitiesBetween;
+                lo_startDate = LocalDate.from(LocalDateTime.ofInstant(in_startDate,ZoneId.systemDefault()));
+                lo_endDate = LocalDate.from(LocalDateTime.ofInstant(in_endDate,ZoneId.systemDefault()));
+            }
+            else {
+                activities = activitiesBetween; //ToDo: Use Activity-List with different time-range (user values of start and end)
+                lo_startDate = LocalDate.from(LocalDateTime.ofInstant(in_startDate,ZoneId.systemDefault()));
+                lo_endDate = LocalDate.from(LocalDateTime.ofInstant(in_endDate,ZoneId.systemDefault()));
+            }
+
+            fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
+            fillXValues(bChart, lo_startDate, entries.size());
     }
-        public static long[] exampleDurations () {
-        long[] durations = {4, 10, 34, 1, 10, 2, 5, 6, 8, 4, 3, 9};
-        return durations;
+
+    private int[] getDurations(List<Activity> activitiesList) {
+            int[] durations = new int[activitiesList.size()];
+            int count = 0;
+            for(Activity activity : activitiesList){
+                durations[count] = activity.duration;
+                count++;
+            }
+            return durations;
     }
 
     @Override
@@ -277,7 +278,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                 this.getMainExecutor()
         );
 
-        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(start, end);
+        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(in_startDate, in_endDate);
         Futures.addCallback(
                 future3,
                 new FutureCallback<List<Activity>>() {
