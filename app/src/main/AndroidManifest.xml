@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -15,6 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.22B11">
+        <activity
+            android:name=".statisticalRepresentation"
+            android:exported="false" />
+        <activity
+            android:name=".inputForStatisticalRepresentation"
+            android:exported="false" />
         <activity
             android:name=".Color_Choose_Theme"
             android:exported="false" />
@@ -42,26 +49,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MyForegroundService"/>
+
+        <service android:name=".MyForegroundService" />
+
         <receiver
             android:name=".MyBroadcastReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <activity
             android:name=".QuestionnaireWelcome"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
         <service android:name=".MyForegroundService" />
-
-
     </application>
 
 </manifest>

@@ -96,6 +96,12 @@ das bedeutendste positive Ereignis?</string>
     <string name="selectAnActivity">Bitte wähle eine Aktivität aus</string>
     <string name="needMoreQuestionnaires">Du musst noch %d tägliche Fragebögen abschließen um dieses Theme freizuschalten</string>
     <string name="barChartActivities">Aktivitäten</string>
+    <string name="startDate">Startdatum</string>
+    <string name="emptyInput">----/--/--</string>
+    <string name="pleaseInputDateValues">Wählen Sie das Datumsintervall, ab dem die Aktivitäten aufgezeichnet werden sollen</string>
+    <string name="invalidDateCombinations">Ungültige Datumskombinationen</string>
+    <string name="dateCombinationsCannotBeNull">"Ein Datumseintrag kann nicht leer sein "</string>
+    <string name="endDate">Enddatum</string>
 
 
 </resources>

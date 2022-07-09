@@ -106,6 +106,12 @@ which I felt sorry for afterwards</string>
         <item>@string/other</item>
     </string-array>
     <string name="needMoreQuestionnaires">You need to do %d more Daily Questionnaires to unlock this theme</string>
+    <string name="startDate">Start Date</string>
+    <string name="emptyInput">----/--/--</string>
+    <string name="pleaseInputDateValues">Select the date interval, from which activities are to be plot</string>
+    <string name="invalidDateCombinations">Invalid Date Combinations</string>
+    <string name="dateCombinationsCannotBeNull">A Date Entry Cannot Be Empty</string>
+    <string name="endDate">End Date</string>
 
 
 </resources>

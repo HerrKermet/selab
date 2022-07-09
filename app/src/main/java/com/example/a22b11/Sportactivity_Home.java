@@ -64,6 +64,15 @@ public class Sportactivity_Home extends AppCompatActivity {
 
         //BarChart
         barChart = findViewById(R.id.barChart);
+
+        //Attaching an onclick listener on the Graph so it is clickable
+        barChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Sportactivity_Home.this, inputForStatisticalRepresentation.class));
+            }
+        });
+
         entries = new ArrayList<>();
 
         textViewRecentActivities = findViewById(R.id.textView31);
@@ -79,6 +88,7 @@ public class Sportactivity_Home extends AppCompatActivity {
 
 
 
+        //TODO CHANGE QUERY
         // get recent activites from Database
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
