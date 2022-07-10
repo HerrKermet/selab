@@ -68,7 +68,7 @@ which I felt sorry for afterwards</string>
     <string name="walking">Walking</string>
     <string name="swimming">Swimming</string>
     <string name="hiking">Hiking</string>
-    <string name="dieing">Dieing</string>
+    <string name="other">Other</string>
     <string name="yoga">Yoga</string>
     <string name="meditation">Meditation</string>
     <string name="addActivity">Add activity</string>
@@ -79,6 +79,34 @@ which I felt sorry for afterwards</string>
     <string name="doYouWantToAddSomeNotes">Add some notes ?</string>
     <string name="recentActivities">Recent activities</string>
     <string name="noActivitiesRecorded">There are no recorded Activities</string>
+    <string name="selectTheme">Select a Theme</string>
+    <string name="apply">Apply</string>
+    <string name="type">Type</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="duration">Duration</string>
+    <string name="selectDate">Select Date</string>
+    <string name="yourCurrentLocation">Your current Location:</string>
+    <string name="CurrentLocationNotAvailable">Location currently not available</string>
+    <string name="AppRequiresPermission">This app requires permission to be granted in order to work properly</string>
+    <string name="yourMoodScore">Your MoodScore is</string>
+    <string name="invalidMoodScore">Questionnaire discarded because too little data was provided</string>
+    <string name="thanksForTakingTheTime">Thank you for taking the time. \n If you wish, you can add some notes to your questionnaire</string>
+    <string name="invalidDate">Invalid date</string>
+    <string name="startBeforeEnd">The end date must be after the start date</string>
+    <string name="selectAnActivity">Please select an activity</string>
+
+    <string-array name="activity_list">
+        <item>@string/please_select_activity</item>
+        <item>@string/running</item>
+        <item>@string/walking</item>
+        <item>@string/swimming</item>
+        <item>@string/hiking</item>
+        <item>@string/other</item>
+    </string-array>
+    <string name="needMoreQuestionnaires">You need to do %d more Daily Questionnaires to unlock this theme</string>
+    <string name="add">Add</string>
+    <string name="detectedActivities">We have captured some activities.\n Should they be added?</string>
 
 
 </resources>

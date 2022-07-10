@@ -67,7 +67,7 @@ das bedeutendste positive Ereignis?</string>
     <string name="hiking">Wandern</string>
     <string name="swimming">Schwimmen</string>
     <string name="walking">Spazieren</string>
-    <string name="dieing">Sterben</string>
+    <string name="other">Andere</string>
     <string name="yoga">Yoga</string>
     <string name="meditation">Meditation</string>
     <string name="addActivity">Aktivität hinzufügen</string>
@@ -78,5 +78,25 @@ das bedeutendste positive Ereignis?</string>
     <string name="doYouWantToAddSomeNotes">Notizen hinzufügen ?</string>
     <string name="recentActivities">Aktuellste Aktivitäten</string>
     <string name="noActivitiesRecorded">Keine aufgezeichneten Aktivitäten gefunden</string>
+    <string name="selectTheme">Wähle ein Theme</string>
+    <string name="yourCurrentLocation">Deine aktuelle Position:</string>
+    <string name="CurrentLocationNotAvailable">Aktuelle Position kann nicht abgerufen werden</string>
+    <string name="AppRequiresPermission">Die App benötigt Berechtigungen um korrekt zu funktionieren</string>
+    <string name="apply">Übernehmen</string>
+    <string name="start">Start</string>
+    <string name="end">Ende</string>
+    <string name="duration">Dauer</string>
+    <string name="type">Art</string>
+    <string name="selectDate">Datum auswählen</string>
+    <string name="yourMoodScore">Dein MoodScore beträgt</string>
+    <string name="invalidMoodScore">Fragebogen verworfen da zu wenig Daten angegeben wurden</string>
+    <string name="thanksForTakingTheTime">Vielen Dank, dass Sie sich die Zeit genommen haben.\n Wenn Sie möchten, können Sie Ihrem Fragebogen noch Anmerkungen hinzufügen.</string>
+    <string name="invalidDate">Ungültiges Datum</string>
+    <string name="startBeforeEnd">Das Enddatum muss nach dem Startdatum liegen</string>
+    <string name="selectAnActivity">Bitte wähle eine Aktivität aus</string>
+    <string name="needMoreQuestionnaires">Du musst noch %d tägliche Fragebögen abschließen um dieses Theme freizuschalten</string>
+    <string name="add">Hinzufügen</string>
+    <string name="detectedActivities">Wir haben ein paar Aktivitäten erfasst.\n Sollen sie hinzugefügt werden?</string>
+
 
 </resources>

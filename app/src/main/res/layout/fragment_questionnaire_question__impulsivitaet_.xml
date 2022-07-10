@@ -57,7 +57,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
                 <RadioButton
@@ -65,7 +64,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -73,7 +71,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -81,7 +78,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -89,7 +85,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -97,7 +92,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -105,7 +99,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
@@ -113,7 +106,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     android:text="@string/completely_true"
                     android:textAlignment="center" />
             </RadioGroup>
@@ -165,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
+
                     android:minWidth="48dp"
                     tools:ignore="TouchTargetSizeCheck" />
 
@@ -174,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
+
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -182,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
+
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -190,7 +182,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -198,7 +189,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -206,7 +196,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
@@ -214,7 +203,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:buttonTint="@color/purple_500"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView

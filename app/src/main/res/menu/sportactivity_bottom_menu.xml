@@ -14,5 +14,4 @@
         android:menuCategory="container"
         android:title="Edit activity"
         app:showAsAction="ifRoom" />
-
 </menu>

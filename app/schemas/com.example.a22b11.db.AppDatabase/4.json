@@ -2,17 +2,17 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "234c7d8a049cfe343e1ded2dc446a417",
+    "identityHash": "21aabcfb7922c587fb579d7776704f57",
     "entities": [
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `creation` INTEGER, `password` TEXT, `last_sync_sqn` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `creation` INTEGER, `password` TEXT, `last_sync_sqn` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "creation",
@@ -30,7 +30,7 @@
             "fieldPath": "lastSyncSqn",
             "columnName": "last_sync_sqn",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -44,17 +44,17 @@
       },
       {
         "tableName": "activities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT, `duration` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT, `duration` INTEGER)",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "localId",
+            "columnName": "local_id",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "remoteId",
-            "columnName": "remote_id",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -68,7 +68,7 @@
             "fieldPath": "isModified",
             "columnName": "is_modified",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "lastModification",
@@ -103,7 +103,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "local_id"
           ],
           "autoGenerate": true
         },
@@ -266,7 +266,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '234c7d8a049cfe343e1ded2dc446a417')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '21aabcfb7922c587fb579d7776704f57')"
     ]
   }
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "dfeb644a6a53f529b9f0b5bb8adbb4b0",
+    "identityHash": "5b9fb94d106810929bbab815991fb480",
     "entities": [
       {
         "tableName": "users",
@@ -30,7 +30,7 @@
             "fieldPath": "lastSyncSqn",
             "columnName": "last_sync_sqn",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -44,8 +44,14 @@
       },
       {
         "tableName": "activities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `remote_id` INTEGER, `user_id` INTEGER NOT NULL, `is_modified` INTEGER NOT NULL, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT, `duration` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT)",
         "fields": [
+          {
+            "fieldPath": "localId",
+            "columnName": "local_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
@@ -53,22 +59,16 @@
             "notNull": false
           },
           {
-            "fieldPath": "remoteId",
-            "columnName": "remote_id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "userId",
             "columnName": "user_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "isModified",
             "columnName": "is_modified",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "lastModification",
@@ -98,12 +98,12 @@
             "fieldPath": "duration",
             "columnName": "duration",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "local_id"
           ],
           "autoGenerate": true
         },
@@ -260,7 +260,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dfeb644a6a53f529b9f0b5bb8adbb4b0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b9fb94d106810929bbab815991fb480')"
     ]
   }
 }

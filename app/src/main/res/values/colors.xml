@@ -7,6 +7,31 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#9a1b2a</color>
+    <color name="transparent">#FFFFFFFF</color>
     <color name="orange">#fc9c00</color>
+    <color name="orangeVariant">#FFB742</color>
+    <color name="red">#eb4d4b</color>
+    <color name="redVariant">#ff7979</color>
+    <color name="green">#6ab04c</color>
+    <color name="greenVariant">#badc58</color>
+    <color name="cyan">#058F83</color>
+    <color name="cyanVariant">#046F65</color>
+    <color name="blue">#4834d4</color>
+    <color name="blueVariant">#686de0</color>
+    <color name="darkBlue">#130f40</color>
+    <color name="darkBlueVariant">#30336b</color>
+    <color name="grey">#70757d</color>
+    <color name="banana_yellow">#FFE135</color>
+    <color name="ocean_blue">#2d98da</color>
+    <color name="sunset_yellow">#FFC300</color>
+    <color name="sunset_orange">#FF5733</color>
+    <color name="sunset_red">#C70039</color>
+    <color name="sunset_magenta">#900C3F</color>
+    <color name="sunset_purple">#581845</color>
+    <color name="hortensia_bright">#FF66E5</color>
+    <color name="hortensia_dark">#7F33BF</color>
+
+    <attr name="colorOnSecondary" format="color"/>
+    <attr name="colorSecondary" format="color"/>
+
 </resources>

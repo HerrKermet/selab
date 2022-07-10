@@ -1,6 +1,7 @@
 package com.example.a22b11.adapter;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,6 @@ public class itemAdapter extends RecyclerView.Adapter<itemViewHolder>{
         //holder.duration.setText(String.valueOf(items.get(position).duration) + "s");
 
 
-
         holder.date.setText(String.valueOf(formatter.format(Date.from(items.get(position).start))));
 
     }
@@ -108,6 +108,11 @@ class itemViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 Intent intent = new Intent(callingActivity, Sportactivity_Edit.class);
                 intent.putExtra("databaseActivityEdit",adapter.items.get(getAdapterPosition()));
+                if (adapter.items.get((getAdapterPosition())).isAutomaticallyDetected
+                && adapter.items.size() > 1) {
+                    intent.putExtra("appCreatedActivity", true);
+                    callingActivity.finish();
+                }
                 callingActivity.startActivity(intent);
             }
         });
