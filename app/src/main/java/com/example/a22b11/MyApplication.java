@@ -15,13 +15,11 @@ import com.example.a22b11.db.AppDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thomasbouvier.persistentcookiejar.PersistentCookieJar;
-import com.thomasbouvier.persistentcookiejar.cache.CookieCache;
 import com.thomasbouvier.persistentcookiejar.cache.SetCookieCache;
 import com.thomasbouvier.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import java.time.Instant;
 
-import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -32,13 +30,16 @@ public class MyApplication extends Application {
 
     private static MyApplication instance;
     private AppDatabase appDatabase;
-    private CookieCache cookieCache;
     private FitnessApiClient fitnessApiClient;
+    SharedPreferences loginStatusFile;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        loginStatusFile = getSharedPreferences("login", Context.MODE_PRIVATE);
+
         appDatabase = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name")
                 .fallbackToDestructiveMigration().build();
@@ -50,9 +51,7 @@ public class MyApplication extends Application {
 
         SharedPreferences cookieSharedPreferences = MyApplication.getInstance().getSharedPreferences("PersistentCookies", Context.MODE_PRIVATE);
 
-        cookieCache = new SetCookieCache();
-
-        CookieJar cookieJar = new PersistentCookieJar(cookieCache, new SharedPrefsCookiePersistor(cookieSharedPreferences));
+        CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(cookieSharedPreferences));
 
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .cookieJar(cookieJar)
@@ -102,12 +101,11 @@ public class MyApplication extends Application {
         return fitnessApiClient;
     }
 
+    public void setLoggedIn(boolean isLoggedIn) {
+        loginStatusFile.edit().clear().putBoolean("loggedIn", isLoggedIn).apply();
+    }
+
     public boolean isLoggedIn() {
-        for (Cookie cookie : cookieCache) {
-            Log.d("Cookie", cookie.name());
-            if (cookie.name().equals("PHPSESSID"))
-                return true;
-        }
-        return false;
+        return loginStatusFile.getBoolean("loggedIn", false);
     }
 }
