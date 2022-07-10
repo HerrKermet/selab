@@ -67,11 +67,12 @@ public class Mood {
     }
 
     @PrimaryKey(autoGenerate = true)
-    public Long id = null;
+    @ColumnInfo(name = "local_id")
+    public Long localId = null;
 
     // ID assigned to the mood by the server
-    @ColumnInfo(name = "remote_id")
-    public Long remoteId = null;
+    @ColumnInfo(name = "id")
+    public Long id = null;
 
     @ColumnInfo(name = "user_id")
     public Long userId;

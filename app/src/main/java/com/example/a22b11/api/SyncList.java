@@ -1,8 +1,9 @@
 package com.example.a22b11.api;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SyncList<T> {
-    public ArrayList<T> created = new ArrayList<>();
-    public ArrayList<T> modified = new ArrayList<>();
+    public List<T> created = new ArrayList<>();
+    public List<T> modified = new ArrayList<>();
 }
