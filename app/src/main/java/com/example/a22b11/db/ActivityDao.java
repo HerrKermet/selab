@@ -23,8 +23,16 @@ public interface ActivityDao {
     @Query("SELECT * FROM activities WHERE start BETWEEN :end AND :start ORDER BY start")
     ListenableFuture<List<Activity>> getActivitiesBetweenDates(Instant start, Instant end);
 
-    @Query("SELECT * FROM activities ORDER BY start DESC LIMIT :n")
+    @Query("SELECT * FROM activities WHERE automatically_detected = 0 ORDER BY start DESC LIMIT :n")
     ListenableFuture<List<Activity>> getLatestNActivities(int n);
+
+    @Query("SELECT * FROM activities WHERE automatically_detected = 0 ORDER BY start DESC")
+    ListenableFuture<List<Activity>> getUserGeneratedActivites();
+
+    @Query("SELECT * FROM activities WHERE automatically_detected = 1 ORDER BY start DESC")
+    ListenableFuture<List<Activity>> getAppGeneratedActivities();
+
+
 
     /**
      * Insert a new activity

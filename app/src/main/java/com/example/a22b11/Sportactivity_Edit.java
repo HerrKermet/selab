@@ -38,6 +38,7 @@ import java.util.Locale;
 public class Sportactivity_Edit extends AppCompatActivity  {
 
     boolean isNewActivity;
+    boolean appCreatedActivity = false;
 
     LocalDateTime localDateTime;
 
@@ -105,6 +106,8 @@ public class Sportactivity_Edit extends AppCompatActivity  {
             startInst = activity.start == null ? null : activity.start;
             endInst = activity.end == null ? null : activity.end;
         }
+
+        if(getIntent().hasExtra("appCreatedActivity")) appCreatedActivity = getIntent().getBooleanExtra("appCreatedActivity", false);
 
 
 
@@ -359,6 +362,7 @@ public class Sportactivity_Edit extends AppCompatActivity  {
             activity.duration = Math.toIntExact(duration);
             activity.activityType = Activity.ActivityType.values()[activitySpinner.getSelectedItemPosition() - 1];
             activity.lastModification = Instant.now();
+            activity.isAutomaticallyDetected = false;
 
             Log.d("activity duration", String.valueOf(activity.duration));
 
@@ -379,8 +383,17 @@ public class Sportactivity_Edit extends AppCompatActivity  {
 
 
             // get back to home screen after clicking apply
-            Intent intent = new Intent(this, Sportactivity_Home.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent;
+            if(appCreatedActivity){
+                intent = new Intent(this, Sportactivity_Edit_Selection.class);
+                intent.putExtra("showOnlyAppCreated", true);
+
+            }
+            else{
+                intent = new Intent(this, Sportactivity_Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            }
+            finish();
             startActivity(intent);
 
 

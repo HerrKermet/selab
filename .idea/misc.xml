@@ -4,14 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable-v24/circle.xml" value="0.2985" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/dot.xml" value="0.1535" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/ic_baseline_add_40.xml" value="0.1535" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/ic_baseline_edit_40.xml" value="0.101" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.1" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_color_choose_theme.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_finished.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_welcome.xml" value="0.358695652173913" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportedit.xml" value="0.29717180244829045" />
-        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.32065217391304346" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.3291592128801431" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportselection.xml" value="0.32608695652173914" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/addwithnotification.xml" value="1.25" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/dialog_add_app_created_activity.xml" value="0.30012825994014536" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/dialog_app_created_activity.xml" value="0.30012825994014536" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_dashboard.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire__finished_fragment.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire__welcome.xml" value="0.33" />
@@ -23,6 +30,7 @@
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__social_context_.xml" value="0.358695652173913" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__social_situation_.xml" value="0.358695652173913" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/item.xml" value="0.5" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/menu/sportactivity_bottom_menu.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.358695652173913" />
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.358695652173913" />
       </map>

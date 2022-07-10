@@ -105,6 +105,8 @@ which I felt sorry for afterwards</string>
         <item>@string/other</item>
     </string-array>
     <string name="needMoreQuestionnaires">You need to do %d more Daily Questionnaires to unlock this theme</string>
+    <string name="add">Add</string>
+    <string name="detectedActivities">We have captured some activities.\n Should they be added?</string>
 
 
 </resources>

@@ -95,6 +95,8 @@ das bedeutendste positive Ereignis?</string>
     <string name="startBeforeEnd">Das Enddatum muss nach dem Startdatum liegen</string>
     <string name="selectAnActivity">Bitte wähle eine Aktivität aus</string>
     <string name="needMoreQuestionnaires">Du musst noch %d tägliche Fragebögen abschließen um dieses Theme freizuschalten</string>
+    <string name="add">Hinzufügen</string>
+    <string name="detectedActivities">Wir haben ein paar Aktivitäten erfasst.\n Sollen sie hinzugefügt werden?</string>
 
 
 </resources>
