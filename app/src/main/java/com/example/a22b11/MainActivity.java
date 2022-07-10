@@ -16,17 +16,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MyApplication myApplication = MyApplication.getInstance();
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
+        setTheme(theme);
 
-        if (!myApplication.isLoggedIn()) {
+        if (!MyApplication.getInstance().isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
         else {
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-            int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
-            setTheme(theme);
             setContentView(R.layout.activity_main);
         }
     }

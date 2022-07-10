@@ -17,25 +17,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a22b11.AccountCreatedActivity;
-import com.example.a22b11.MainActivity;
 import com.example.a22b11.MyApplication;
 import com.example.a22b11.R;
-import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.Sportactivity_Home;
 import com.example.a22b11.db.User;
 import com.example.a22b11.db.UserDao;
-import com.example.a22b11.ui.login.LoginViewModel;
-import com.example.a22b11.ui.login.LoginViewModelFactory;
 import com.example.a22b11.databinding.ActivityLoginBinding;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -69,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Sportactivity_Home.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

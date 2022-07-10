@@ -89,6 +89,7 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    MyApplication.getInstance().setLoggedIn(true);
                     loginResult.setValue(new LoginResult(user));
                 }
                 else {
@@ -121,9 +122,11 @@ public class LoginViewModel extends ViewModel {
                     User user = response.body();
                     if (user.id == null || user.password == null) {
                         registerResult.setValue(new RegisterResult(R.string.registration_failed));
-                        return;
                     }
-                    registerResult.setValue(new RegisterResult(user));
+                    else {
+                        MyApplication.getInstance().setLoggedIn(true);
+                        registerResult.setValue(new RegisterResult(user));
+                    }
                 }
                 else {
                     registerResult.setValue(new RegisterResult(R.string.registration_failed));
