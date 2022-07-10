@@ -7,7 +7,7 @@
     tools:context=".Sportactivity_Home">
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
+        android:id="@+id/barChart3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="15dp"

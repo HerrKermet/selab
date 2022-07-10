@@ -50,7 +50,7 @@ public class Sportactivity_Home extends AppCompatActivity {
     BarDataSet barDataSet;
     List<BarEntry> entries;
 
-    Instant in_startDate, in_endDate;
+    Instant startDate, endDate;
 
 
     @Override
@@ -63,7 +63,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         setContentView(R.layout.activity_sporthome);
 
         //BarChart
-        barChart = findViewById(R.id.barChart);
+        barChart = findViewById(R.id.barChart3);
 
         //Attaching an onclick listener on the Graph so it is clickable
         barChart.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +82,15 @@ public class Sportactivity_Home extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         //TODO initialize start and end here to default values if user has not picked any
-        in_endDate = Instant.now();                                                // instant at start time
-        in_startDate = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+        if(getIntent().hasExtra("startInstant") && getIntent().hasExtra("endInstant")){
+            startDate = (Instant) getIntent().getSerializableExtra("startInstant");
+            endDate = (Instant) getIntent().getSerializableExtra("endInstant");
+        }
+        else {
+            endDate = Instant.now();                                                // instant at start time
+            startDate = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+        }
+        Log.e("currentInstant", startDate + "   " + endDate);
         /////////////////////////////////////////////////////////////////////////////////
 
 
@@ -124,7 +131,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         );
 
         // get activites between start, end
-        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(in_startDate, in_endDate);
+        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);
         Futures.addCallback(
                 future3,
                 new FutureCallback<List<Activity>>() {
@@ -133,7 +140,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<Activity> result) {
                         activitiesBetween = result;
-                        Log.d("activity count between", "start:" + in_startDate.toString() + "  end:" + in_endDate.toString() + " count: " + String.valueOf(activitiesBetween.size()));
+                        Log.d("activity count between", "start:" + startDate.toString() + "  end:" + endDate.toString() + " count: " + String.valueOf(activitiesBetween.size()));
                         for (Activity activity :
                                 activitiesBetween) {
                             Log.d("activities retrieved between", activity.type + "  " + activity.duration + "  " + activity.start.toString());
@@ -151,11 +158,6 @@ public class Sportactivity_Home extends AppCompatActivity {
         );
 
         //done with database query
-
-        //TODO  activitiesBetween ist initialisiert und die activities sollten aufsteigend sortiert sein
-        //TODO check if list is null
-
-
 
     }
 
@@ -233,13 +235,13 @@ public class Sportactivity_Home extends AppCompatActivity {
 
             if(checkOpenPage) {
                 activities = activitiesBetween;
-                lo_startDate = LocalDate.from(LocalDateTime.ofInstant(in_startDate,ZoneId.systemDefault()));
-                lo_endDate = LocalDate.from(LocalDateTime.ofInstant(in_endDate,ZoneId.systemDefault()));
+                lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
+                lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
             }
             else {
                 activities = activitiesBetween; //ToDo: Use Activity-List with different time-range (user values of start and end)
-                lo_startDate = LocalDate.from(LocalDateTime.ofInstant(in_startDate,ZoneId.systemDefault()));
-                lo_endDate = LocalDate.from(LocalDateTime.ofInstant(in_endDate,ZoneId.systemDefault()));
+                lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
+                lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
             }
 
             fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
@@ -259,6 +261,17 @@ public class Sportactivity_Home extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(getIntent().hasExtra("startInstant") && getIntent().hasExtra("endInstant")){
+            startDate = (Instant) getIntent().getSerializableExtra("startInstant");
+            endDate = (Instant) getIntent().getSerializableExtra("endInstant");
+        }
+        else {
+            endDate = Instant.now();                                                // instant at start time
+            startDate = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+        }
+        Log.e("currentInstant", startDate + "   " + endDate);
+
         // get test user from Database
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
@@ -288,7 +301,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                 this.getMainExecutor()
         );
 
-        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(in_startDate, in_endDate);
+        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);
         Futures.addCallback(
                 future3,
                 new FutureCallback<List<Activity>>() {
@@ -310,8 +323,16 @@ public class Sportactivity_Home extends AppCompatActivity {
 
         //done with database query
 
+        //  activitiesBetween ist initialisiert und die activities sollten aufsteigend sortiert sein
+        //TODO check if list is null and plot
+        // If the list is null(no empty), skip the entire plot (should not happen)
+        // else then plot the activites between
+
+
 
     }
+
+
 
     public void buttonSelectActivity(View view) {
 

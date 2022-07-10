@@ -16,9 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.22B11">
-        <activity
-            android:name=".statisticalRepresentation"
-            android:exported="false" />
+
         <activity
             android:name=".inputForStatisticalRepresentation"
             android:exported="false" />
