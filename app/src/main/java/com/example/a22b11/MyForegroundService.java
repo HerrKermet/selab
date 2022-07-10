@@ -21,6 +21,9 @@ import com.example.a22b11.db.Activity;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,6 +37,11 @@ public class MyForegroundService extends Service  {
     int stepCount;
     double MagnitudePrevious;
     boolean recording = false;
+    int CounterforMedian = 0;
+
+    List RawAccDataX = new LinkedList<Integer>();
+    List RawAccDataY = new LinkedList<Integer>();
+    List RawAccDataZ = new LinkedList<Integer>();
 
     SensorManager sensorManager;
     Sensor sensor;
@@ -54,7 +62,7 @@ public class MyForegroundService extends Service  {
                     float z_acceleration = sensorEvent.values[2];
 
                     double Magnitude = Math.sqrt(
-                            x_acceleration * x_acceleration +
+                                    x_acceleration * x_acceleration +
                                     y_acceleration * y_acceleration +
                                     z_acceleration * z_acceleration);
                     double MagnitudeDelta = Magnitude - MagnitudePrevious;
@@ -87,11 +95,24 @@ public class MyForegroundService extends Service  {
                 //was gemacht werden soll
                 Log.d("Time counter", String.valueOf(counter));
                 Log.d("Steps", String.valueOf(steps));
+                //Counter for the Accelerometer data
+                //Each 5 second the Raw data is collected
+                //and each 60 seconds the Raw data is summarized and saved
+                CounterforMedian +=1;
+
+                if (CounterforMedian == 60){
+                    CounterforMedian = 0;
+                }
+
+
+                Log.d("medianCouneter", String.valueOf(CounterforMedian));
                 if (!recording) counter+=1;
                 if (counter ==  threshholddelay) {
                     counter = 0 ;
                     if (stepCount >= threshold){
                         recording = true;
+                        //saving of the accelerometer raw data summarized as median
+
                         // TODO:start activity and add the steps onto the newly started activity
                         Instant instant = Instant.now();
                         Activity activity = new Activity();
@@ -114,27 +135,13 @@ public class MyForegroundService extends Service  {
                 () -> {
                     while (true) {
                         Log.e("Service", "Service is running...");
-                        Log.e("StepCount", String.valueOf(stepCount));
+                        //Log.e("StepCount", String.valueOf(stepCount));
                         try {
                             Thread.sleep(2000);
                         } catch ( InterruptedException e) {
 
                             e.printStackTrace();
                         }
-                        //timer task
-                        /*
-                        Timer timerObj = new Timer();
-                        TimerTask timerTaskObj = new TimerTask() {
-
-                            public void run() {
-                                //was gemacht werden soll
-                                Log.d("funktionier endlich","sahne");
-                                Log.d("zahlen", String.valueOf(number));
-                                number+=1;
-                            }
-                        }; */
-
-                       // timerObj.schedule(timerTaskObj, 0, 9000);
                     }
                 }
         ).start();
