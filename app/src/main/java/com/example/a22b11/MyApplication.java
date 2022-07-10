@@ -32,6 +32,7 @@ public class MyApplication extends Application {
 
     private static MyApplication instance;
     private AppDatabase appDatabase;
+    private PersistentCookieJar cookieJar;
     private CookieCache cookieCache;
     private FitnessApiClient fitnessApiClient;
 
@@ -52,7 +53,7 @@ public class MyApplication extends Application {
 
         cookieCache = new SetCookieCache();
 
-        CookieJar cookieJar = new PersistentCookieJar(cookieCache, new SharedPrefsCookiePersistor(cookieSharedPreferences));
+        cookieJar = new PersistentCookieJar(cookieCache, new SharedPrefsCookiePersistor(cookieSharedPreferences));
 
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .cookieJar(cookieJar)
@@ -100,6 +101,10 @@ public class MyApplication extends Application {
 
     public FitnessApiClient getFitnessApiClient() {
         return fitnessApiClient;
+    }
+
+    public void logout() {
+        cookieJar.clear();
     }
 
     public boolean isLoggedIn() {
