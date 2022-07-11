@@ -45,6 +45,16 @@ CREATE TABLE IF NOT EXISTS `moods` (
  `acted_aggressively` tinyint(4) DEFAULT NULL,
  PRIMARY KEY (`id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `login_sessions` (
+ `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ `key` varchar(255) NOT NULL,
+ `user_id` bigint(20) unsigned NOT NULL,
+ `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `last_access` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ";
 

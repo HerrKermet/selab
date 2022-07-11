@@ -1,5 +1,7 @@
 <?php
 
+require_once "http_exceptions.php";
+require_once "session.php";
 require_once "snake_to_camel.php";
 
 function datef(string $field): string {
@@ -14,13 +16,13 @@ function to_bool($val) {
 
 function assert_is_array($array, $name) {
     if (!is_array($array)) {
-        throw new InvalidArgumentException("$name must be an array");
+        throw new BadRequest("$name must be an array");
     }
 }
 
 function assert_is_numeric($num, $name) {
     if (!is_numeric($num)) {
-        throw new InvalidArgumentException("$name must be numeric");
+        throw new BadRequest("$name must be numeric");
     }
 }
 
@@ -106,7 +108,7 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
             ]);
         }
     }
-    
+
     return $act_id_map;
 }
 
@@ -253,7 +255,7 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
             ]);
         }
     }
-    
+
     return $mood_id_map;
 }
 
@@ -288,26 +290,29 @@ function get_updated_moods(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
 }
 
 try {
-    if (!session_start()) {
-        throw new RuntimeException("Cannot start session");
-    }
-
     header('Content-type: application/json; charset=utf-8');
 
-    $user_id = $_SESSION['user_id'] ?? null;
-    if (!isset($user_id)) {
-        throw new RuntimeException("Not logged in");
-    }
-    $last_access = $_SESSION['last_access'] ?? null;
-    $_SESSION['last_access'] = time();
     $request = require "get_input.php";
-
     $json_pretty = $request['json_pretty'] ?? null;
     $json_pretty = to_bool($json_pretty);
+
+    $sess_str = $request['session'] ?? null;
+
+    if (!isset($sess_str)) {
+        throw new BadRequest();
+    }
 
     $dbh = require 'connect.php';
     $dbh->beginTransaction();
     $dbh->exec('set time_zone = "+00:00";');
+
+    $sess = Session::fromString($sess_str);
+
+    $user_id = $sess->authenticate($dbh);
+
+    if ($user_id === false) {
+        throw new Unauthorized();
+    }
 
     $sync_sqn = get_sync_sqn($dbh, $user_id);
 
@@ -323,7 +328,6 @@ try {
 
     $response = [
         "last_sync_sqn" => $sync_sqn,
-        "last_access" => $last_access,
         "activities" => [
             "created" => [],
             "modified" => []
@@ -357,8 +361,15 @@ try {
     }
 
     $json = json_encode($response, $json_flags);
-    
+
     $dbh->commit();
+}
+catch (HttpException $e) {
+    http_response_code($e->getHttpCode());
+    $json = json_encode(['error' => [
+        'msg' => $e->getMessage(),
+        'code' => $e->getCode()
+    ]]);
 }
 catch (Throwable $e) {
     http_response_code(500);

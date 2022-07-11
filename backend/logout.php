@@ -1,27 +1,36 @@
 <?php
 
-try {
-    if (!session_start()) {
-        throw new RuntimeException("Cannot start session");
-    }
+require_once "http_exceptions.php";
 
+require_once "session.php";
+
+try {
     header('Content-type: application/json; charset=utf-8');
 
-    $_SESSION = [];
+    $request = require "get_input.php";
 
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
-        );
+    $sess_str = $request['session'] ?? null;
+
+    if (!isset($sess_str)) {
+        throw new BadRequest();
     }
 
-    if (!session_destroy()) {
-        throw new RuntimeException("Cannot stop session");
-    }
+    $dbh = require "connect.php";
+    $dbh->beginTransaction();
+    $dbh->exec('set time_zone = "+00:00";');
+
+    Session::fromString($sess_str)->delete($dbh);
+
+    $dbh->commit();
 
     $json = "{}";
+}
+catch (HttpException $e) {
+    http_response_code($e->getHttpCode());
+    $json = json_encode(['error' => [
+        'msg' => $e->getMessage(),
+        'code' => $e->getCode()
+    ]]);
 }
 catch (Throwable $e) {
     http_response_code(500);
