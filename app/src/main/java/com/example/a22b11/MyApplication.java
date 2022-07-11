@@ -127,6 +127,7 @@ public class MyApplication extends Application {
         static final private long interval = 123;
 
         private void sync()  {
+            Log.d("Sync", "Synchronizing data with the server...");
             try {
                 appDatabase.runInTransaction(() -> {
                     SyncObject syncObject = new SyncObject();
@@ -165,10 +166,10 @@ public class MyApplication extends Application {
                     }
                     activityDao.updateSync(syncObject.activities.created);
                     activityDao.insertSync(retSyncObject.activities.created);
-                    activityDao.updateSync(retSyncObject.activities.modified);
+                    activityDao.insertSync(retSyncObject.activities.modified);
                     moodDao.updateSync(syncObject.moods.created);
                     moodDao.insertSync(retSyncObject.moods.created);
-                    moodDao.updateSync(retSyncObject.moods.modified);
+                    moodDao.insertSync(retSyncObject.moods.modified);
                 });
             }
             catch (Throwable e) {

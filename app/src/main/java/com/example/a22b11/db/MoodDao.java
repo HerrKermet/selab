@@ -3,6 +3,7 @@ package com.example.a22b11.db;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -59,10 +60,10 @@ public interface MoodDao {
     @Insert
     ListenableFuture<List<Long>> insertAll(Mood... moods);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSync(Mood mood);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSync(List<Mood> mood);
 
     @Delete
