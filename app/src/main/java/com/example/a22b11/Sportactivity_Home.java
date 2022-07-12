@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -87,8 +88,8 @@ public class Sportactivity_Home extends AppCompatActivity {
             endDate = (Instant) getIntent().getSerializableExtra("endInstant");
         }
         else {
-            endDate = Instant.now();                                                // instant at start time
-            startDate = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+            endDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant();                                                // instant at start time
+            startDate =  endDate.minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
         }
         Log.e("currentInstant", startDate + "   " + endDate);
         /////////////////////////////////////////////////////////////////////////////////
@@ -167,9 +168,14 @@ public class Sportactivity_Home extends AppCompatActivity {
         for(int i=0; i<mergedResults.length; i++){
             entryList.add(new BarEntry((float) i,mergedResults[i]));
         }
-        barDataSet = new BarDataSet(entries, "Data");
+        barDataSet = new BarDataSet(entries, getString(R.string.barChartActivities));
+        TypedValue typedValue = new TypedValue();
+        //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
+        getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
+        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
+        int color = typedValue.data;
+        barDataSet.setColors(color);
 
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(android.R.color.black);
         //set.setValueTextSize(16f);
 
@@ -177,7 +183,8 @@ public class Sportactivity_Home extends AppCompatActivity {
 
         barChart.setFitBars(true);
         barChart.setData(barData); //If no data is available a message is on the screen: "No chart data available"
-        barChart.getDescription().setText(getString(R.string.barChartActivities));
+        //barChart.getDescription().setText(getString(R.string.barChartActivities));
+        barChart.getDescription().setEnabled(false);
         barChart.animateY(2000);
     }
 
