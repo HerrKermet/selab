@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Debug;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 
 import androidx.room.Room;
@@ -69,7 +70,7 @@ public class MyApplication extends Application {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://fitness.ax24.net/")
+                .baseUrl("http://localhost/backend/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -78,8 +79,9 @@ public class MyApplication extends Application {
 
         Log.d("Logged in", Boolean.toString(isLoggedIn()));
 
-
-        syncHandler = new Handler();
+        HandlerThread syncThread = new HandlerThread("SyncThread");
+        syncThread.start();
+        syncHandler = new Handler(syncThread.getLooper());
         syncHandler.post(new RunnableSync());
 
         //TODO check implementation
@@ -124,7 +126,7 @@ public class MyApplication extends Application {
     }
 
     private class RunnableSync implements Runnable {
-        static final private long interval = 123;
+        static final private long interval = 60000;
 
         private void sync()  {
             Log.d("Sync", "Synchronizing data with the server...");
@@ -145,7 +147,7 @@ public class MyApplication extends Application {
                         throw new RuntimeException(e);
                     }
                     if (!response.isSuccessful()) {
-                        throw new RuntimeException("HTTP status not successful");
+                        throw new RuntimeException("HTTP status: " + response.code());
                     }
                     SyncObject retSyncObject = response.body();
                     if (retSyncObject.activities.created.size() != syncObject.activities.created.size()
