@@ -156,7 +156,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                             Log.d("activities retrieved between", activity.type + "  " + activity.duration + "  " + activity.start.toString());
 
                         }
-                        plotActivities(true, barChart);
+                        //TODO check if this can be removed    plotActivities(true, barChart);
                     }
 
                     public void onFailure(Throwable thrown) {
@@ -250,7 +250,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<Activity> result) {
                         activitiesBetween = result;
-
+                        plotActivities(true, barChart);
                     }
 
                     public void onFailure(Throwable thrown) {

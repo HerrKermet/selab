@@ -20,7 +20,7 @@ public interface ActivityDao {
     @Query("SELECT * FROM activities WHERE user_id = :userId")
     ListenableFuture<List<Activity>> getAllByUserId(long userId);
 
-    @Query("SELECT * FROM activities WHERE start BETWEEN :start AND :end ORDER BY start ASC")
+    @Query("SELECT * FROM activities WHERE automatically_detected = 0 AND start BETWEEN :start AND :end ORDER BY start ASC")
     ListenableFuture<List<Activity>> getActivitiesBetweenDates(Instant start, Instant end);
 
     @Query("SELECT * FROM activities WHERE automatically_detected = 0 ORDER BY start DESC LIMIT :n")
