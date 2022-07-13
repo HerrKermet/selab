@@ -88,10 +88,10 @@ public class Sportactivity_Home extends AppCompatActivity {
             endDate = (Instant) getIntent().getSerializableExtra("endInstant");
         }
         else {
-            endDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant();                                                // instant at start time
-            startDate =  endDate.minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+            endDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS);                                                // instant at start time
+            startDate =  endDate.minus(8, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS);      // instant 7 days before start time
         }
-        Log.e("currentInstant", startDate + "   " + endDate);
+        Log.d("currentInstant", startDate + "   " + endDate);
         /////////////////////////////////////////////////////////////////////////////////
 
 
@@ -269,15 +269,17 @@ public class Sportactivity_Home extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        //TODO initialize start and end here to default values if user has not picked any
         if(getIntent().hasExtra("startInstant") && getIntent().hasExtra("endInstant")){
             startDate = (Instant) getIntent().getSerializableExtra("startInstant");
             endDate = (Instant) getIntent().getSerializableExtra("endInstant");
         }
         else {
-            endDate = Instant.now();                                                // instant at start time
-            startDate = Instant.now().minus(7, ChronoUnit.DAYS);      // instant 7 days before start time
+            endDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS);                                                // instant at start time
+            startDate =  endDate.minus(8, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS);      // instant 7 days before start time
         }
-        Log.e("currentInstant", startDate + "   " + endDate);
+        Log.d("currentInstant", startDate + "   " + endDate);
+        /////////////////////////////////////////////////////////////////////////////////
 
         // get test user from Database
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
