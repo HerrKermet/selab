@@ -8,19 +8,20 @@ import java.time.Instant;
 
 @Entity(tableName = "users")
 public class User {
-    public User(long id, Instant creation, String password) {
+    public User() {}
+
+    public User(long id, String password) {
         this.id = id;
-        this.creation = creation;
         this.password = password;
     }
 
     @PrimaryKey
-    public long id;
+    public Long id;
 
-    public Instant creation;
+    public Instant creation = null;
 
     public String password;
 
     @ColumnInfo(name = "last_sync_sqn")
-    public long lastSyncSqn = 0;
+    public Long lastSyncSqn = null;
 }

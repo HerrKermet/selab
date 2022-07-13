@@ -28,27 +28,12 @@
                 android:id="@+id/imageButton3"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="10dp"
                 android:contentDescription="@string/selectDate"
-                android:onClick="showDatePickerDialog"
-                app:layout_constraintBottom_toBottomOf="@+id/textView38"
-                app:layout_constraintStart_toEndOf="@+id/textView38"
-                app:layout_constraintTop_toTopOf="@+id/textView38"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewStart"
+                app:layout_constraintEnd_toEndOf="@+id/imageButton2"
+                app:layout_constraintStart_toStartOf="@+id/imageButton2"
+                app:layout_constraintTop_toTopOf="@+id/textViewStart"
                 app:srcCompat="@android:drawable/ic_menu_today" />
-
-            <EditText
-                android:id="@+id/editTextTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:ems="10"
-                android:hint="@string/duration"
-                android:inputType="time"
-                app:layout_constraintBottom_toBottomOf="@+id/textView34"
-                app:layout_constraintStart_toEndOf="@+id/textView34"
-                app:layout_constraintTop_toTopOf="@+id/textView34"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/textView34"
@@ -72,7 +57,7 @@
                 app:layout_constraintStart_toStartOf="@+id/textView34" />
 
             <TextView
-                android:id="@+id/textView36"
+                android:id="@+id/textViewEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="----/--/--"
@@ -84,12 +69,11 @@
                 android:id="@+id/imageButton2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="80dp"
                 android:contentDescription="@string/selectDate"
-                android:onClick="showDatePickerDialog"
-                app:layout_constraintBottom_toBottomOf="@+id/textView36"
-                app:layout_constraintStart_toEndOf="@+id/textView36"
-                app:layout_constraintTop_toTopOf="@+id/textView36"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewEnd"
+                app:layout_constraintStart_toEndOf="@+id/textViewEnd"
+                app:layout_constraintTop_toTopOf="@+id/textViewEnd"
                 app:layout_constraintVertical_bias="0.38"
                 app:srcCompat="@android:drawable/ic_menu_today" />
 
@@ -103,24 +87,24 @@
                 app:layout_constraintStart_toStartOf="@+id/textView35" />
 
             <TextView
-                android:id="@+id/textView38"
+                android:id="@+id/textViewStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="----/--/--"
                 app:layout_constraintBottom_toBottomOf="@+id/textView37"
-                app:layout_constraintStart_toStartOf="@+id/textView36"
+                app:layout_constraintStart_toStartOf="@+id/textViewEnd"
                 app:layout_constraintTop_toTopOf="@+id/textView37" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/editTextType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/type"
+                android:text="@string/other"
                 app:layout_constraintBottom_toTopOf="@+id/textView37"
-                app:layout_constraintStart_toStartOf="@+id/editTextTime"
+                app:layout_constraintStart_toStartOf="@+id/textViewStart"
                 tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
@@ -129,16 +113,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp"
                 android:text="@string/type"
-                app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+                app:layout_constraintBottom_toTopOf="@+id/editTextType"
                 app:layout_constraintStart_toStartOf="@+id/textView37" />
 
             <Spinner
-                android:id="@+id/spinner3"
+                android:id="@+id/activitySpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:entries="@array/activity_list"
+                android:spinnerMode="dialog"
                 app:layout_constraintBottom_toBottomOf="@+id/textView41"
-                app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-                app:layout_constraintTop_toTopOf="@+id/textView41" />
+                app:layout_constraintStart_toStartOf="@+id/editTextType"
+                app:layout_constraintTop_toTopOf="@+id/textView41"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/editTextTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="-"
+                app:layout_constraintBottom_toBottomOf="@+id/textView34"
+                app:layout_constraintStart_toEndOf="@+id/textView34"
+                app:layout_constraintTop_toTopOf="@+id/textView34" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -148,6 +145,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
+        android:onClick="onClickApply"
         android:text="@string/apply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -163,4 +161,5 @@
         app:layout_constraintBottom_toTopOf="@+id/button31"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

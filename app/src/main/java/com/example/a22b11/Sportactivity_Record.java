@@ -24,6 +24,7 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a22b11.db.Activity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -58,7 +59,7 @@ public class Sportactivity_Record extends AppCompatActivity {
     Instant startTime;
     Instant endTime;
     Integer duration;
-    enum activityType {RUNNING, WALKING, SWIMMING, HIKING, DIEING, YOGA, MEDITATION};
+
 
 
 
@@ -80,6 +81,7 @@ public class Sportactivity_Record extends AppCompatActivity {
         tv_address = findViewById(R.id.tv_address);
         //location management
         locationRequest = new LocationRequest();
+
 
 
 
@@ -221,12 +223,13 @@ public class Sportactivity_Record extends AppCompatActivity {
     //Saving SelectedActivity, SelectedActivityNumber, StartTime,EndTime and Duration in intent and passing them into next page
     public void buttonClickFinish(View view){
 
-       duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) ); //TODO getting the duration in minutes, remember to bring back /60
+        duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) ); //TODO getting the duration in minutes, remember to bring back /60
+        Activity activity = new Activity(1L, startTime, endTime, selectedActivity, duration, Activity.ActivityType.values()[selectedActivityNumber]);
 
         Log.e("this is the error we are looking for ", String.valueOf(duration));
 
-        Intent intent = new Intent(this, Sportactivity_Finish.class);
-
+        Intent intent = new Intent(this, Sportactivity_Edit.class);
+        intent.putExtra("databaseActivityAdd", activity);
         intent.putExtra("selectedActivity", selectedActivity);
         intent.putExtra("selectedActivityNumber", selectedActivityNumber);
         intent.putExtra("startTime", String.valueOf(startTime));
@@ -301,6 +304,7 @@ public class Sportactivity_Record extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
+
 
 
 }

@@ -10,7 +10,7 @@ import java.util.Collections;
 
 public class MoodScore {
 
-    //TODO replace placeholder values with formula
+
     /***
      *
      * @param mood takes a mood object as parameter
@@ -43,23 +43,19 @@ public class MoodScore {
         list.addAll(ImmutableSet.of(satisfaction, calmness,comfort,relaxation,energy,wakefulness,eventNegativeIntensity,
                     eventPositiveIntensity,surroundingPeopleLiking,satisfiedWithYourself,considerYourselfFailure,actedImpulsively,actedAggressively));
 
-        //TODO change remove
-        // delete null values
-        /*
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) == -1) list.remove(i);
-        }
-        */
-
 
         // calculates average
         if (!list.isEmpty()) {
+            int validAnswers = 0;
             for (int value : list) {
-                if (value != -1) score += value;
+                if (value != -1){
+                    score += value;
+                    validAnswers++;
+                }
             }
-            score = (int) Math.ceil(score / list.size());
+           if (validAnswers > 0) score = (int) Math.ceil(score / validAnswers);
+           else score = -1;
         }
-
 
         return score;
     }

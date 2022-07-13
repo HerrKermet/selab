@@ -25,7 +25,7 @@
             android:layout_marginTop="24dp">
 
             <Button
-                android:id="@+id/button30"
+                android:id="@+id/buttonUnlockable00"
                 android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -47,16 +47,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/button23" />
 
             <Button
-                android:id="@+id/button29"
+                android:id="@+id/buttonUnlockable0"
                 android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/red"
                 android:onClick="setThemeAppleMunch"
                 android:text="Apple Munch"
                 android:textColor="@color/greenVariant"
-                app:layout_constraintBottom_toBottomOf="@+id/button30"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonUnlockable00"
                 app:layout_constraintStart_toStartOf="@+id/button27"
-                app:layout_constraintTop_toTopOf="@+id/button30" />
+                app:layout_constraintTop_toTopOf="@+id/buttonUnlockable00" />
 
             <Button
                 android:id="@+id/button22"
@@ -118,25 +118,43 @@
                 app:layout_constraintTop_toTopOf="@+id/button26" />
 
             <Button
-                android:id="@+id/button28"
+                android:id="@+id/buttonUnlockable1"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/ocean_blue"
+                android:onClick="setThemeOceanBanana"
+                android:text="Ocean Banana"
+                android:textColor="@color/banana_yellow"
+                app:layout_constraintStart_toStartOf="@+id/buttonUnlockable00"
+                app:layout_constraintTop_toBottomOf="@+id/buttonUnlockable00" />
+
+            <Button
+                android:id="@+id/buttonUnlockable2"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/sunset_purple"
+                android:onClick="setThemeMellowSunset"
+                android:text="Mellow Sunset"
+                android:textColor="@color/sunset_yellow"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonUnlockable1"
+                app:layout_constraintStart_toStartOf="@+id/buttonUnlockable0"
+                app:layout_constraintTop_toTopOf="@+id/buttonUnlockable1" />
+
+            <Button
+                android:id="@+id/buttonUnlockable3"
                 android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
-                android:text="Button"
+                android:backgroundTint="@color/hortensia_bright"
+                android:onClick="setThemeBloomingHortensia"
+                android:text="Blooming Hortensia"
+                android:textColor="@color/greenVariant"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/button30"
-                app:layout_constraintTop_toBottomOf="@+id/button30"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toStartOf="@+id/buttonUnlockable1"
+                app:layout_constraintTop_toBottomOf="@+id/buttonUnlockable1" />
 
-            <Button
-                android:id="@+id/button32"
-                android:layout_width="155dp"
-                android:layout_height="wrap_content"
-                android:text="Button"
-                app:layout_constraintBottom_toBottomOf="@+id/button28"
-                app:layout_constraintStart_toStartOf="@+id/button29"
-                app:layout_constraintTop_toTopOf="@+id/button28" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

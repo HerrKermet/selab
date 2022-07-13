@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 4,
-    "identityHash": "21aabcfb7922c587fb579d7776704f57",
+    "version": 6,
+    "identityHash": "904ad31049ed6954e98dbd9430cc3493",
     "entities": [
       {
         "tableName": "users",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "activities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT, `duration` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `activity_type` TEXT, `custom_type` TEXT, `duration` INTEGER, `automatically_detected` INTEGER)",
         "fields": [
           {
             "fieldPath": "localId",
@@ -89,14 +89,26 @@
             "notNull": false
           },
           {
+            "fieldPath": "activityType",
+            "columnName": "activity_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "type",
-            "columnName": "type",
+            "columnName": "custom_type",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "duration",
             "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isAutomaticallyDetected",
+            "columnName": "automatically_detected",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -266,7 +278,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '21aabcfb7922c587fb579d7776704f57')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '904ad31049ed6954e98dbd9430cc3493')"
     ]
   }
 }

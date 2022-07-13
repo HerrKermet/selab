@@ -20,8 +20,18 @@
     <color name="blueVariant">#686de0</color>
     <color name="darkBlue">#130f40</color>
     <color name="darkBlueVariant">#30336b</color>
+    <color name="grey">#70757d</color>
+    <color name="banana_yellow">#FFE135</color>
+    <color name="ocean_blue">#2d98da</color>
+    <color name="sunset_yellow">#FFC300</color>
+    <color name="sunset_orange">#FF5733</color>
+    <color name="sunset_red">#C70039</color>
+    <color name="sunset_magenta">#900C3F</color>
+    <color name="sunset_purple">#581845</color>
+    <color name="hortensia_bright">#FF66E5</color>
+    <color name="hortensia_dark">#7F33BF</color>
 
-
-
+    <attr name="colorOnSecondary" format="color"/>
+    <attr name="colorSecondary" format="color"/>
 
 </resources>

@@ -7,13 +7,19 @@ import android.content.Intent;
 
 import androidx.room.Room;
 
+import com.example.a22b11.api.FitnessApiClient;
+import com.example.a22b11.api.FitnessApiClientBuilder;
 import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.MyForegroundService;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyApplication extends Application {
 
     private static MyApplication instance;
     private AppDatabase appDatabase;
+    private FitnessApiClient fitnessApiClient;
 
     @Override
     public void onCreate() {
@@ -22,6 +28,8 @@ public class MyApplication extends Application {
         appDatabase = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name")
                 .fallbackToDestructiveMigration().build();
+
+        fitnessApiClient = FitnessApiClientBuilder.build();
 
         //TODO check implementation
         //Foreground service
@@ -50,5 +58,9 @@ public class MyApplication extends Application {
 
     public AppDatabase getAppDatabase() {
         return appDatabase;
+    }
+
+    public FitnessApiClient getFitnessApiClient() {
+        return fitnessApiClient;
     }
 }

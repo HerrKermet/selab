@@ -57,7 +57,6 @@ public class Sportactivity_Selection extends AppCompatActivity {
     public void buttonRecordActivity(View view) {
         Intent intent = new Intent(this,Sportactivity_Record.class);
 
-        //TODO change toast message to local string
         Toast toast = Toast.makeText(this, getString(R.string.please_select_activity), Toast.LENGTH_SHORT);
         if (selectedActivity == null) toast.show();
         else {
