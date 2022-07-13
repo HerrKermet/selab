@@ -31,4 +31,7 @@
     <color name="hortensia_bright">#FF66E5</color>
     <color name="hortensia_dark">#7F33BF</color>
 
+    <attr name="colorOnSecondary" format="color"/>
+    <attr name="colorSecondary" format="color"/>
+
 </resources>

@@ -28,7 +28,8 @@
             android:exported="false" />
         <activity
             android:name=".Sportactivity_Edit_Selection"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Sportactivity_Home"/>
         <activity
             android:name=".Sportactivity_Selection"
             android:exported="false"

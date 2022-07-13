@@ -286,7 +286,7 @@ public class Color_Choose_Theme extends AppCompatActivity {
 
     public boolean isUnlocked(int differentDailyQuestionnaireCount, int countToUnlock) {
         boolean is_unlocked = true;
-        //TODO IMPLEMENT
+
         if (differentDailyQuestionnaireCount < countToUnlock) is_unlocked = false;
 
         return is_unlocked;

@@ -25,11 +25,14 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
 
     List<Activity> items;
     RecyclerView recyclerView;
+    boolean showOnlyAppCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        if(getIntent().hasExtra("showOnlyAppCreated")) showOnlyAppCreated = getIntent().getBooleanExtra("showOnlyAppCreated", false);
+
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
         setContentView(R.layout.activity_sportedit_selection);
@@ -40,7 +43,9 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
         ActivityDao activityDao = db.activityDao();
-        ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getAll();
+        ListenableFuture<List<Activity>> future2;
+        if (!showOnlyAppCreated) future2 = (ListenableFuture<List<Activity>>) activityDao.getUserGeneratedActivites();
+        else future2 = (ListenableFuture<List<Activity>>) activityDao.getAppGeneratedActivities();
         Futures.addCallback(
                 future2,
                 new FutureCallback<List<Activity>>() {

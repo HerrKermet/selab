@@ -43,6 +43,15 @@
             android:backgroundTintMode="screen"
             android:foregroundTint="@color/design_default_color_primary">
 
+            <com.nex3z.notificationbadge.NotificationBadge
+                android:id="@+id/notificationBatch"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:nbBackground="@drawable/dot"
+                app:layout_constraintEnd_toEndOf="@+id/addActivity"
+                app:layout_constraintTop_toTopOf="@+id/addActivity"
+                app:nbMaxTextLength="2" />
+
             <ImageButton
                 android:id="@+id/addActivity"
                 android:layout_width="60dp"

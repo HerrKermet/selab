@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -25,6 +27,19 @@ public class Activity implements Serializable {
         this.type = type;
         this.duration = duration;
         this.activityType = activityType;
+        this.isAutomaticallyDetected = false;
+    }
+
+    @Ignore
+    public Activity(long userId, Instant start, Instant end, String type, Integer duration, ActivityType activityType, Boolean isAutomaticallyDetected) {
+        this.userId = userId;
+        this.lastModification = Instant.now();
+        this.start = start;
+        this.end = end;
+        this.type = type;
+        this.duration = duration;
+        this.activityType = activityType;
+        this.isAutomaticallyDetected = isAutomaticallyDetected;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -60,5 +75,27 @@ public class Activity implements Serializable {
     @ColumnInfo(name = "duration")
     public Integer duration;
 
+    @ColumnInfo(name = "automatically_detected")
+    public Boolean isAutomaticallyDetected;
 
 }
+/*
+// when activity threshold start
+Activity newActivity = new Activity();
+Instant start = Instant.now();
+
+//...running (not activity running) activity...
+//...
+
+
+// when activity threshold end
+
+Instant end = Instant.now();
+newActivity.start = start;
+newActivity.end = end;
+newActivity.isAutomaticallyDetected = true;
+newActivity.type = R.string.other;
+
+database.insert(newActivity);
+
+*/
