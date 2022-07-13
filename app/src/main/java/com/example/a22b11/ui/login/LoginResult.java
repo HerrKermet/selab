@@ -2,27 +2,30 @@ package com.example.a22b11.ui.login;
 
 import androidx.annotation.Nullable;
 
-import com.example.a22b11.db.User;
-
 /**
  * Authentication result : success (user details) or error message.
  */
 class LoginResult {
     @Nullable
-    private User success;
+    private Long success;  // User ID
     @Nullable
     private Integer error;
 
-    LoginResult(@Nullable Integer error) {
+    private LoginResult(@Nullable Long success, @Nullable Integer error) {
+        this.success = success;
         this.error = error;
     }
 
-    LoginResult(@Nullable User success) {
-        this.success = success;
+    static public LoginResult createSuccess(Long success) {
+        return new LoginResult(success, null);
+    }
+
+    static public LoginResult createError(Integer error) {
+        return new LoginResult(null, error);
     }
 
     @Nullable
-    User getSuccess() {
+    Long getSuccess() {
         return success;
     }
 

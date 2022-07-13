@@ -79,7 +79,7 @@ public class Mood {
 
     // Whether the mood has been modified since the last synchronization
     @ColumnInfo(name = "is_modified")
-    public Boolean isModified = true;
+    public Boolean isModified = null;
 
     @ColumnInfo(name = "last_modification")
     public Instant lastModification;

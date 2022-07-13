@@ -9,20 +9,16 @@ import java.time.Instant;
 
 @Entity(tableName = "users")
 public class User {
-    public User() {}
-
-    @Ignore
-    public User(long id, String password) {
+    public User(long id, String loginSession) {
         this.id = id;
-        this.password = password;
+        this.loginSession = loginSession;
     }
 
     @PrimaryKey
     public Long id;
 
-    public Instant creation = null;
-
-    public String password;
+    @ColumnInfo(name = "login_session")
+    public String loginSession;
 
     @ColumnInfo(name = "last_sync_sqn")
     public Long lastSyncSqn = null;

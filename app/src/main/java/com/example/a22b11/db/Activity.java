@@ -33,11 +33,11 @@ public class Activity implements Serializable {
     public Long id = null;
 
     @ColumnInfo(name = "user_id")
-    transient public Long userId = null;
+    public Long userId = null;
 
     // Whether the activity has been modified since the last synchronization
     @ColumnInfo(name = "is_modified")
-    transient public Boolean isModified = null;
+    public Boolean isModified = null;
 
     @ColumnInfo(name = "last_modification")
     public Instant lastModification;

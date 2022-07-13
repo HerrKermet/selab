@@ -29,11 +29,11 @@ public interface MoodDao {
     @Query("SELECT * FROM moods WHERE user_id = :userId AND assessment > :assessMin AND assessment < :assessMax")
     ListenableFuture<List<Mood>> getAllByUserIdAndAssessmentRange(long userId, Instant assessMin, Instant assessMax);
 
-    @Query("SELECT * FROM moods WHERE id IS NULL")
-    List<Mood> getNewSync();
+    @Query("SELECT * FROM moods WHERE user_id = :userId AND id IS NULL")
+    List<Mood> getNewByUserIdSync(long userId);
 
-    @Query("SELECT * FROM moods WHERE is_modified")
-    List<Mood> getModifiedSync();
+    @Query("SELECT * FROM moods WHERE user_id = :userId AND is_modified")
+    List<Mood> getModifiedByUserIdSync(long userId);
 
     @Update
     void updateSync(Mood mood);
@@ -42,7 +42,7 @@ public interface MoodDao {
     void updateSync(List<Mood> mood);
 
     @Query("SELECT `local_id` FROM `activities` WHERE `id` = :id")
-    long getLocalIdById(long id);
+    List<Long> getLocalIdById(long id);
 
     /**
      * Insert a new mood
@@ -60,10 +60,10 @@ public interface MoodDao {
     @Insert
     ListenableFuture<List<Long>> insertAll(Mood... moods);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insertSync(Mood mood);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insertSync(List<Mood> mood);
 
     @Delete

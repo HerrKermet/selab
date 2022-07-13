@@ -4,9 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
+
 import com.google.common.util.concurrent.ListenableFuture;
-
-
 
 import java.util.List;
 
@@ -26,4 +26,13 @@ public interface UserDao {
 
     @Delete
     ListenableFuture<Void> delete(User user);
+
+    @Query("SELECT * FROM users")
+    List<User> getAllSync();
+
+    @Update
+    void updateSync(User users);
+
+    @Update
+    void updateSync(List<User> users);
 }

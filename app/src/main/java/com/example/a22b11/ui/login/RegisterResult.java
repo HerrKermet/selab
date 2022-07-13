@@ -2,11 +2,11 @@ package com.example.a22b11.ui.login;
 
 import androidx.annotation.Nullable;
 
-import com.example.a22b11.db.User;
+import com.example.a22b11.api.RegisteredUser;
 
 public class RegisterResult {
     @Nullable
-    private User success;
+    private RegisteredUser success;
     @Nullable
     private Integer error;
 
@@ -14,12 +14,12 @@ public class RegisterResult {
         this.error = error;
     }
 
-    RegisterResult(@Nullable User success) {
+    RegisterResult(@Nullable RegisteredUser success) {
         this.success = success;
     }
 
     @Nullable
-    User getSuccess() {
+    RegisteredUser getSuccess() {
         return success;
     }
 

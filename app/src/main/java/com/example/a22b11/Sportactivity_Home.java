@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.example.a22b11.adapter.itemAdapter;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.db.User;
 import com.example.a22b11.ui.login.LoginActivity;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -30,6 +32,37 @@ public class Sportactivity_Home extends AppCompatActivity {
     List<Activity> items;
     TextView textViewRecentActivities;
 
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void getGlobalUser() {
+        final Sportactivity_Home parent = this;
+        Futures.addCallback(
+                MyApplication.getInstance().getAppDatabase().userDao().getAll(),
+                new FutureCallback<List<User>>() {
+                    @Override
+                    public void onSuccess(List<User> result) {
+                        if (result.size() > 0) {
+                            User user = result.get(0);
+                            MyApplication.getInstance().setLoggedInUser(user);
+                        }
+                        else {
+                            parent.startLoginActivity();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable t) {
+                        Log.e("Room", "Cannot get list of users: " + t.getMessage());
+                        parent.startLoginActivity();
+                    }
+                },
+                getMainExecutor()
+        );
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +71,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
 
-        if (!MyApplication.getInstance().isLoggedIn()) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            return;
-        }
+        getGlobalUser();
 
         setContentView(R.layout.activity_sporthome);
 
@@ -86,7 +114,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                         }
                     }
 
-                    public void onFailure(Throwable thrown) {
+                    public void onFailure(@NonNull Throwable thrown) {
                         Log.e("Failure to retrieve activities",thrown.getMessage());
                     }
                 },
@@ -131,7 +159,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                         }
                     }
 
-                    public void onFailure(Throwable thrown) {
+                    public void onFailure(@NonNull Throwable thrown) {
                         Log.e("Failure to retrieve activities",thrown.getMessage());
                     }
                 },

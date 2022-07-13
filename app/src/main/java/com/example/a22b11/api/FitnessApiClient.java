@@ -9,19 +9,22 @@ import com.example.a22b11.db.User;
 
 public interface FitnessApiClient {
     @POST("register.php")
-    Call<User> register();
+    Call<RegisteredUser> register();
 
     @GET("account_info.php")
     Call<User> accountInfo();
 
+    /**
+     * @param loginCredentials - user id and password
+     * @return session
+     */
     @Headers("Content-Type: application/json")
-    @POST("login.php")
-    Call<Void> login(@Body User user);
+    Call<Session> login(@Body LoginCredentials loginCredentials);
 
     @POST("logout.php")
-    Call<Void> logout();
+    Call<Void> logout(@Body Session session);
 
     @Headers("Content-Type: application/json")
     @POST("sync.php")
-    Call<SyncObject> synchronize(@Body SyncObject syncObject);
+    Call<SyncObjectResponse> synchronize(@Body SyncObject syncObject);
 }

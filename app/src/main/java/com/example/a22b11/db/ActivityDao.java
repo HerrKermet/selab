@@ -25,11 +25,11 @@ public interface ActivityDao {
     @Query("SELECT * FROM activities")
     List<Activity> getAllSync();
 
-    @Query("SELECT * FROM activities WHERE id IS NULL")
-    List<Activity> getNewSync();
+    @Query("SELECT * FROM activities WHERE user_id = :userId AND id IS NULL")
+    List<Activity> getNewByUserIdSync(long userId);
 
-    @Query("SELECT * FROM activities WHERE is_modified")
-    List<Activity> getModifiedSync();
+    @Query("SELECT * FROM activities WHERE user_id = :userId AND is_modified")
+    List<Activity> getModifiedByUserIdSync(long userId);
 
     @Update
     void updateSync(Activity activity);
@@ -38,7 +38,7 @@ public interface ActivityDao {
     void updateSync(List<Activity> activity);
 
     @Query("SELECT `local_id` FROM `activities` WHERE `id` = :id")
-    long getLocalIdById(long id);
+    List<Long> getLocalIdById(long id);
 
     /**
      * Insert a new activity
@@ -56,10 +56,10 @@ public interface ActivityDao {
     @Insert
     ListenableFuture<List<Long>> insertAll(Activity... activities);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insertSync(Activity mood);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insertSync(List<Activity> mood);
 
     @Delete

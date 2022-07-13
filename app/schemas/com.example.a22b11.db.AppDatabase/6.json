@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "52fe8b7392611ba594b8c8d405d7d470",
+    "identityHash": "c696aa912e6cf59520d5bd91c9c40c53",
     "entities": [
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `creation` INTEGER, `password` TEXT, `last_sync_sqn` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `login_session` TEXT, `last_sync_sqn` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,14 +15,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "creation",
-            "columnName": "creation",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "password",
-            "columnName": "password",
+            "fieldPath": "loginSession",
+            "columnName": "login_session",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -266,7 +260,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52fe8b7392611ba594b8c8d405d7d470')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c696aa912e6cf59520d5bd91c9c40c53')"
     ]
   }
 }
