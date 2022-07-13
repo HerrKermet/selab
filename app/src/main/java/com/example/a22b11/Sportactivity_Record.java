@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,9 +27,11 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.time.Instant;
+import java.util.List;
 
 public class Sportactivity_Record extends AppCompatActivity {
 
@@ -39,11 +43,12 @@ public class Sportactivity_Record extends AppCompatActivity {
     Button button, finishButton;
     private long pauseOffset;
     int buttonState = 0;  // initial state  0 = ready to start / 1 = ready to stop / 2 = stopped ready to resume or finish
-    TextView textView, tv_location, tv_labelLocation;
+    TextView textView, tv_location, tv_labelLocation, tv_address;
     //location management
     FusedLocationProviderClient fusedLocationProviderClient;        //Google Api for Location Services
     LocationRequest locationRequest; //config file for FusedLocationProvideClient settings (settings in onCreate)
     private boolean gpsOn = true; //if false, towers+wifi is used
+
 
 
     long startedAt;
@@ -72,8 +77,11 @@ public class Sportactivity_Record extends AppCompatActivity {
         tv_labelLocation = findViewById(R.id.tv_labellocation);
         tv_location.setVisibility(View.GONE);
         tv_labelLocation.setVisibility(View.GONE);
+        tv_address = findViewById(R.id.tv_address);
         //location management
         locationRequest = new LocationRequest();
+
+
 
 
         //TODO finish all the state saves
@@ -130,6 +138,7 @@ public class Sportactivity_Record extends AppCompatActivity {
                 break;
         }
     }
+
 
 
     public void toggleButton(View view)
@@ -240,7 +249,12 @@ public class Sportactivity_Record extends AppCompatActivity {
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
-                    updateUIlocation(location);
+                    if(location != null){
+                        updateUIlocation(location);
+                    }
+                    else {
+                        Toast.makeText(Sportactivity_Record.this, "No Location", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         } else {
@@ -255,6 +269,18 @@ public class Sportactivity_Record extends AppCompatActivity {
         tv_location.setVisibility(View.VISIBLE);
         tv_labelLocation.setVisibility(View.VISIBLE);
         tv_location.setText("Longitude: "+ location.getLongitude() + "\n"+"Latitude: " + location.getLatitude());
+
+        Geocoder geocoder = new Geocoder(this);
+
+        try{
+            List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            tv_address.setVisibility(View.VISIBLE);
+            tv_address.setText(addressList.get(0).getAddressLine(0));
+
+        }
+        catch(Exception e){
+            tv_address.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -275,7 +301,6 @@ public class Sportactivity_Record extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
-
 
 
 }
