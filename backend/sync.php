@@ -304,7 +304,7 @@ try {
 
     $dbh = require 'connect.php';
     $dbh->beginTransaction();
-    $dbh->exec('set time_zone = "+00:00";');
+    $dbh->exec('set time_zone = "+00:00"; SET SESSION sql_mode="ALLOW_INVALID_DATES";');
 
     $sess = Session::fromString($sess_str);
 
