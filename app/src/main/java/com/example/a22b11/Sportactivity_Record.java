@@ -26,9 +26,12 @@ import android.widget.Toast;
 
 import com.example.a22b11.db.Activity;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.time.Instant;
@@ -48,6 +51,7 @@ public class Sportactivity_Record extends AppCompatActivity {
     //location management
     FusedLocationProviderClient fusedLocationProviderClient;        //Google Api for Location Services
     LocationRequest locationRequest; //config file for FusedLocationProvideClient settings (settings in onCreate)
+    LocationCallback locationCallback;
     private boolean gpsOn = true; //if false, towers+wifi is used
 
 
@@ -81,7 +85,7 @@ public class Sportactivity_Record extends AppCompatActivity {
         tv_address = findViewById(R.id.tv_address);
         //location management
         locationRequest = new LocationRequest();
-
+        locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
 
 
 
@@ -120,6 +124,19 @@ public class Sportactivity_Record extends AppCompatActivity {
             finishButton.setVisibility(View.GONE);
         }
         else finishButton.setVisibility(View.VISIBLE);
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                if(locationResult == null) {
+                    return;
+                }
+
+                super.onLocationResult(locationResult);
+                Location location = locationResult.getLastLocation();
+                updateUIlocation(location);
+                //save location
+            }
+        };
 
         updateGPS();
     }
@@ -249,6 +266,7 @@ public class Sportactivity_Record extends AppCompatActivity {
         //check permission on GPS
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //user provided permission
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
