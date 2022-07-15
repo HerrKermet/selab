@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.widget.TextView;
 
 import com.example.a22b11.db.Activity;
 import com.github.mikephil.charting.charts.BarChart;
@@ -34,8 +33,8 @@ public class StatisticalRepresentation extends AppCompatActivity {
     List<Activity> appGeneratedActivities;
     List<Activity> activitiesBetween;
 
-    BarChart barChart1;
-    BarChart barChart2;
+    BarChart barChartactivities;
+    BarChart barChartMood;
     BarData barData;
     BarDataSet barDataSet;
     List<BarEntry> entries;
@@ -48,15 +47,16 @@ public class StatisticalRepresentation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Setting the theme to this activity
+
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
 
         setContentView(R.layout.activity_statistical_representation);
 
-        barChart1 = findViewById(R.id.ActivitiesBarChart);
-        barChart2 = findViewById(R.id.MoodBarChart);
+        //SO FAR IT IS NOT PLOTTING FOR ME, aaaaaahhhhhh
+        barChartactivities = findViewById(R.id.ActivitiesBarChart);
+        barChartMood = findViewById(R.id.MoodBarChart);
 
     }
 
@@ -79,11 +79,11 @@ public class StatisticalRepresentation extends AppCompatActivity {
 
         barData = new BarData(barDataSet);
 
-        barChart1.setFitBars(true);
-        barChart1.setData(barData); //If no data is available a message is on the screen: "No chart data available"
+        barChartactivities.setFitBars(true);
+        barChartactivities.setData(barData); //If no data is available a message is on the screen: "No chart data available"
         //barChart.getDescription().setText(getString(R.string.barChartActivities));
-        barChart1.getDescription().setEnabled(false);
-        barChart1.animateY(2000);
+        barChartactivities.getDescription().setEnabled(false);
+        barChartactivities.animateY(2000);
     }
 
     private void fillXValues(BarChart chart, LocalDate startDate, int length){
