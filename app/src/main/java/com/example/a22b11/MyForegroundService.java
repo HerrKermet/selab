@@ -33,9 +33,9 @@ import java.util.TimerTask;
 
 public class MyForegroundService extends Service  {
 
-    int stepThreshholdToTriggerActivity = 50; //TODO adjust value
+    int stepThreshholdToTriggerActivity = 930; //TODO adjust value
     int maxPauseDurationSeconds = 300;  //TODO adjust value
-    int arraySize = 300;                  //TODO adjust value
+    int arraySize = 30;                  //TODO adjust value
 
     AppDatabase db;
 
