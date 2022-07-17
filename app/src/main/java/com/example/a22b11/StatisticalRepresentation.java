@@ -62,6 +62,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
             endDate = (Instant) getIntent().getSerializableExtra("endInstant");
 
         }
+
         else{
             endDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS);                                                // instant at start time
             startDate =  endDate.minus(8, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS);      // instant 7 days before start time

@@ -8,8 +8,10 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/ActivitiesBarChart"
-        android:layout_width="400dp"
-        android:layout_height="360dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toTopOf="@+id/MoodBarChart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
@@ -18,8 +20,10 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/MoodBarChart"
-        android:layout_width="400dp"
-        android:layout_height="365dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
