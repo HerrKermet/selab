@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 
 import com.example.a22b11.db.Activity;
+import com.example.a22b11.db.ActivityDao;
+import com.example.a22b11.db.AppDatabase;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -16,6 +19,9 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -47,16 +53,60 @@ public class StatisticalRepresentation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
+
+        if(getIntent().hasExtra("startInstant") && getIntent().hasExtra("endInstant")){
+            startDate = (Instant) getIntent().getSerializableExtra("startInstant");
+            endDate = (Instant) getIntent().getSerializableExtra("endInstant");
+
+        }
+        else{
+            endDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS);                                                // instant at start time
+            startDate =  endDate.minus(8, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS);      // instant 7 days before start time
+        }
+        Log.d("currentInstant", startDate + "   " + endDate);
+
+        entries = new ArrayList<>();
 
         setContentView(R.layout.activity_statistical_representation);
 
         //SO FAR IT IS NOT PLOTTING FOR ME, aaaaaahhhhhh
         barChartactivities = findViewById(R.id.ActivitiesBarChart);
         barChartMood = findViewById(R.id.MoodBarChart);
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // get objects from Database
+        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+
+        ActivityDao activityDao = db.activityDao();
+
+        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);
+        Futures.addCallback(
+                future3,
+                new FutureCallback<List<Activity>>() {
+
+
+                    @Override
+                    public void onSuccess(List<Activity> result) {
+                        activitiesBetween = result;
+                        plotActivities(true, barChartactivities);
+                    }
+
+                    public void onFailure(Throwable thrown) {
+                        Log.e("Failure to retrieve activities",thrown.getMessage());
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
 
     }
 
