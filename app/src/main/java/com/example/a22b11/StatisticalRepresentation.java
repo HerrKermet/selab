@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 
+import com.example.a22b11.adapter.itemAdapter;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.db.Mood;
+import com.example.a22b11.db.MoodDao;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -38,6 +41,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
     List<Activity> items;
     List<Activity> appGeneratedActivities;
     List<Activity> activitiesBetween;
+    List<Mood> moodBetween;
 
     BarChart barChartactivities;
     BarChart barChartMood;
@@ -76,6 +80,35 @@ public class StatisticalRepresentation extends AppCompatActivity {
         //SO FAR IT IS NOT PLOTTING FOR ME, aaaaaahhhhhh
         barChartactivities = findViewById(R.id.ActivitiesBarChart);
         barChartMood = findViewById(R.id.MoodBarChart);
+
+
+        // retrieve mood objects from database
+        // get objects from Database
+        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+
+        MoodDao moodDao = db.moodDao();
+        ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getMoodBetween(startDate, endDate);
+        final StatisticalRepresentation mythis = this;
+        Futures.addCallback(
+                future2,
+                new FutureCallback<List<Mood>>() {
+
+
+                    @Override
+                    public void onSuccess(List<Mood> result) {
+                        moodBetween = result;
+                        Log.d("Mood from Database", String.valueOf(moodBetween));
+
+
+                    }
+
+                    public void onFailure(Throwable thrown) {
+                        Log.e("Failure to retrieve Mood",thrown.getMessage());
+                    }
+                },
+                // causes the callbacks to be executed on the main (UI) thread
+                this.getMainExecutor()
+        );
 
     }
 
