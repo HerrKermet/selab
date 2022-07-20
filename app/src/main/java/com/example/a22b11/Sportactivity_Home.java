@@ -261,7 +261,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<Activity> result) {
                         activitiesBetween = result;
-                        plotActivities(true, barChart);
+                        plotActivities(barChart);
                     }
 
                     public void onFailure(Throwable thrown) {
@@ -414,15 +414,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         xAxis.setValueFormatter(formatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
     }
-    public static List<LocalDate> dateList(LocalDate startDate, LocalDate endDate) {
 
-        List<LocalDate> days = new ArrayList<>(25);
-        while (startDate.isBefore(endDate) || startDate.equals(endDate)) {
-            days.add(startDate);
-            startDate = startDate.plusDays(1);
-        }
-        return days;
-    }
     /*
     mergeActivities below sums up the duration of activities
     that happened on the same day.
@@ -446,21 +438,15 @@ public class Sportactivity_Home extends AppCompatActivity {
     }
 
     //Implementation
-    private void plotActivities (boolean checkOpenPage, BarChart bChart){
+    private void plotActivities (BarChart bChart){
         List<Activity> activities;
         LocalDate lo_startDate;
         LocalDate lo_endDate;
 
-        if(checkOpenPage) {
-            activities = activitiesBetween;
-            lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
-            lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
-        }
-        else {
-            activities = activitiesBetween; //ToDo: Use Activity-List with different time-range (user values of start and end)
-            lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
-            lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
-        }
+        activities = activitiesBetween;
+        lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
+        lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
+
 
         fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
         fillXValues(bChart, lo_startDate, entries.size());
