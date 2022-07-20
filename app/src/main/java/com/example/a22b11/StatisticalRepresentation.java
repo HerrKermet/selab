@@ -9,15 +9,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 
-import com.example.a22b11.adapter.itemAdapter;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.db.Mood;
 import com.example.a22b11.db.MoodDao;
+import com.example.a22b11.moodscore.MoodScore;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -37,19 +38,22 @@ import java.util.List;
 
 public class StatisticalRepresentation extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    List<Activity> items;
-    List<Activity> appGeneratedActivities;
+
     List<Activity> activitiesBetween;
     List<Mood> moodBetween;
 
-    BarChart barChartactivities;
+    BarChart barChartActivities;
     BarChart barChartMood;
-    BarData barData;
-    BarDataSet barDataSet;
-    List<BarEntry> entries;
+    BarData barDataMood;
+    BarData barDataActivities;
+    BarDataSet barDataSetMood;
+    BarDataSet barDataSetActivities;
+    List<BarEntry> entriesMood;
+    List<BarEntry> entriesActivities;
+
 
     Instant startDate, endDate;
+    int color;
 
 
 
@@ -60,6 +64,11 @@ public class StatisticalRepresentation extends AppCompatActivity {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
+        TypedValue typedValue = new TypedValue();
+        //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
+        getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
+        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
+        color = typedValue.data;
 
         if(getIntent().hasExtra("startInstant") && getIntent().hasExtra("endInstant")){
             startDate = (Instant) getIntent().getSerializableExtra("startInstant");
@@ -73,20 +82,33 @@ public class StatisticalRepresentation extends AppCompatActivity {
         }
         Log.d("currentInstant", startDate + "   " + endDate);
 
-        entries = new ArrayList<>();
+        entriesMood = new ArrayList<>();
+        entriesActivities = new ArrayList<>();
+
 
         setContentView(R.layout.activity_statistical_representation);
 
         //SO FAR IT IS NOT PLOTTING FOR ME, aaaaaahhhhhh
-        barChartactivities = findViewById(R.id.ActivitiesBarChart);
+        barChartActivities = findViewById(R.id.ActivitiesBarChart);
         barChartMood = findViewById(R.id.MoodBarChart);
+        barChartActivities.setNoDataText(getString(R.string.NoBarData));
+        barChartActivities.setNoDataTextColor(color);
+
+        barChartMood.setNoDataText(getString(R.string.NoBarData));
+        barChartMood.setNoDataTextColor(color);
 
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         // retrieve mood objects from database
         // get objects from Database
-        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+        AppDatabase dbMood = ((MyApplication)getApplication()).getAppDatabase();
 
-        MoodDao moodDao = db.moodDao();
+        MoodDao moodDao = dbMood.moodDao();
         ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getMoodBetween(startDate, endDate);
         final StatisticalRepresentation mythis = this;
         Futures.addCallback(
@@ -98,7 +120,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
                     public void onSuccess(List<Mood> result) {
                         moodBetween = result;
                         Log.d("Mood from Database", String.valueOf(moodBetween));
-
+                        plotMoods(barChartMood);
 
                     }
 
@@ -110,17 +132,10 @@ public class StatisticalRepresentation extends AppCompatActivity {
                 this.getMainExecutor()
         );
 
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
         // get objects from Database
-        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+        AppDatabase dbAct = ((MyApplication)getApplication()).getAppDatabase();
 
-        ActivityDao activityDao = db.activityDao();
+        ActivityDao activityDao = dbAct.activityDao();
 
         ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);
         Futures.addCallback(
@@ -131,7 +146,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<Activity> result) {
                         activitiesBetween = result;
-                        plotActivities(true, barChartactivities);
+                        plotActivities(barChartActivities);
                     }
 
                     public void onFailure(Throwable thrown) {
@@ -144,30 +159,45 @@ public class StatisticalRepresentation extends AppCompatActivity {
 
     }
 
-    private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
+    private void fillActivityYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
         int [] mergedResults = mergeActivities(activitiesList, durations, startDate, endDate);
+        int highest = 0;
 
-        for(int i=0; i<mergedResults.length; i++){
-            entryList.add(new BarEntry((float) i,mergedResults[i]));
+        if(mergedResults!=null) {
+            for (int i = 0; i < mergedResults.length; i++) {
+                entryList.add(new BarEntry((float) i, mergedResults[i] / 60));
+                if (highest < mergedResults[i]) {
+                    highest = mergedResults[i];
+                }
+            }
+
+            barDataSetActivities = new BarDataSet(entriesActivities, getString(R.string.barChartActivities));
+
+            barDataSetActivities.setColors(color);
+
+            barDataSetActivities.setValueTextColor(android.R.color.black);
+            //set.setValueTextSize(16f);
+
+            barDataActivities = new BarData(barDataSetActivities);
+
+            barChartActivities.setFitBars(true);
+            barChartActivities.setData(barDataActivities); //If no data is available a message is on the screen: "No chart data available"
+            //barChart.getDescription().setText(getString(R.string.barChartActivities));
+            barChartActivities.getDescription().setEnabled(false);
+            barChartActivities.animateY(2000);
+            YAxis yAxisLeft = barChartActivities.getAxisLeft();
+            YAxis yAxisRight = barChartActivities.getAxisRight();
+            yAxisLeft.setDrawZeroLine(true);
+            yAxisRight.setEnabled(false);
+            yAxisLeft.setAxisMinimum(0f); // start at zero
+
+            highest = highest / 60;
+            if (highest < 100) {
+                yAxisLeft.setAxisMaximum(100f); // the axis maximum is 100
+            } else {
+                yAxisLeft.setAxisMaximum(highest + 10);
+            }
         }
-        barDataSet = new BarDataSet(entries, getString(R.string.barChartActivities));
-        TypedValue typedValue = new TypedValue();
-        //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
-        getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
-        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
-        int color = typedValue.data;
-        barDataSet.setColors(color);
-
-        barDataSet.setValueTextColor(android.R.color.black);
-        //set.setValueTextSize(16f);
-
-        barData = new BarData(barDataSet);
-
-        barChartactivities.setFitBars(true);
-        barChartactivities.setData(barData); //If no data is available a message is on the screen: "No chart data available"
-        //barChart.getDescription().setText(getString(R.string.barChartActivities));
-        barChartactivities.getDescription().setEnabled(false);
-        barChartactivities.animateY(2000);
     }
 
     private void fillXValues(BarChart chart, LocalDate startDate, int length){
@@ -186,55 +216,121 @@ public class StatisticalRepresentation extends AppCompatActivity {
         XAxis xAxis = chart.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
     }
-    public static List<LocalDate> dateList(LocalDate startDate, LocalDate endDate) {
 
-        List<LocalDate> days = new ArrayList<>(25);
-        while (startDate.isBefore(endDate) || startDate.equals(endDate)) {
-            days.add(startDate);
-            startDate = startDate.plusDays(1);
-        }
-        return days;
-    }
     /*
     mergeActivities below sums up the duration of activities
     that happened on the same day.
     returns long-Array with durations only
      */
     public static int[] mergeActivities(List<Activity> activitiesList, int[] duration, LocalDate startDate, LocalDate endDate){
-
+        boolean noResults = true;
         int daysBetween = (int) ChronoUnit.DAYS.between(startDate, endDate);
         int result [] = new int[daysBetween+1];
         LocalDate temp;
 
         for(int i = 0; i < result.length; i++){
             for(int m = 0; m < activitiesList.size(); m++){
-                temp = LocalDate.from(LocalDateTime.ofInstant(activitiesList.get(m).start, ZoneId.systemDefault()));
-                if(startDate.plusDays(i).isEqual(temp)) result[i]+=duration[m]/60;
+                temp = LocalDate.from(LocalDateTime.ofInstant(activitiesList.get(m).start,ZoneId.systemDefault()));
+                if(startDate.plusDays(i).isEqual(temp)) result[i]+=duration[m];
             }
+            if(result[i] != 0) noResults = false;
         }
+        if(noResults) return null;
         return result;
     }
 
+    public static int[] mergeMoods(List<Mood> moodList, int [] moodScore, LocalDate startDate, LocalDate endDate){
+        boolean noResults = true;
+        int daysBetween = (int) ChronoUnit.DAYS.between(startDate, endDate);
+        int result [] = new int[daysBetween+1];
+        LocalDate temp;
+
+        for(int i = 0; i < result.length; i++){
+            int count = 0;
+            for(int m = 0; m < moodList.size(); m++){
+                temp = LocalDate.from(LocalDateTime.ofInstant(moodList.get(m).assessment, ZoneId.systemDefault()));
+                if(startDate.plusDays(i).isEqual(temp)) {
+                    result[i]+=moodScore[m];
+                    count++;
+                }
+            }
+            if(count!=0) result[i] = result[i]/count;
+            if(result[i] != 0) noResults = false;
+
+        }
+        if(noResults) return null;
+        return result;
+    }
+    private void fillMoodYValues(List<BarEntry> entryList, List<Mood> moodList, int [] moodScore, LocalDate startDate, LocalDate endDate) {
+        int [] mergedResults = mergeMoods(moodList, moodScore, startDate, endDate);
+
+
+        if(mergedResults!=null) {
+            for (int i = 0; i < mergedResults.length; i++) {
+                entryList.add(new BarEntry((float) i, mergedResults[i]));
+            }
+            barDataSetMood = new BarDataSet(entriesMood, getString(R.string.barChartMood));
+
+            barDataSetMood.setColors(color);
+
+            barDataSetMood.setValueTextColor(android.R.color.black);
+            //set.setValueTextSize(16f);
+
+            barDataMood = new BarData(barDataSetMood);
+
+            barChartMood.setFitBars(true);
+            barChartMood.setData(barDataMood); //If no data is available a message is on the screen: "No chart data available"
+            //barChart.getDescription().setText(getString(R.string.barChartActivities));
+            barChartMood.getDescription().setEnabled(false);
+            barChartMood.animateY(2000);
+            YAxis yAxisLeft = barChartMood.getAxisLeft();
+            YAxis yAxisRight = barChartMood.getAxisRight();
+            yAxisLeft.setDrawZeroLine(true);
+            yAxisRight.setEnabled(false);
+            yAxisLeft.setAxisMinimum(0f); // start at zero
+            yAxisLeft.setAxisMaximum(100f); // the axis maximum is 100
+        }
+    }
+
+
     //Implementation
-    private void plotActivities (boolean checkOpenPage, BarChart bChart){
+    private void plotActivities (BarChart bChart){
         List<Activity> activities;
         LocalDate lo_startDate;
         LocalDate lo_endDate;
 
-        if(checkOpenPage) {
-            activities = activitiesBetween;
-            lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
-            lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
-        }
-        else {
-            activities = activitiesBetween; //ToDo: Use Activity-List with different time-range (user values of start and end)
-            lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
-            lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
-        }
+        activities = activitiesBetween;
+        lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
+        lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
 
-        fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
-        fillXValues(bChart, lo_startDate, entries.size());
+
+        fillActivityYValues(entriesActivities, activities, getDurations(activities), lo_startDate, lo_endDate);
+        fillXValues(bChart, lo_startDate, entriesActivities.size());
+    }
+    private void plotMoods (BarChart bChart){
+        List<Mood> moods;
+        LocalDate lo_startDate;
+        LocalDate lo_endDate;
+
+        moods = moodBetween;
+        lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
+        lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
+
+
+        fillMoodYValues(entriesMood, moods, getMoodScore(moods), lo_startDate, lo_endDate);
+        fillXValues(bChart, lo_startDate, entriesMood.size());
+    }
+
+    private int [] getMoodScore(List<Mood> moods) {
+        int[] moodScore = new int[moods.size()];
+        int count = 0;
+        for(Mood mood : moods){
+            moodScore[count] = MoodScore.calculate(mood);
+            count++;
+        }
+        return moodScore;
     }
 
     private int[] getDurations(List<Activity> activitiesList) {

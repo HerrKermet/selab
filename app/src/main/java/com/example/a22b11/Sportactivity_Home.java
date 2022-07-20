@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -21,6 +22,7 @@ import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -59,6 +61,8 @@ public class Sportactivity_Home extends AppCompatActivity {
     List<BarEntry> entries;
 
     Instant startDate, endDate;
+    int textColor;
+
 
 
     @Override
@@ -68,10 +72,17 @@ public class Sportactivity_Home extends AppCompatActivity {
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
 
+        TypedValue typedValue = new TypedValue();
+
+        getTheme().resolveAttribute(com.google.android.material.R.attr.color, typedValue, true);
+        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
+        textColor = typedValue.data;
         setContentView(R.layout.activity_sporthome);
 
         //BarChart
         barChart = findViewById(R.id.barChart3);
+        barChart.setNoDataText(getString(R.string.NoBarDataLastDays));
+        barChart.setNoDataTextColor(textColor);
 
         //Attaching an onclick listener on the Graph so it is clickable
         barChart.setOnClickListener(new View.OnClickListener() {
@@ -340,28 +351,49 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
         int [] mergedResults = mergeActivities(activitiesList, durations, startDate, endDate);
+        int highest = 0;
 
-        for(int i=0; i<mergedResults.length; i++){
-            entryList.add(new BarEntry((float) i,mergedResults[i]));
+
+        if(mergedResults!=null) {
+            for (int i = 0; i < mergedResults.length; i++) {
+                entryList.add(new BarEntry((float) i, mergedResults[i] / 60));
+                if (highest < mergedResults[i]) {
+                    highest = mergedResults[i];
+                }
+            }
+
+
+            barDataSet = new BarDataSet(entries, getString(R.string.barChartActivities));
+            TypedValue typedValue = new TypedValue();
+            //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
+            getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
+            //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
+            int color = typedValue.data;
+            barDataSet.setColors(color);
+
+            barDataSet.setValueTextColor(android.R.color.black);
+            //set.setValueTextSize(16f);
+
+            barData = new BarData(barDataSet);
+
+            barChart.setFitBars(true);
+            barChart.setData(barData); //If no data is available a message is on the screen: "No chart data available"
+            //barChart.getDescription().setText(getString(R.string.barChartActivities));
+            barChart.getDescription().setEnabled(false);
+            barChart.animateY(2000);
+            YAxis yAxisLeft = barChart.getAxisLeft();
+            YAxis yAxisRight = barChart.getAxisRight();
+            yAxisLeft.setDrawZeroLine(true);
+            yAxisRight.setEnabled(false);
+            yAxisLeft.setAxisMinimum(0f); // start at zero
+
+            highest = highest / 60;
+            if (highest < 100) {
+                yAxisLeft.setAxisMaximum(100f); // the axis maximum is 100
+            } else {
+                yAxisLeft.setAxisMaximum(highest + 10);
+            }
         }
-        barDataSet = new BarDataSet(entries, getString(R.string.barChartActivities));
-        TypedValue typedValue = new TypedValue();
-        //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
-        getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
-        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
-        int color = typedValue.data;
-        barDataSet.setColors(color);
-
-        barDataSet.setValueTextColor(android.R.color.black);
-        //set.setValueTextSize(16f);
-
-        barData = new BarData(barDataSet);
-
-        barChart.setFitBars(true);
-        barChart.setData(barData); //If no data is available a message is on the screen: "No chart data available"
-        //barChart.getDescription().setText(getString(R.string.barChartActivities));
-        barChart.getDescription().setEnabled(false);
-        barChart.animateY(2000);
     }
 
     private void fillXValues(BarChart chart, LocalDate startDate, int length){
@@ -380,6 +412,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         XAxis xAxis = chart.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
     }
     public static List<LocalDate> dateList(LocalDate startDate, LocalDate endDate) {
 
@@ -396,7 +429,7 @@ public class Sportactivity_Home extends AppCompatActivity {
     returns long-Array with durations only
      */
     public static int[] mergeActivities(List<Activity> activitiesList, int[] duration, LocalDate startDate, LocalDate endDate){
-
+        boolean noResults = true;
         int daysBetween = (int) ChronoUnit.DAYS.between(startDate, endDate);
         int result [] = new int[daysBetween+1];
         LocalDate temp;
@@ -404,9 +437,11 @@ public class Sportactivity_Home extends AppCompatActivity {
         for(int i = 0; i < result.length; i++){
             for(int m = 0; m < activitiesList.size(); m++){
                 temp = LocalDate.from(LocalDateTime.ofInstant(activitiesList.get(m).start,ZoneId.systemDefault()));
-                if(startDate.plusDays(i).isEqual(temp)) result[i]+=duration[m]/60;
+                if(startDate.plusDays(i).isEqual(temp)) result[i]+=duration[m];
             }
+            if(result[i] != 0) noResults = false;
         }
+        if(noResults) return null;
         return result;
     }
 
