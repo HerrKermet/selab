@@ -165,6 +165,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
 
         if(mergedResults!=null) {
             for (int i = 0; i < mergedResults.length; i++) {
+                if(mergedResults[i] <= 60 && mergedResults[i]!=0) mergedResults[i] = 60;       //Duration shorter than one minute is always displayed as one minute
                 entryList.add(new BarEntry((float) i, mergedResults[i] / 60));
                 if (highest < mergedResults[i]) {
                     highest = mergedResults[i];
