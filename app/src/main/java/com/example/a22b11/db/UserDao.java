@@ -3,6 +3,7 @@ package com.example.a22b11.db;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -21,10 +22,22 @@ public interface UserDao {
     @Query("DELETE FROM users")
     void deleteAllSync();
 
-    @Insert
+    @Query("UPDATE users SET login_session = NULL")
+    void clearAllSessionsSync();
+
+    @Query("UPDATE users SET login_session = NULL")
+    ListenableFuture<Void> clearAllSessions();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSync(User user);
 
-    @Insert
+    @Query("SELECT * FROM users WHERE login_session IS NOT NULL")
+    List<User> getLoggedInSync();
+
+    @Query("SELECT * FROM users WHERE login_session IS NOT NULL")
+    ListenableFuture<List<User>> getLoggedIn();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     ListenableFuture<Void> insert(User user);
 
     @Insert
