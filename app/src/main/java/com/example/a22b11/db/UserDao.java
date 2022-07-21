@@ -18,6 +18,12 @@ public interface UserDao {
     @Query("DELETE FROM users")
     ListenableFuture<Void> deleteAll();
 
+    @Query("DELETE FROM users")
+    void deleteAllSync();
+
+    @Insert
+    void insertSync(User user);
+
     @Insert
     ListenableFuture<Void> insert(User user);
 
