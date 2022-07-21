@@ -41,6 +41,8 @@
         <entry key="app/src/main/res/layout/activity_sporthome.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/layout/activity_sportrecord.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_sportselection.xml" value="0.12335359675785208" />
+        <entry key="app/src/main/res/layout/activity_statistical_representation.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_questionnaire__finished_fragment.xml" value="0.19479166666666667" />
       </map>
     </option>
   </component>
