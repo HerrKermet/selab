@@ -2,6 +2,7 @@ package com.example.a22b11.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
@@ -10,7 +11,12 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.io.Serializable;
 import java.time.Instant;
 
-@Entity(tableName = "activities")
+@Entity(tableName = "activities", foreignKeys = {@ForeignKey(
+        entity = User.class,
+        parentColumns = "id",
+        childColumns = "user_id",
+        onDelete = ForeignKey.CASCADE)
+})
 public class Activity implements Serializable {
     public Activity() {}
 

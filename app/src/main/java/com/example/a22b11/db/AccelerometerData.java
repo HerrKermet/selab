@@ -2,11 +2,17 @@ package com.example.a22b11.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.time.Instant;
 
-@Entity(tableName = "accelerometer_data")
+@Entity(tableName = "accelerometer_data", foreignKeys = {@ForeignKey(
+        entity = User.class,
+        parentColumns = "id",
+        childColumns = "user_id",
+        onDelete = ForeignKey.CASCADE)
+})
 public class AccelerometerData {
 
     @PrimaryKey
