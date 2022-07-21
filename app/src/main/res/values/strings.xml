@@ -97,7 +97,7 @@ which I felt sorry for afterwards</string>
     <string name="selectAnActivity">Please select an activity</string>
     <string name="barChartActivities">Activities in min</string>
     <string name="NoBarData">No data could be found for this interval!</string>
-    <string name="NoBarDataLastDays">No activities have been recorded in the last 7 days. As soon as activities have been created, a graph is shown here</string>
+    <string name="NoBarDataLastDays">No activities have been recorded in the last 7 days!</string>
 
     <string-array name="activity_list">
         <item>@string/please_select_activity</item>

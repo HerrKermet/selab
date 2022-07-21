@@ -61,7 +61,8 @@ public class Sportactivity_Home extends AppCompatActivity {
     List<BarEntry> entries;
 
     Instant startDate, endDate;
-    int textColor;
+    int textColor, color;
+    boolean empty = true;
 
 
 
@@ -73,16 +74,19 @@ public class Sportactivity_Home extends AppCompatActivity {
         setTheme(theme);
 
         TypedValue typedValue = new TypedValue();
-
-        getTheme().resolveAttribute(com.google.android.material.R.attr.color, typedValue, true);
-        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
+        getTheme().resolveAttribute(com.google.android.material.R.attr.colorOnBackground, typedValue, true);
         textColor = typedValue.data;
+        getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
+        color = typedValue.data;
+
+
         setContentView(R.layout.activity_sporthome);
 
         //BarChart
         barChart = findViewById(R.id.barChart3);
         barChart.setNoDataText(getString(R.string.NoBarDataLastDays));
         barChart.setNoDataTextColor(textColor);
+
 
         //Attaching an onclick listener on the Graph so it is clickable
         barChart.setOnClickListener(new View.OnClickListener() {
@@ -167,6 +171,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                             Log.d("activities retrieved between", activity.type + "  " + activity.duration + "  " + activity.start.toString());
 
                         }
+
                         //TODO check if this can be removed    plotActivities(true, barChart);
                     }
 
@@ -261,6 +266,8 @@ public class Sportactivity_Home extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<Activity> result) {
                         activitiesBetween = result;
+                        if(activitiesBetween.size() == 0) empty = true;
+                        else empty = false;
                         plotActivities(barChart);
                     }
 
@@ -365,28 +372,26 @@ public class Sportactivity_Home extends AppCompatActivity {
 
 
             barDataSet = new BarDataSet(entries, getString(R.string.barChartActivities));
-            TypedValue typedValue = new TypedValue();
-            //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
-            getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
-            //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
-            int color = typedValue.data;
             barDataSet.setColors(color);
+            barDataSet.setValueTextColor(textColor);
+            barChart.getLegend().setTextColor(textColor);
 
-            barDataSet.setValueTextColor(android.R.color.black);
-            //set.setValueTextSize(16f);
 
             barData = new BarData(barDataSet);
 
             barChart.setFitBars(true);
-            barChart.setData(barData); //If no data is available a message is on the screen: "No chart data available"
-            //barChart.getDescription().setText(getString(R.string.barChartActivities));
+            barChart.setData(barData);
+            barChart.invalidate();
             barChart.getDescription().setEnabled(false);
             barChart.animateY(2000);
+            //barChart.setBorderColor(textColor);
             YAxis yAxisLeft = barChart.getAxisLeft();
             YAxis yAxisRight = barChart.getAxisRight();
             yAxisLeft.setDrawZeroLine(true);
             yAxisRight.setEnabled(false);
             yAxisLeft.setAxisMinimum(0f); // start at zero
+            yAxisLeft.setGridColor(textColor);
+            yAxisLeft.setTextColor(textColor);
 
             highest = highest / 60;
             if (highest < 100) {
@@ -414,6 +419,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(textColor);
     }
 
     /*
@@ -448,9 +454,22 @@ public class Sportactivity_Home extends AppCompatActivity {
         lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
         lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
 
-
-        fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
+        if(!empty) {
+            fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
+        }
         fillXValues(bChart, lo_startDate, entries.size());
+
+    }
+    private void plotEmpty (BarChart bChart){
+        List<BarEntry> entriesEmpty = new ArrayList<>();
+
+        BarDataSet bDataSet = new BarDataSet(entriesEmpty, "This is empty");
+
+        BarData bData = new BarData(bDataSet);
+        bChart.setFitBars(true);
+        bChart.setData(bData);
+        bChart.getDescription().setEnabled(false);
+        bChart.animateY(2000);
     }
 
     private int[] getDurations(List<Activity> activitiesList) {

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -53,7 +54,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
 
 
     Instant startDate, endDate;
-    int color;
+    int textColor, color;
 
 
 
@@ -65,9 +66,9 @@ public class StatisticalRepresentation extends AppCompatActivity {
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
         TypedValue typedValue = new TypedValue();
-        //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
+        getTheme().resolveAttribute(com.google.android.material.R.attr.colorOnBackground, typedValue, true);
+        textColor = typedValue.data;
         getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
-        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
         color = typedValue.data;
 
         if(getIntent().hasExtra("startInstant") && getIntent().hasExtra("endInstant")){
@@ -92,10 +93,13 @@ public class StatisticalRepresentation extends AppCompatActivity {
         barChartActivities = findViewById(R.id.ActivitiesBarChart);
         barChartMood = findViewById(R.id.MoodBarChart);
         barChartActivities.setNoDataText(getString(R.string.NoBarData));
-        barChartActivities.setNoDataTextColor(color);
+        barChartActivities.setNoDataTextColor(textColor);
+
+
 
         barChartMood.setNoDataText(getString(R.string.NoBarData));
-        barChartMood.setNoDataTextColor(color);
+        barChartMood.setNoDataTextColor(textColor);
+
 
 
     }
@@ -176,7 +180,8 @@ public class StatisticalRepresentation extends AppCompatActivity {
 
             barDataSetActivities.setColors(color);
 
-            barDataSetActivities.setValueTextColor(android.R.color.black);
+            //barDataSetActivities.setValueTextColor(android.R.color.black); //für blank
+            barDataSetActivities.setValueTextColor(textColor);
             //set.setValueTextSize(16f);
 
             barDataActivities = new BarData(barDataSetActivities);
@@ -186,11 +191,14 @@ public class StatisticalRepresentation extends AppCompatActivity {
             //barChart.getDescription().setText(getString(R.string.barChartActivities));
             barChartActivities.getDescription().setEnabled(false);
             barChartActivities.animateY(2000);
+            barChartActivities.getLegend().setTextColor(textColor);
             YAxis yAxisLeft = barChartActivities.getAxisLeft();
             YAxis yAxisRight = barChartActivities.getAxisRight();
             yAxisLeft.setDrawZeroLine(true);
             yAxisRight.setEnabled(false);
             yAxisLeft.setAxisMinimum(0f); // start at zero
+            yAxisLeft.setGridColor(textColor);
+            yAxisLeft.setTextColor(textColor);
 
             highest = highest / 60;
             if (highest < 100) {
@@ -218,6 +226,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(textColor);
     }
 
     /*
@@ -276,7 +285,8 @@ public class StatisticalRepresentation extends AppCompatActivity {
 
             barDataSetMood.setColors(color);
 
-            barDataSetMood.setValueTextColor(android.R.color.black);
+            //barDataSetMood.setValueTextColor(android.R.color.black); für blank
+            barDataSetMood.setValueTextColor(textColor);
             //set.setValueTextSize(16f);
 
             barDataMood = new BarData(barDataSetMood);
@@ -286,12 +296,15 @@ public class StatisticalRepresentation extends AppCompatActivity {
             //barChart.getDescription().setText(getString(R.string.barChartActivities));
             barChartMood.getDescription().setEnabled(false);
             barChartMood.animateY(2000);
+            barChartMood.getLegend().setTextColor(textColor);
             YAxis yAxisLeft = barChartMood.getAxisLeft();
             YAxis yAxisRight = barChartMood.getAxisRight();
             yAxisLeft.setDrawZeroLine(true);
             yAxisRight.setEnabled(false);
             yAxisLeft.setAxisMinimum(0f); // start at zero
             yAxisLeft.setAxisMaximum(100f); // the axis maximum is 100
+            yAxisLeft.setGridColor(textColor);
+            yAxisLeft.setTextColor(textColor);
         }
     }
 
