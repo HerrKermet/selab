@@ -52,6 +52,4 @@ public class Activity implements Serializable {
     public String type;
 
     public Integer duration;
-
-
 }

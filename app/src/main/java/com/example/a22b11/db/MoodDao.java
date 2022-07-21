@@ -18,9 +18,6 @@ public interface MoodDao {
     ListenableFuture<List<Mood>> getAll();
 
     @Query("SELECT * FROM moods")
-    ListenableFuture<List<Mood>> getAllSyncFuture();
-
-    @Query("SELECT * FROM moods")
     List<Mood> getAllSync();
 
     @Query("SELECT * FROM moods WHERE user_id = :userId")

@@ -7,11 +7,11 @@ import java.time.Instant;
 public class Converter {
     @TypeConverter
     public static Instant fromTimestamp(Long value) {
-        return value == null ? null : Instant.ofEpochSecond(value);
+        return value == null ? null : Instant.ofEpochMilli(value);
     }
 
     @TypeConverter
     public static Long dateToTimestamp(Instant date) {
-        return date == null ? null : date.getEpochSecond();
+        return date == null ? null : date.toEpochMilli();
     }
 }
