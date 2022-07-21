@@ -2,10 +2,7 @@ package com.example.a22b11.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import java.time.Instant;
 
 @Entity(tableName = "users")
 public class User {

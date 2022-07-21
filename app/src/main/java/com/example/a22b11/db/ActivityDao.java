@@ -31,6 +31,9 @@ public interface ActivityDao {
     @Query("SELECT * FROM activities WHERE user_id = :userId AND is_modified")
     List<Activity> getModifiedByUserIdSync(long userId);
 
+    @Query("SELECT * FROM activities WHERE user_id = :userId")
+    List<Activity> getAllByUserIdSync(long userId);
+
     @Update
     void updateSync(Activity activity);
 
