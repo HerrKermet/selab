@@ -2,6 +2,7 @@ package com.example.a22b11.db;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.time.Instant;
@@ -9,10 +10,10 @@ import java.util.List;
 
 @Dao
 public interface AccelerometerDataDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSync(AccelerometerData accelerometerSample);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSync(List<AccelerometerData> accelerometerSamples);
 
     @Query("SELECT * FROM accelerometer_data")

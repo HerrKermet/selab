@@ -38,7 +38,7 @@ public class Activity implements Serializable {
     @ColumnInfo(name = "id")
     public Long id = null;
 
-    @ColumnInfo(name = "user_id")
+    @ColumnInfo(name = "user_id", index = true)
     public Long userId = null;
 
     // Whether the activity has been modified since the last synchronization

@@ -14,5 +14,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract MoodDao moodDao();
 
-    public abstract AccelerometerData accelerometerDataDao();
+    public abstract AccelerometerDataDao accelerometerDataDao();
 }

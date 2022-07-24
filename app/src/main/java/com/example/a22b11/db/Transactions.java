@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -119,7 +120,15 @@ public class Transactions {
                     ActivityDao activityDao = appDatabase.activityDao();
                     MoodDao moodDao = appDatabase.moodDao();
                     UserDao userDao = appDatabase.userDao();
+                    AccelerometerDataDao accelDataDao = appDatabase.accelerometerDataDao();
                     for (User user : userDao.getLoggedInSync()) {
+                        Instant lastSyncTime = user.lastSyncTime;
+                        if (lastSyncTime == null) {
+                            syncObject.accelerometerData = accelDataDao.getByUserIdSync(user.id);
+                        }
+                        else {
+                            syncObject.accelerometerData = accelDataDao.getByUserIdAfterSync(user.id, user.lastSyncTime);
+                        }
                         syncObject.lastSyncSqn = user.lastSyncSqn;
                         syncObject.session = user.loginSession;
                         syncObject.activities.created = activityDao.getNewByUserIdSync(user.id);
@@ -150,6 +159,7 @@ public class Transactions {
                         activityDao.updateSync(syncObject.activities.created);
                         moodDao.updateSync(syncObject.moods.created);
                         for (Activity e : retSyncObject.activities.modified) {
+                            e.userId = user.id;
                             List<Long> localId = activityDao.getLocalIdById(e.id);
                             if (localId.size() > 0) {
                                 e.localId = localId.get(0);
@@ -159,6 +169,7 @@ public class Transactions {
                             }
                         }
                         for (Mood e : retSyncObject.moods.modified) {
+                            e.userId = user.id;
                             List<Long> localId = moodDao.getLocalIdById(e.id);
                             if (localId.size() > 0) {
                                 e.localId = localId.get(0);
@@ -167,7 +178,12 @@ public class Transactions {
                                 moodDao.insertSync(e);
                             }
                         }
+                        for (AccelerometerData accel : retSyncObject.accelerometerData) {
+                            accel.userId = user.id;
+                        }
+                        accelDataDao.insertSync(retSyncObject.accelerometerData);
                         user.lastSyncSqn = retSyncObject.lastSyncSqn;
+                        user.lastSyncTime = Instant.now();
                         userDao.updateSync(user);
                     }
                 });

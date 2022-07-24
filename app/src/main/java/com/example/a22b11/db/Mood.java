@@ -34,7 +34,6 @@ public class Mood {
             Integer energy,
             Integer wakefulness,
 
-
             Integer eventNegativeIntensity,    // 0 - 100
             Integer eventPositiveIntensity,    // 0 - 100
             Boolean alone,
@@ -47,8 +46,6 @@ public class Mood {
             Integer actedAggressively,          // 0 - 7
 
             String notes
-
-
     ) {
         this.userId = userId;
         this.lastModification = Instant.now();
@@ -80,7 +77,7 @@ public class Mood {
     @ColumnInfo(name = "id")
     public Long id = null;
 
-    @ColumnInfo(name = "user_id")
+    @ColumnInfo(name = "user_id", index = true)
     public Long userId;
 
     // Whether the mood has been modified since the last synchronization

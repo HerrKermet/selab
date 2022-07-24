@@ -1,5 +1,6 @@
 package com.example.a22b11.db;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -7,30 +8,26 @@ import androidx.room.PrimaryKey;
 
 import java.time.Instant;
 
-@Entity(tableName = "accelerometer_data", foreignKeys = {@ForeignKey(
-        entity = User.class,
-        parentColumns = "id",
-        childColumns = "user_id",
-        onDelete = ForeignKey.CASCADE)
-})
+@Entity(tableName = "accelerometer_data",
+        foreignKeys = {@ForeignKey(
+            entity = User.class,
+            parentColumns = "id",
+            childColumns = "user_id",
+            onDelete = ForeignKey.CASCADE)},
+        primaryKeys = {"user_id", "time"})
 public class AccelerometerData {
 
-    @PrimaryKey
-    @ColumnInfo(name = "local_id")
-    public Long localId = null;
-
-    public Long id = null;
-
     @ColumnInfo(name = "user_id")
-    public Long userId;
+    public long userId;
 
+    @NonNull
     public Instant time;
 
     public float x;
     public float y;
     public float z;
 
-    public AccelerometerData(Long userId, Instant time, float x, float y, float z) {
+    public AccelerometerData(long userId, @NonNull Instant time, float x, float y, float z) {
         this.userId = userId;
         this.time = time;
         this.x = x;
