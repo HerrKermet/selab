@@ -10,7 +10,7 @@ import java.util.Collections;
 
 public class MoodScore {
 
-    //TODO replace placeholder values with formula
+
     /***
      *
      * @param mood takes a mood object as parameter
@@ -46,12 +46,16 @@ public class MoodScore {
 
         // calculates average
         if (!list.isEmpty()) {
+            int validAnswers = 0;
             for (int value : list) {
-                if (value != -1) score += value;
+                if (value != -1){
+                    score += value;
+                    validAnswers++;
+                }
             }
-            score = (int) Math.ceil(score / list.size());
+           if (validAnswers > 0) score = (int) Math.ceil(score / validAnswers);
+           else score = -1;
         }
-
 
         return score;
     }

@@ -12,11 +12,9 @@
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.3105" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/ic_baseline_play_circle_filled_24.xml" value="0.3105" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/item.xml" value="0.3105" />
-        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_color_choose_theme.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_finished.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_welcome.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportedit.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportselection.xml" value="0.32608695652173914" />
@@ -32,6 +30,7 @@
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/fragment_questionnaire_question__social_situation_.xml" value="0.358695652173913" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/item.xml" value="0.5" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/menu/sportactivity_bottom_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_input_for_statistical_representation.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportedit.xml" value="0.33" />
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportedit_selection.xml" value="0.33" />
         <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_sportfinish.xml" value="0.33" />
@@ -41,10 +40,11 @@
         <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_account_created.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.18" />
+        <entry key="..\:/Users/ssamw/OneDrive/Dokumente/GitHub/22B11/app/src/main/res/layout/activity_statistical_representation.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/layout/activity_sportedit.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/layout/activity_sportedit_selection.xml" value="0.12335359675785208" />
-        <entry key="app/src/main/res/layout/activity_sporthome.xml" value="0.12335359675785208" />
+        <entry key="app/src/main/res/layout/activity_sporthome.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_sportrecord.xml" value="0.7587476979742173" />
         <entry key="app/src/main/res/layout/activity_sportselection.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/layout/activity_startup.xml" value="0.11347517730496454" />

@@ -20,14 +20,30 @@ import java.time.Instant;
 public class Activity implements Serializable {
     public Activity() {}
 
+    public enum ActivityType {RUNNING, WALKING, SWIMMING, HIKING, OTHER}
+
     @Ignore
-    public Activity(long userId, Instant start, Instant end, String type, Integer duration) {
+    public Activity(long userId, Instant start, Instant end, String type, Integer duration, ActivityType activityType) {
         this.userId = userId;
         this.lastModification = Instant.now();
         this.start = start;
         this.end = end;
         this.type = type;
         this.duration = duration;
+        this.activityType = activityType;
+        this.isAutomaticallyDetected = false;
+    }
+
+    @Ignore
+    public Activity(long userId, Instant start, Instant end, String type, Integer duration, ActivityType activityType, Boolean isAutomaticallyDetected) {
+        this.userId = userId;
+        this.lastModification = Instant.now();
+        this.start = start;
+        this.end = end;
+        this.type = type;
+        this.duration = duration;
+        this.activityType = activityType;
+        this.isAutomaticallyDetected = isAutomaticallyDetected;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -54,8 +70,16 @@ public class Activity implements Serializable {
     @ColumnInfo(name = "end")
     public Instant end;
 
-    @ColumnInfo(name = "type")
+    @ColumnInfo(name = "activity_type")
+    public ActivityType activityType;
+
+    @ColumnInfo(name = "custom_type")
     public String type;
 
+    @ColumnInfo(name = "duration")
     public Integer duration;
+
+    @ColumnInfo(name = "automatically_detected")
+    public Boolean isAutomaticallyDetected;
+
 }

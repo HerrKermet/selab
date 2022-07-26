@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.a22b11">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -31,6 +32,9 @@
             android:exported="false"
             android:label="@string/title_activity_login" />
         <activity
+            android:name=".inputForStatisticalRepresentation"
+            android:exported="false" />
+        <activity
             android:name=".Color_Choose_Theme"
             android:exported="false" />
         <activity
@@ -38,10 +42,8 @@
             android:exported="false" />
         <activity
             android:name=".Sportactivity_Edit_Selection"
-            android:exported="false" />
-        <activity
-            android:name=".Sportactivity_Finish"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Sportactivity_Home"/>
         <activity
             android:name=".Sportactivity_Selection"
             android:exported="false"

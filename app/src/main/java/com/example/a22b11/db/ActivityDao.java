@@ -9,15 +9,29 @@ import androidx.room.Update;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.time.Instant;
 import java.util.List;
 
 @Dao
 public interface ActivityDao {
-    @Query("SELECT * FROM activities")
+    @Query("SELECT * FROM activities ORDER BY start DESC")
     ListenableFuture<List<Activity>> getAll();
 
     @Query("SELECT * FROM activities WHERE user_id = :userId")
     ListenableFuture<List<Activity>> getAllByUserId(long userId);
+
+    @Query("SELECT * FROM activities WHERE automatically_detected = 0 AND start BETWEEN :start AND :end ORDER BY start ASC")
+    ListenableFuture<List<Activity>> getActivitiesBetweenDates(Instant start, Instant end);
+
+    @Query("SELECT * FROM activities WHERE automatically_detected = 0 ORDER BY start DESC LIMIT :n")
+    ListenableFuture<List<Activity>> getLatestNActivities(int n);
+
+    @Query("SELECT * FROM activities WHERE automatically_detected = 0 ORDER BY start DESC")
+    ListenableFuture<List<Activity>> getUserGeneratedActivites();
+
+    @Query("SELECT * FROM activities WHERE automatically_detected = 1 ORDER BY start DESC")
+    ListenableFuture<List<Activity>> getAppGeneratedActivities();
+
 
     @Query("SELECT * FROM activities")
     ListenableFuture<List<Activity>> getAllFuture();
@@ -58,6 +72,9 @@ public interface ActivityDao {
      */
     @Insert
     ListenableFuture<List<Long>> insertAll(Activity... activities);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    ListenableFuture<Integer> update(Activity activity);
 
     @Insert
     void insertSync(Activity mood);

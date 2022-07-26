@@ -29,7 +29,6 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:contentDescription="@string/selectDate"
-                android:onClick="showDatePickerDialog"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewStart"
                 app:layout_constraintEnd_toEndOf="@+id/imageButton2"
                 app:layout_constraintStart_toStartOf="@+id/imageButton2"
@@ -70,9 +69,8 @@
                 android:id="@+id/imageButton2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="80dp"
                 android:contentDescription="@string/selectDate"
-                android:onClick="showDatePickerDialog"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewEnd"
                 app:layout_constraintStart_toEndOf="@+id/textViewEnd"
                 app:layout_constraintTop_toTopOf="@+id/textViewEnd"
@@ -104,7 +102,7 @@
                 android:layout_marginBottom="30dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/type"
+                android:text="@string/other"
                 app:layout_constraintBottom_toTopOf="@+id/textView37"
                 app:layout_constraintStart_toStartOf="@+id/textViewStart"
                 tools:ignore="TouchTargetSizeCheck" />
@@ -134,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="TextView"
+                android:text="-"
                 app:layout_constraintBottom_toBottomOf="@+id/textView34"
                 app:layout_constraintStart_toEndOf="@+id/textView34"
                 app:layout_constraintTop_toTopOf="@+id/textView34" />
@@ -147,6 +145,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
+        android:onClick="onClickApply"
         android:text="@string/apply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,4 +161,5 @@
         app:layout_constraintBottom_toTopOf="@+id/button31"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
