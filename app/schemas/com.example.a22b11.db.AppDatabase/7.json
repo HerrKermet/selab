@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "75ccbbdfb6978b8ebd2952f12f924de3",
+    "identityHash": "75138f9d6674ce757c987e12ac47534d",
     "entities": [
       {
         "tableName": "users",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "activities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `type` TEXT, `duration` INTEGER, FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `activity_type` TEXT, `custom_type` TEXT, `duration` INTEGER, `automatically_detected` INTEGER, FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "localId",
@@ -89,14 +89,26 @@
             "notNull": false
           },
           {
+            "fieldPath": "activityType",
+            "columnName": "activity_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "type",
-            "columnName": "type",
+            "columnName": "custom_type",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "duration",
             "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isAutomaticallyDetected",
+            "columnName": "automatically_detected",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -367,7 +379,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75ccbbdfb6978b8ebd2952f12f924de3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75138f9d6674ce757c987e12ac47534d')"
     ]
   }
 }
