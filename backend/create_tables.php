@@ -47,6 +47,18 @@ CREATE TABLE IF NOT EXISTS `moods` (
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `accelerometer_data` (
+ `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ `user_id` bigint(20) unsigned NOT NULL,
+ `last_sync_sqn` bigint(20) unsigned NOT NULL,
+ `time` timestamp NOT NULL,
+ `x` float NOT NULL,
+ `y` float NOT NULL,
+ `z` float NOT NULL,
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `login_sessions` (
  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  `key` varchar(255) NOT NULL,
@@ -55,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `login_sessions` (
  `last_access` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ";
 
 try {

@@ -289,6 +289,58 @@ function get_updated_moods(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
     return $sth->fetchAll(PDO::FETCH_ASSOC);
 }
 
+$sql_insert_accelerometer_data = <<<'EOD'
+insert into accelerometer_data (user_id, last_sync_sqn, time, x, y, z)
+values (:user_id, :sync_sqn, :time, :x, :y, :z)
+ON DUPLICATE KEY UPDATE;
+EOD;
+
+function insert_accelerometer_data(PDO $dbh, int $user_id, int $sync_sqn, ?array $client_accels): array {
+    global $sql_insert_accelerometer_data;
+
+    if (isset($client_accels)) {
+        $sth = $dbh->prepare($sql_insert_accelerometer_data);
+        foreach ($client_accels as $accel) {
+            $sth->execute([
+                "user_id" => $user_id,
+                "sync_sqn" => $sync_sqn,
+                "time" => $accel['time'] ?? null,
+                "x" => $accel['y'] ?? null,
+                "y" => $accel['y'] ?? null,
+                "z" => $accel['y'] ?? null
+            ]);
+        }
+    }
+}
+
+// Note it is missing a semicolon at the end.
+// An additional condition can be appended.
+$sql_get_accelerometer_data = <<<EOD
+select {$df('time')}, x, y, z
+from accelerometer_data
+where user_id = :user_id
+EOD;
+
+function get_accelerometer_data(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
+    global $sql_get_accelerometer_data;
+
+    $sql = $sql_get_accelerometer_data;
+
+    $params = [
+        "user_id" => $user_id
+    ];
+
+    if (isset($last_sync_sqn)) {
+        $sql .= " and last_sync_sqn > :last_sync_sqn";
+        $params["last_sync_sqn"] = $last_sync_sqn;
+    }
+    $sql .= ";";
+
+    $sth = $dbh->prepare($sql);
+    $sth->execute($params);
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+}
+
 try {
     header('Content-type: application/json; charset=utf-8');
 
@@ -335,8 +387,8 @@ try {
         "moods" => [
             "created" => [],
             "modified" => []
-        ]
-
+        ],
+        "accelerometer_data" => []
     ];
 
     $client_acts = $request['activities'] ?? null;
@@ -350,6 +402,10 @@ try {
         $response['moods']['created'] = sync_moods($dbh, $user_id, $sync_sqn, $client_moods);
     }
     $response['moods']['modified'] = get_updated_moods($dbh, $user_id, $last_sync_sqn);
+
+    $client_accels = $request['accelerometer_data'] ?? null;
+    insert_accelerometer_data($dbh, $user_id, $sync_sqn, $client_accels);
+    $response['accelerometer_data'] = get_accelerometer_data($dbh, $user_id, $last_sync_sqn);
 
     update_sync_sqn($dbh, $user_id);
 
