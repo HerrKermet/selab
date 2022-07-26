@@ -175,6 +175,7 @@ public class Sportactivity_Record extends AppCompatActivity {
     public void buttonClickFinish(View view){
 
         duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) ); //TODO getting the duration in minutes, remember to bring back /60
+        //TODO QUERY change this to new Query and user id to NULL
         Activity activity = new Activity(1L, startTime, endTime, selectedActivity, duration, Activity.ActivityType.values()[selectedActivityNumber]);
 
         Log.e("this is the error we are looking for ", String.valueOf(duration));

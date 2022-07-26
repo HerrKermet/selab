@@ -215,7 +215,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
         MoodDao moodDao = db.moodDao();
-
+        //TODO QUERY  change userId to null
         mood.userId = 1L;
         mood.assessment = Instant.now();
         mood.notes = notes;
@@ -228,7 +228,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         //TODO Calculate Questionnaire Streak
          // get test user from Database
-
+         //TODO QUERY CHANGE THIS QUERY
          ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getAll();
          Futures.addCallback(
                  future2,

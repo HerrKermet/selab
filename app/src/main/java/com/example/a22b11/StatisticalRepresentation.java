@@ -110,6 +110,8 @@ public class StatisticalRepresentation extends AppCompatActivity {
         super.onResume();
         // retrieve mood objects from database
         // get objects from Database
+
+        //TODO QUERY change this to new Query
         AppDatabase dbMood = ((MyApplication)getApplication()).getAppDatabase();
 
         MoodDao moodDao = dbMood.moodDao();
@@ -138,7 +140,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
 
         // get objects from Database
         AppDatabase dbAct = ((MyApplication)getApplication()).getAppDatabase();
-
+        //TODO QUERY change this to new Query
         ActivityDao activityDao = dbAct.activityDao();
 
         ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);

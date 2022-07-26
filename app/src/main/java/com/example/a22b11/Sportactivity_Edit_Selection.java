@@ -38,7 +38,7 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
         setContentView(R.layout.activity_sportedit_selection);
         recyclerView = findViewById(R.id.recyclerView);
 
-
+        //TODO QUERY change this to new Query
         // get test user from Database
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
