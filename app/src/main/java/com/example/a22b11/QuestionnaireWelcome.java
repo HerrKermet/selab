@@ -216,7 +216,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
         MoodDao moodDao = db.moodDao();
 
-        mood.userId = 1L;
+
         mood.assessment = Instant.now();
         mood.notes = notes;
         int mood_score = MoodScore.calculate(mood);

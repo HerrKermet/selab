@@ -74,7 +74,7 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
         //done with database query
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        if (!items.isEmpty()) {
+        if (items != null && !items.isEmpty()) {
             itemAdapter adapter = new itemAdapter(items, activityDao, this);
             recyclerView.setAdapter(adapter);
         }

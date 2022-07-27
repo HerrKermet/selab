@@ -101,7 +101,7 @@ public class Sportactivity_Edit extends AppCompatActivity  {
         }
         else if(getIntent().hasExtra("databaseActivityAdd")) {
             activity = (Activity) getIntent().getSerializableExtra("databaseActivityAdd");
-            Log.d("local Id passed by intent ADD", String.valueOf(activity.localId));
+            Log.d("Activity state local Id passed by intent ADD", String.valueOf(activity.localId));
             isNewActivity = true;
             startInst = activity.start == null ? null : activity.start;
             endInst = activity.end == null ? null : activity.end;
@@ -370,14 +370,15 @@ public class Sportactivity_Edit extends AppCompatActivity  {
 
             if (isNewActivity) {
                 Log.d("Activity state", "is new activity");
+                Log.d("Activity state", activity.activityType + " " + activity.type + " " + activity.start + " " + activity.end + "  is auto detected " + activity.isAutomaticallyDetected);
                 //Insert activity
-                activityDao.insert(activity);
+                ListenableFuture<Long> future = activityDao.insert(activity);
             }
 
             else {
                 Log.d("Activity state", "is existing activity");
                 Log.d("local id", String.valueOf(activity.localId));
-                ListenableFuture<Integer> test = activityDao.update(activity);
+                ListenableFuture<Integer> future = activityDao.update(activity);
                 Log.d("onClickApply", "updated activity");
             }
 
