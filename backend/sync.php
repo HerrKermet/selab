@@ -295,7 +295,7 @@ values (:user_id, :sync_sqn, :time, :x, :y, :z)
 ON DUPLICATE KEY UPDATE;
 EOD;
 
-function insert_accelerometer_data(PDO $dbh, int $user_id, int $sync_sqn, ?array $client_accels): array {
+function insert_accelerometer_data(PDO $dbh, int $user_id, int $sync_sqn, ?array $client_accels) {
     global $sql_insert_accelerometer_data;
 
     if (isset($client_accels)) {
