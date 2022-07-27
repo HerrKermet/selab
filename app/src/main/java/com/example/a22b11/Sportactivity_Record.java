@@ -175,17 +175,12 @@ public class Sportactivity_Record extends AppCompatActivity {
     public void buttonClickFinish(View view){
 
         duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) ); //TODO getting the duration in minutes, remember to bring back /60
-        Activity activity = new Activity(1L, startTime, endTime, selectedActivity, duration, Activity.ActivityType.values()[selectedActivityNumber]);
+        Activity activity = new Activity(startTime, endTime, selectedActivity, duration, Activity.ActivityType.values()[selectedActivityNumber]);
 
         Log.e("this is the error we are looking for ", String.valueOf(duration));
 
         Intent intent = new Intent(this, Sportactivity_Edit.class);
         intent.putExtra("databaseActivityAdd", activity);
-        intent.putExtra("selectedActivity", selectedActivity);
-        intent.putExtra("selectedActivityNumber", selectedActivityNumber);
-        intent.putExtra("startTime", String.valueOf(startTime));
-        intent.putExtra("endTime", String.valueOf(endTime));
-        intent.putExtra("duration", duration);
 
         startActivity(intent);
     }
