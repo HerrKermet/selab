@@ -59,7 +59,7 @@ public class MyApplication extends Application {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http:///localhost/backend/")
+                .baseUrl(BuildConfig.SERVER_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

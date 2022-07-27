@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdk 32
 
@@ -11,6 +14,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "SERVER_URL", localProperties['server_url']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
