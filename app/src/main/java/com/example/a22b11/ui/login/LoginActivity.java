@@ -73,8 +73,6 @@ public class LoginActivity extends AppCompatActivity {
 
         loginFormState = null;
 
-        final UserDao userDao = MyApplication.getInstance().getAppDatabase().userDao();
-
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             this.loginFormState = loginFormState;
             if (!loading) {

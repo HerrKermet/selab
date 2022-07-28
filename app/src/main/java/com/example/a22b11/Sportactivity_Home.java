@@ -370,7 +370,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                 MyApplication.getInstance().getAppDatabase().runInTransaction(runnable);
             }
             catch (Throwable t) {
-                Log.e("Transaction", "Exception: " + t.getMessage());
+                Log.e("Room", "Exception: " + t.getMessage());
                 String str = getResources().getString(R.string.database_transaction_failed);
                 showToast(str + ": " + t.getMessage());
             }
@@ -403,6 +403,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                 activityDao.deleteAllByUserIdSync(user.id);
                 accelerometerDataDao.deleteAllByUserIdSync(user.id);
                 userDao.deleteAllSync();
+                MyApplication.getInstance().setLoggedInUser(null);
                 startLoginActivity();
             }
         });

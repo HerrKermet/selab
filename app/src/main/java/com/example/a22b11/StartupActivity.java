@@ -29,7 +29,6 @@ public class StartupActivity extends AppCompatActivity {
     }
 
     private void cacheLoggedInUser() {
-        final StartupActivity parent = this;
         Futures.addCallback(
                 MyApplication.getInstance().getAppDatabase().userDao().getAll(),
                 new FutureCallback<List<User>>() {
@@ -41,14 +40,14 @@ public class StartupActivity extends AppCompatActivity {
                             startHomeActivity();
                         }
                         else {
-                            parent.startLoginActivity();
+                            startLoginActivity();
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Throwable t) {
                         Log.e("Room", "Cannot get list of users: " + t.getMessage());
-                        parent.startLoginActivity();
+                        startLoginActivity();
                     }
                 },
                 getMainExecutor()
