@@ -384,7 +384,7 @@ public class Sportactivity_Home extends AppCompatActivity {
     }
 
     public void onBtnClickLogOut(View view) {
-        runInAsyncTransaction(() -> {
+        new LogoutDialogFragment(() -> runInAsyncTransaction(() -> {
             final AppDatabase database = MyApplication.getInstance().getAppDatabase();
             final FitnessApiClient apiClient = MyApplication.getInstance().getFitnessApiClient();
             final UserDao userDao = database.userDao();
@@ -406,7 +406,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                 MyApplication.getInstance().setLoggedInUser(null);
                 startLoginActivity();
             }
-        });
+        })).show(getSupportFragmentManager(), "logout");
     }
 
     private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
