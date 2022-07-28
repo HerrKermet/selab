@@ -129,4 +129,6 @@ das bedeutendste positive Ereignis?</string>
     <string name="ok">OK</string>
     <string name="cancel">Abbrechen</string>
     <string name="dialog_logout">Sind Sie sicher, dass Sie sich ausloggen möchten?</string>
+    <string name="signed_in_user_info">Nutzer ID: %d</string>
+    <string name="last_sync_info">Letzte Synchronisation: %s</string>
 </resources>

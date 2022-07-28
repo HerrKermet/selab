@@ -36,7 +36,9 @@ public class StartupActivity extends AppCompatActivity {
                     public void onSuccess(List<User> result) {
                         if (result.size() > 0) {
                             User user = result.get(0);
-                            MyApplication.getInstance().setLoggedInUser(user);
+                            MyApplication application = MyApplication.getInstance();
+                            application.setLoggedInUser(user);
+                            application.getLastSyncMutableLiveData().setValue(user.lastSyncTime);
                             startHomeActivity();
                         }
                         else {

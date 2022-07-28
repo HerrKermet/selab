@@ -18,6 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -79,6 +82,15 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     Instant startDate, endDate;
 
+    public static String getTimeString(Instant instant) {
+        if (instant == null) {
+            return "/";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+        return formatter.format(instant);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +99,19 @@ public class Sportactivity_Home extends AppCompatActivity {
         setTheme(theme);
 
         setContentView(R.layout.activity_sporthome);
+
+        TextView signInInfo = findViewById(R.id.signInInfo);
+        signInInfo.setText(getResources().getString(R.string.signed_in_user_info,
+                MyApplication.getInstance().getLoggedInUser().id));
+
+        TextView lastSyncInfo = findViewById(R.id.lastSyncInfo);
+        lastSyncInfo.setText(getResources().getString(R.string.last_sync_info,
+                getTimeString(null)));
+
+        MyApplication.getInstance().getLastSyncLiveData().observe(
+                this,
+                instant -> lastSyncInfo.setText(getResources().getString(R.string.last_sync_info,
+                        getTimeString(instant))));
 
         //BarChart
         barChart = findViewById(R.id.barChart3);
@@ -211,6 +236,7 @@ public class Sportactivity_Home extends AppCompatActivity {
         );
 
         //done with database query
+
 
     }
 
@@ -391,6 +417,8 @@ public class Sportactivity_Home extends AppCompatActivity {
             final ActivityDao activityDao = database.activityDao();
             final AccelerometerDataDao accelerometerDataDao = database.accelerometerDataDao();
             final MoodDao moodDao = database.moodDao();
+
+            // There should be one user in the list
             for (User user : userDao.getLoggedInSync()) {
                 Session session = new Session(user.loginSession);
                 try {
@@ -403,8 +431,11 @@ public class Sportactivity_Home extends AppCompatActivity {
                 activityDao.deleteAllByUserIdSync(user.id);
                 accelerometerDataDao.deleteAllByUserIdSync(user.id);
                 userDao.deleteAllSync();
-                MyApplication.getInstance().setLoggedInUser(null);
-                startLoginActivity();
+                runOnUiThread(() -> {
+                    MyApplication.getInstance().setLoggedInUser(null);
+                    MyApplication.getInstance().getLastSyncMutableLiveData().setValue(null);
+                    startLoginActivity();
+                });
             }
         })).show(getSupportFragmentManager(), "logout");
     }
