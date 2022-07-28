@@ -3,7 +3,6 @@ package com.example.a22b11.db;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -25,6 +24,9 @@ public interface MoodDao {
 
     @Query("SELECT * FROM moods WHERE user_id = :userId")
     List<Mood> getAllByUserIdSync(long userId);
+
+    @Query("DELETE FROM moods WHERE user_id = :userId")
+    void deleteAllByUserIdSync(long userId);
 
     @Query("SELECT * FROM moods WHERE user_id = :userId AND assessment > :assessMin AND assessment < :assessMax")
     ListenableFuture<List<Mood>> getAllByUserIdAndAssessmentRange(long userId, Instant assessMin, Instant assessMax);

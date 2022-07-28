@@ -1,7 +1,9 @@
 package com.example.a22b11;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,16 +12,26 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a22b11.adapter.itemAdapter;
+import com.example.a22b11.api.FitnessApiClient;
+import com.example.a22b11.api.Session;
+import com.example.a22b11.db.AccelerometerDataDao;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.db.MoodDao;
+import com.example.a22b11.db.User;
+import com.example.a22b11.db.UserDao;
+import com.example.a22b11.ui.login.LoginActivity;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.formatter.ValueFormatter;
@@ -35,6 +47,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,6 +56,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Sportactivity_Home extends AppCompatActivity {
 
@@ -336,6 +354,60 @@ public class Sportactivity_Home extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void showToast(@StringRes int toast)
+    {
+        runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
+    }
+
+    private void showToast(final String toast)
+    {
+        runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
+    }
+
+    private void runInAsyncTransaction(Runnable runnable) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                MyApplication.getInstance().getAppDatabase().runInTransaction(runnable);
+            }
+            catch (Throwable t) {
+                Log.e("Transaction", "Exception: " + t.getMessage());
+                String str = getResources().getString(R.string.database_transaction_failed);
+                showToast(str + ": " + t.getMessage());
+            }
+        });
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    public void onBtnClickLogOut(View view) {
+        runInAsyncTransaction(() -> {
+            final AppDatabase database = MyApplication.getInstance().getAppDatabase();
+            final FitnessApiClient apiClient = MyApplication.getInstance().getFitnessApiClient();
+            final UserDao userDao = database.userDao();
+            final ActivityDao activityDao = database.activityDao();
+            final AccelerometerDataDao accelerometerDataDao = database.accelerometerDataDao();
+            final MoodDao moodDao = database.moodDao();
+            for (User user : userDao.getLoggedInSync()) {
+                Session session = new Session(user.loginSession);
+                try {
+                    if (!apiClient.logout(session).execute().isSuccessful())
+                        throw new RuntimeException("HTTP status code is not successful");
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
+                moodDao.deleteAllByUserIdSync(user.id);
+                activityDao.deleteAllByUserIdSync(user.id);
+                accelerometerDataDao.deleteAllByUserIdSync(user.id);
+                userDao.deleteAllSync();
+                startLoginActivity();
+            }
+        });
+    }
+
     private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
         int [] mergedResults = mergeActivities(activitiesList, durations, startDate, endDate);
 
@@ -463,8 +535,5 @@ public class Sportactivity_Home extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
-
     }
-
 }
