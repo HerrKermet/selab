@@ -32,6 +32,8 @@ public interface ActivityDao {
     @Query("SELECT * FROM activities WHERE automatically_detected = 1 ORDER BY start DESC")
     ListenableFuture<List<Activity>> getAppGeneratedActivities();
 
+    @Query("DELETE FROM activities WHERE user_id = :userId")
+    void deleteAllByUserIdSync(long userId);
 
     @Query("SELECT * FROM activities")
     ListenableFuture<List<Activity>> getAllFuture();

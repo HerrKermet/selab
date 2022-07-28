@@ -132,4 +132,6 @@
     <string name="remember_login">Remember login and password</string>
     <string name="credentials_saved">User credentials saved</string>
     <string name="credentials_not_saved">User credentials could not be saved</string>
+    <string name="logout">Log out</string>
+    <string name="database_transaction_failed">Database transaction failed</string>
 </resources>

@@ -168,4 +168,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="155dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:onClick="onBtnClickLogOut"
+        android:text="@string/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

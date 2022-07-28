@@ -124,4 +124,6 @@ das bedeutendste positive Ereignis?</string>
     <string name="remember_login">Login und Passwort merken</string>
     <string name="credentials_saved">Anmeldedaten wurden gespeichert</string>
     <string name="credentials_not_saved">Anmeldedaten konnten nicht gespeichert werden</string>
+    <string name="logout">Ausloggen</string>
+    <string name="database_transaction_failed">Datenbank-Transaktion fehlgeschlagen</string>
 </resources>

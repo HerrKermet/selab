@@ -18,13 +18,15 @@ public interface FitnessApiClient {
      * @param loginCredentials - user id and password
      * @return session
      */
+    @POST("login.php")
     @Headers("Content-Type: application/json")
     Call<Session> login(@Body LoginCredentials loginCredentials);
 
     @POST("logout.php")
+    @Headers("Content-Type: application/json")
     Call<Void> logout(@Body Session session);
 
-    @Headers("Content-Type: application/json")
     @POST("sync.php")
+    @Headers("Content-Type: application/json")
     Call<SyncObjectResponse> synchronize(@Body SyncObject syncObject);
 }
