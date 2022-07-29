@@ -16,6 +16,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.a22b11.db.AccelerometerData;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
@@ -42,6 +43,7 @@ public class MyForegroundService extends Service  {
 
 
     int counter = 0;
+    int TimeCounterForAccData = 0;
     int threshold = 150;
     int threshholddelay = 16;
     Accelerometer accelerometer = new Accelerometer();
@@ -63,9 +65,8 @@ public class MyForegroundService extends Service  {
     Activity activity = new Activity(); // activity which gets recorded
 
 
-    List RawAccDataX = new LinkedList<Integer>();
-    List RawAccDataY = new LinkedList<Integer>();
-    List RawAccDataZ = new LinkedList<Integer>();
+    List<AccelerometerData> RawAccDataX = new LinkedList<>();
+
 
     SensorManager sensorManager;
     Sensor sensor;
@@ -127,6 +128,17 @@ public class MyForegroundService extends Service  {
                 //Each 5 second the Raw data is collected
                 //and each 60 seconds the Raw data is summarized and saved
                 CounterforMedian +=1;
+
+                TimeCounterForAccData +=1;
+                if(TimeCounterForAccData == 10){
+
+
+
+
+
+                    TimeCounterForAccData = 0;
+                }
+
 
 
                 if (CounterforMedian == 60){

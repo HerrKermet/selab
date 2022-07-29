@@ -34,4 +34,13 @@ public class AccelerometerData {
         this.y = y;
         this.z = z;
     }
+
+    public AccelerometerData(@NonNull Instant time, float x, float y, float z) {
+        this.userId = 0;
+        this.time = time;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
 }
