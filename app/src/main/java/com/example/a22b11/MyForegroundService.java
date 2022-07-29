@@ -17,9 +17,12 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.a22b11.db.AccelerometerData;
+import com.example.a22b11.db.AccelerometerDataDao;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.db.User;
+import com.example.a22b11.db.UserDao;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.time.Duration;
@@ -30,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class MyForegroundService extends Service  {
@@ -71,6 +76,8 @@ public class MyForegroundService extends Service  {
     SensorManager sensorManager;
     Sensor sensor;
 
+    Instant lastSaveTime = null;
+
     //TODO DELETE SOME LOGS
     @Override
     public void onCreate() {
@@ -84,14 +91,14 @@ public class MyForegroundService extends Service  {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
                 if (sensorEvent != null) {
-                    float x_acceleration = sensorEvent.values[0];
-                    float y_acceleration = sensorEvent.values[1];
-                    float z_acceleration = sensorEvent.values[2];
+                    float x = sensorEvent.values[0];
+                    float y = sensorEvent.values[1];
+                    float z = sensorEvent.values[2];
 
                     double Magnitude = Math.sqrt(
-                            x_acceleration * x_acceleration +
-                                    y_acceleration * y_acceleration +
-                                    z_acceleration * z_acceleration);
+                            x * x +
+                            y * y +
+                            z * z);
                     double MagnitudeDelta = Magnitude - MagnitudePrevious;
                     MagnitudePrevious = Magnitude;
 
@@ -99,6 +106,30 @@ public class MyForegroundService extends Service  {
                         stepCount++;
                         activityStepCount++;
                         Log.d("activity sensor","current stepcount in this interval " + activityStepCount);
+                    }
+
+                    Instant now = Instant.now();
+                    if (lastSaveTime == null || Duration.between(lastSaveTime, now).toMillis() > 10000) {
+                        Log.d("Accelerometer", "10 seconds elapsed, saving sample");
+                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                        executorService.execute(() -> {
+                            final AppDatabase database = MyApplication.getInstance().getAppDatabase();
+                            try {
+                                database.runInTransaction(() -> {
+                                    final UserDao userDao = database.userDao();
+                                    final AccelerometerDataDao accelerometerDataDao = database.accelerometerDataDao();
+                                    for (User user : userDao.getLoggedInSync()) {
+                                        AccelerometerData sample = new AccelerometerData(user.id, now, x, y, z);
+                                        accelerometerDataDao.insertSync(sample);
+                                    }
+                                });
+                            }
+                            catch (Throwable t) {
+                                Log.e("Room", "Transaction failed with exception: " + t.getMessage());
+                            }
+                        });
+                        executorService.shutdown();
+                        lastSaveTime = now;
                     }
                 }
             }
@@ -130,12 +161,7 @@ public class MyForegroundService extends Service  {
                 CounterforMedian +=1;
 
                 TimeCounterForAccData +=1;
-                if(TimeCounterForAccData == 10){
-
-
-
-
-
+                if (TimeCounterForAccData == 10) {
                     TimeCounterForAccData = 0;
                 }
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.Instant;
@@ -35,6 +36,7 @@ public class AccelerometerData {
         this.z = z;
     }
 
+    @Ignore
     public AccelerometerData(@NonNull Instant time, float x, float y, float z) {
         this.userId = 0;
         this.time = time;
