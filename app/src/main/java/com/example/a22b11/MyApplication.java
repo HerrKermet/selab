@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.security.NetworkSecurityPolicy;
 import android.util.Log;
 
 import androidx.room.Room;
@@ -53,6 +54,8 @@ public class MyApplication extends Application {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        Log.d("Network", "Is cleartext enabled: " + NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted());
 
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .addInterceptor(interceptor)
