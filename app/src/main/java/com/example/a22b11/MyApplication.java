@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
+import com.example.a22b11.api.BooleanAdapter;
 import com.example.a22b11.api.FitnessApiClient;
 import com.example.a22b11.api.InstantAdapter;
 import com.example.a22b11.db.AppDatabase;
@@ -66,7 +67,10 @@ public class MyApplication extends Application {
                 AppDatabase.class, "database-name")
                 .fallbackToDestructiveMigration().build();
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Instant.class, new InstantAdapter())
+                .registerTypeAdapter(boolean.class, new BooleanAdapter())
+                .create();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

@@ -165,6 +165,7 @@ public class Transactions {
                         activityDao.updateSync(syncObject.activities.created);
                         moodDao.updateSync(syncObject.moods.created);
                         for (Activity e : retSyncObject.activities.modified) {
+                            e.isModified = false;
                             e.userId = user.id;
                             List<Long> localId = activityDao.getLocalIdById(e.id);
                             if (localId.size() > 0) {
@@ -175,6 +176,7 @@ public class Transactions {
                             }
                         }
                         for (Mood e : retSyncObject.moods.modified) {
+                            e.isModified = false;
                             e.userId = user.id;
                             List<Long> localId = moodDao.getLocalIdById(e.id);
                             if (localId.size() > 0) {
