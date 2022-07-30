@@ -5,6 +5,11 @@ plugins {
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
+def server_url = localProperties['server_url']
+if (server_url == null) {
+    server_url = "https://fitness.ax24.net/"
+}
+
 android {
     compileSdk 32
 
@@ -14,7 +19,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "SERVER_URL", localProperties['server_url']
+        buildConfigField "String", "SERVER_URL", '"' + server_url + '"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
