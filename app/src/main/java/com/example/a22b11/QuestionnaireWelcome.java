@@ -67,12 +67,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBarCircular);
         textViewProgressBar = findViewById(R.id.tv_progressBar_circular);
 
-
-
         updateQuestionProgessBar();
-
-
-
     }
 
     @Override
@@ -184,41 +179,32 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_Welcome_Fragment_Next);
     }
 
-
-
-
     public void onBtnNotNowClick(View view) {
         Intent backToCallingActivity = new Intent(this, Sportactivity_Home.class);
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
-
         finish();  // delete questionnaire from backstack to prevent going back from recording into questionnaire
 
         startActivity(backToCallingActivity);
-
-
     }
 
-
-
-     public void onBtnFinishClick (View view) {
+    public void onBtnFinishClick (View view) {
         TextInputEditText textInputEditText = fragmentContainerView.getFragment().getView().findViewById(R.id.textInputEditText);
         notes = textInputEditText.getText().toString();
         //get notes from Questionnaire
 
-
-
-         if (notes.replaceAll(" ","").equals("")) notes = "";
-         Log.e("NOTES","STRING NOTE IS:" + notes +"END");
-
-
+        if (notes.replaceAll(" ","").equals("")) notes = "";
+        Log.e("NOTES","STRING NOTE IS:" + notes +"END");
 
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
         MoodDao moodDao = db.moodDao();
 
+        long userId = ((MyApplication) getApplication()).getLoggedInUser().id;
 
         mood.assessment = Instant.now();
         mood.notes = notes;
+        mood.userId = userId;
+
         int mood_score = MoodScore.calculate(mood);
 
         // only insert mood when questionnaire is valid and not only null
@@ -229,12 +215,10 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         //TODO Calculate Questionnaire Streak
          // get test user from Database
 
-         ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getAll();
+         ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getAllByUserId(userId);
          Futures.addCallback(
                  future2,
                  new FutureCallback<List<Mood>>() {
-
-
                      @Override
                      public void onSuccess(List<Mood> result) {
                          items = result;
@@ -262,8 +246,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
                  this.getMainExecutor()
          );
 
-         //done with database query
-
+        //done with database query
 
 
         //initialize new Questionnaire data
@@ -275,7 +258,6 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         Intent backToCallingActivity = new Intent(this, MainActivity.class);
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
-
 
         finish();
         startActivity(backToCallingActivity);
@@ -289,7 +271,4 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         toast.show();
 
     }
-
-
-
 }
