@@ -1,5 +1,7 @@
 <?php
 
+require_once "http_exceptions.php";
+require_once "session.php";
 require_once "snake_to_camel.php";
 
 function datef(string $field): string {
@@ -14,13 +16,13 @@ function to_bool($val) {
 
 function assert_is_array($array, $name) {
     if (!is_array($array)) {
-        throw new InvalidArgumentException("$name must be an array");
+        throw new BadRequest("$name must be an array");
     }
 }
 
 function assert_is_numeric($num, $name) {
     if (!is_numeric($num)) {
-        throw new InvalidArgumentException("$name must be numeric");
+        throw new BadRequest("$name must be numeric");
     }
 }
 
@@ -106,7 +108,7 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
             ]);
         }
     }
-    
+
     return $act_id_map;
 }
 
@@ -253,7 +255,7 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
             ]);
         }
     }
-    
+
     return $mood_id_map;
 }
 
@@ -287,27 +289,82 @@ function get_updated_moods(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
     return $sth->fetchAll(PDO::FETCH_ASSOC);
 }
 
-try {
-    if (!session_start()) {
-        throw new RuntimeException("Cannot start session");
-    }
+$sql_insert_accelerometer_data = <<<'EOD'
+insert into accelerometer_data (user_id, last_sync_sqn, time, x, y, z)
+values (:user_id, :sync_sqn, :time, :x, :y, :z)
+ON DUPLICATE KEY UPDATE;
+EOD;
 
+function insert_accelerometer_data(PDO $dbh, int $user_id, int $sync_sqn, ?array $client_accels) {
+    global $sql_insert_accelerometer_data;
+
+    if (isset($client_accels)) {
+        $sth = $dbh->prepare($sql_insert_accelerometer_data);
+        foreach ($client_accels as $accel) {
+            $sth->execute([
+                "user_id" => $user_id,
+                "sync_sqn" => $sync_sqn,
+                "time" => $accel['time'] ?? null,
+                "x" => $accel['y'] ?? null,
+                "y" => $accel['y'] ?? null,
+                "z" => $accel['y'] ?? null
+            ]);
+        }
+    }
+}
+
+// Note it is missing a semicolon at the end.
+// An additional condition can be appended.
+$sql_get_accelerometer_data = <<<EOD
+select {$df('time')}, x, y, z
+from accelerometer_data
+where user_id = :user_id
+EOD;
+
+function get_accelerometer_data(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
+    global $sql_get_accelerometer_data;
+
+    $sql = $sql_get_accelerometer_data;
+
+    $params = [
+        "user_id" => $user_id
+    ];
+
+    if (isset($last_sync_sqn)) {
+        $sql .= " and last_sync_sqn > :last_sync_sqn";
+        $params["last_sync_sqn"] = $last_sync_sqn;
+    }
+    $sql .= ";";
+
+    $sth = $dbh->prepare($sql);
+    $sth->execute($params);
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+}
+
+try {
     header('Content-type: application/json; charset=utf-8');
 
-    $user_id = $_SESSION['user_id'] ?? null;
-    if (!isset($user_id)) {
-        throw new RuntimeException("Not logged in");
-    }
-    $last_access = $_SESSION['last_access'] ?? null;
-    $_SESSION['last_access'] = time();
     $request = require "get_input.php";
-
     $json_pretty = $request['json_pretty'] ?? null;
     $json_pretty = to_bool($json_pretty);
 
+    $sess_str = $request['session'] ?? null;
+
+    if (!isset($sess_str)) {
+        throw new BadRequest();
+    }
+
     $dbh = require 'connect.php';
     $dbh->beginTransaction();
-    $dbh->exec('set time_zone = "+00:00";');
+    $dbh->exec('set time_zone = "+00:00"; SET SESSION sql_mode="ALLOW_INVALID_DATES";');
+
+    $sess = Session::fromString($sess_str);
+
+    $user_id = $sess->authenticate($dbh);
+
+    if ($user_id === false) {
+        throw new Unauthorized();
+    }
 
     $sync_sqn = get_sync_sqn($dbh, $user_id);
 
@@ -323,7 +380,6 @@ try {
 
     $response = [
         "last_sync_sqn" => $sync_sqn,
-        "last_access" => $last_access,
         "activities" => [
             "created" => [],
             "modified" => []
@@ -331,8 +387,8 @@ try {
         "moods" => [
             "created" => [],
             "modified" => []
-        ]
-
+        ],
+        "accelerometer_data" => []
     ];
 
     $client_acts = $request['activities'] ?? null;
@@ -347,6 +403,10 @@ try {
     }
     $response['moods']['modified'] = get_updated_moods($dbh, $user_id, $last_sync_sqn);
 
+    $client_accels = $request['accelerometer_data'] ?? null;
+    insert_accelerometer_data($dbh, $user_id, $sync_sqn, $client_accels);
+    $response['accelerometer_data'] = get_accelerometer_data($dbh, $user_id, $last_sync_sqn);
+
     update_sync_sqn($dbh, $user_id);
 
     arr_snake_to_camel($response);
@@ -357,8 +417,15 @@ try {
     }
 
     $json = json_encode($response, $json_flags);
-    
+
     $dbh->commit();
+}
+catch (HttpException $e) {
+    http_response_code($e->getHttpCode());
+    $json = json_encode(['error' => [
+        'msg' => $e->getMessage(),
+        'code' => $e->getCode()
+    ]]);
 }
 catch (Throwable $e) {
     http_response_code(500);
