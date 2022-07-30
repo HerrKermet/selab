@@ -16,7 +16,10 @@ CREATE TABLE IF NOT EXISTS `activities` (
  `last_modification` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `end` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `type` varchar(255) DEFAULT NULL,
+ `duration` bigint(20) unsigned DEFAULT NULL, -- duration in seconds
+ `activity_type` varchar(255) DEFAULT NULL, -- is a string from a clearly defined enum
+ `type` varchar(255) DEFAULT NULL, -- can be written by the user of the app
+ `is_automatically_detected` boolean NOT NULL DEFAULT 0,
  PRIMARY KEY (`id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -43,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `moods` (
  `consider_yourself_failure` tinyint(4) DEFAULT NULL,
  `acted_impulsively` tinyint(4) DEFAULT NULL,
  `acted_aggressively` tinyint(4) DEFAULT NULL,
+ `notes` varchar(255) DEFAULT NULL,
  PRIMARY KEY (`id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

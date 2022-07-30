@@ -50,8 +50,8 @@ function update_sync_sqn(PDO $dbh, int $user_id) {
 }
 
 $sql_sync_activities_insert = <<<'EOD'
-insert into activities (user_id, last_sync_sqn, last_modification, start, end, type)
-values (:user_id, :sync_sqn, :last_modification, :start, :end, :type);
+insert into activities (user_id, last_sync_sqn, last_modification, start, end, duration, activity_type, type, is_automatically_detected)
+values (:user_id, :sync_sqn, :last_modification, :start, :end, :duration, :activity_type, :type, :is_automatically_detected);
 EOD;
 
 $sql_sync_activities_update = <<<'EOD'
@@ -60,7 +60,11 @@ last_sync_sqn = :sync_sqn,
 last_modification = :last_modification,
 start = :start,
 end = :end,
-type = :type
+duration = :duration,
+activity_type = :activity_type,
+type = :type,
+is_automatically_detected = :is_automatically_detected
+
 where user_id = :user_id and id = :activity_id and last_modification < :last_modification;
 EOD;
 
@@ -81,7 +85,10 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
                 "last_modification" => $created_act['lastModification'] ?? null,
                 "start" => $created_act['start'] ?? null,
                 "end" => $created_act['end'] ?? null,
-                "type" => $created_act['type'] ?? null
+                "duration" => $created_act['duration'] ?? null,
+                "activity_type" => $created_act['activity_type'] ?? null,
+                "type" => $created_act['type'] ?? null,
+                "is_automatically_detected" => $created_act['is_automatically_detected'] ?? null
             ]);
             $act_id_map[] = [
                 "id" => $dbh->lastInsertId()
@@ -104,7 +111,10 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
                 "last_modification" => $mod_act['lastModification'] ?? null,
                 "start" => $mod_act['start'] ?? null,
                 "end" => $mod_act['end'] ?? null,
-                "type" => $mod_act['type'] ?? null
+                "duration" => $mod_act['duration'] ?? null,
+                "activity_type" => $mod_act['activity_type'] ?? null,
+                "type" => $mod_act['type'] ?? null,
+                "is_automatically_detected" => $mod_act['is_automatically_detected'] ?? null
             ]);
         }
     }
@@ -115,7 +125,9 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
 // Note it is missing a semicolon at the end.
 // An additional condition can be appended.
 $sql_get_updated_activities = <<<EOD
-select id, {$df('last_modification')}, {$df('start')}, {$df('end')}, type
+select id, {$df('last_modification')}, {$df('start')}, {$df('end')},
+duration, activity_type, type, is_automatically_detected
+
 from activities
 where user_id = :user_id
 EOD;
@@ -145,12 +157,13 @@ insert into moods (user_id, last_sync_sqn, last_modification,
 assessment, satisfaction, calmness, comfort, relaxation, energy, wakefulness,
 event_negative_intensity, event_positive_intensity, alone, surrounding_people_liking,
 surrounding_people_type, location, satisfied_with_yourself, consider_yourself_failure,
-acted_impulsively, acted_aggressively)
+acted_impulsively, acted_aggressively, notes)
 
 values (:user_id, :sync_sqn, :last_modification,
 :assessment, :satisfaction, :calmness, :comfort, :relaxation, :energy, :wakefulness,
 :event_negative_intensity, :event_positive_intensity, :alone, :surrounding_people_liking,
-:surrounding_people_type, :location, :satisfied_with_yourself, :consider_yourself_failure, :acted_impulsively, :acted_aggressively);
+:surrounding_people_type, :location, :satisfied_with_yourself, :consider_yourself_failure,
+:acted_impulsively, :acted_aggressively, :notes);
 EOD;
 
 $sql_sync_moods_update = <<<'EOD'
@@ -174,7 +187,8 @@ location = :location,
 satisfied_with_yourself = :satisfied_with_yourself,
 consider_yourself_failure = :consider_yourself_failure,
 acted_impulsively = :acted_impulsively,
-acted_aggressively = :acted_aggressively
+acted_aggressively = :acted_aggressively,
+notes = :notes
 
 where user_id = :user_id and id = :id and last_modification < :last_modification;
 EOD;
@@ -214,7 +228,8 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
                 "satisfied_with_yourself" => $created_mood['satisfied_with_yourself'] ?? null,
                 "consider_yourself_failure" => $created_mood['consider_yourself_failure'] ?? null,
                 "acted_impulsively" => $created_mood['acted_impulsively'] ?? null,
-                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null
+                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null,
+                "notes" => $created_mood['notes'] ?? null,
             ]);
             $mood_id_map[] = [
                 "id" => $dbh->lastInsertId()
@@ -234,24 +249,25 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
                 "id" => $mod_mood['id'],
                 "user_id" => $user_id,
                 "sync_sqn" => $sync_sqn,
-                "last_modification" => $created_mood['lastModification'] ?? null,
-                "assessment" => $created_mood['assessment'] ?? null,
-                "satisfaction" => $created_mood['satisfaction'] ?? null,
-                "calmness" => $created_mood['calmness'] ?? null,
-                "comfort" => $created_mood['comfort'] ?? null,
-                "relaxation" => $created_mood['relaxation'] ?? null,
-                "energy" => $created_mood['energy'] ?? null,
-                "wakefulness" => $created_mood['wakefulness'] ?? null,
-                "event_negative_intensity" => $created_mood['event_negative_intensity'] ?? null,
-                "event_positive_intensity" => $created_mood['event_positive_intensity'] ?? null,
-                "alone" => $created_mood['alone'] ?? null,
-                "surrounding_people_liking" => $created_mood['surrounding_people_liking'] ?? null,
-                "surrounding_people_type" => $created_mood['surrounding_people_type'] ?? null,
-                "location" => $created_mood['location'] ?? null,
-                "satisfied_with_yourself" => $created_mood['satisfied_with_yourself'] ?? null,
-                "consider_yourself_failure" => $created_mood['consider_yourself_failure'] ?? null,
-                "acted_impulsively" => $created_mood['acted_impulsively'] ?? null,
-                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null
+                "last_modification" => $mod_mood['lastModification'] ?? null,
+                "assessment" => $mod_mood['assessment'] ?? null,
+                "satisfaction" => $mod_mood['satisfaction'] ?? null,
+                "calmness" => $mod_mood['calmness'] ?? null,
+                "comfort" => $mod_mood['comfort'] ?? null,
+                "relaxation" => $mod_mood['relaxation'] ?? null,
+                "energy" => $mod_mood['energy'] ?? null,
+                "wakefulness" => $mod_mood['wakefulness'] ?? null,
+                "event_negative_intensity" => $mod_mood['event_negative_intensity'] ?? null,
+                "event_positive_intensity" => $mod_mood['event_positive_intensity'] ?? null,
+                "alone" => $mod_mood['alone'] ?? null,
+                "surrounding_people_liking" => $mod_mood['surrounding_people_liking'] ?? null,
+                "surrounding_people_type" => $mod_mood['surrounding_people_type'] ?? null,
+                "location" => $mod_mood['location'] ?? null,
+                "satisfied_with_yourself" => $mod_mood['satisfied_with_yourself'] ?? null,
+                "consider_yourself_failure" => $mod_mood['consider_yourself_failure'] ?? null,
+                "acted_impulsively" => $mod_mood['acted_impulsively'] ?? null,
+                "acted_aggressively" => $mod_mood['acted_aggressively'] ?? null,
+                "notes" => $mod_mood['notes'] ?? null,
             ]);
         }
     }
@@ -263,7 +279,11 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
 // An additional condition can be appended.
 $sql_get_updated_moods = <<<EOD
 select id, {$df('last_modification')},
-{$df('assessment')}, satisfaction, calmness, comfort, relaxation, energy, wakefulness
+{$df('assessment')}, satisfaction, calmness, comfort, relaxation, energy, wakefulness,
+event_negative_intensity, event_positive_intensity, alone,
+surrounding_people_liking, surrounding_people_type, location,
+satisfied_with_yourself, consider_yourself_failure,
+acted_impulsively, acted_aggressively, notes
 
 from moods
 where user_id = :user_id
