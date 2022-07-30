@@ -177,14 +177,17 @@ public class Sportactivity_Home extends AppCompatActivity {
             try {
                 db.runInTransaction(() -> {
                     List<Activity> latestActivities = activityDao.getUserLatestNActivitiesSync(userId, 5);
-                    itemAdapter adapter = new itemAdapter(latestActivities, activityDao, this);
-                    recyclerView.setAdapter(adapter);
 
                     activitiesBetween = activityDao.getUserActivitiesBetweenDatesSync(userId, startDate, endDate);
-                    plotActivities(true, barChart);
 
                     appGeneratedActivities = activityDao.getUserAppGeneratedActivitiesSync(userId);
-                    notificationBadge.setNumber(appGeneratedActivities.size());
+
+                    runOnUiThread(() -> {
+                        itemAdapter adapter = new itemAdapter(latestActivities, activityDao, this);
+                        recyclerView.setAdapter(adapter);
+                        plotActivities(true, barChart);
+                        notificationBadge.setNumber(appGeneratedActivities.size());
+                    });
                     Log.d("Room", "Transaction succeeded");
                 });
             }
