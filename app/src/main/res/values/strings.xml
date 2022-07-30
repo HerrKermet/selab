@@ -127,6 +127,10 @@
     <string name="invalid_userid">Not a valid user ID</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="invalid_credentials">"Invalid user ID or password"</string>
+    <string name="http_connection_failed">"Connection to the server failed"</string>
+    <string name="http_request_failed">"HTTP request failed"</string>
+    <string name="http_response_malformed">"HTTP response malformed"</string>
     <string name="registration_failed">"Registration failed"</string>
     <string name="account_created_text">A new account has been automatically created for you!\n\nPlease store the following information in a safe place.</string>
     <string name="remember_login">Remember login and password</string>
