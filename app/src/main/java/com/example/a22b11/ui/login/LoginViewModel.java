@@ -12,11 +12,8 @@ import com.example.a22b11.api.LoginCredentials;
 import com.example.a22b11.api.RegisteredUser;
 import com.example.a22b11.api.Session;
 import com.example.a22b11.db.User;
-import com.example.a22b11.db.UserDao;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-
-import java.util.concurrent.Executor;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,31 +61,25 @@ public class LoginViewModel extends ViewModel {
 
                                 @Override
                                 public void onFailure(@NonNull Throwable t) {
-                                    loginResult.setValue(LoginResult.createError(R.string.login_failed));
+                                    loginResult.setValue(LoginResult.createError(R.string.database_transaction_failed));
                                 }
                             },
                             MyApplication.getInstance().getMainExecutor()
                     );
                 }
+                else if (response.code() == 401) {
+                    loginResult.setValue(LoginResult.createError(R.string.invalid_credentials));
+                }
                 else {
-                    loginResult.setValue(LoginResult.createError(R.string.login_failed));
+                    loginResult.setValue(LoginResult.createError(R.string.http_request_failed));
                 }
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                loginResult.setValue(LoginResult.createError(R.string.login_failed));
+                loginResult.setValue(LoginResult.createError(R.string.http_connection_failed));
             }
         });
-
-        /*
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
-         */
     }
 
     public void register() {
@@ -99,7 +90,7 @@ public class LoginViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     final RegisteredUser user = response.body();
                     if (user.id == null || user.password == null || user.session == null) {
-                        registerResult.setValue(new RegisterResult(R.string.registration_failed));
+                        registerResult.setValue(new RegisterResult(R.string.http_response_malformed));
                         return;
                     }
                     User loggedInUser = new User(user.id, user.session);
@@ -114,20 +105,20 @@ public class LoginViewModel extends ViewModel {
 
                                 @Override
                                 public void onFailure(@NonNull Throwable t) {
-                                    registerResult.setValue(new RegisterResult(R.string.registration_failed));
+                                    registerResult.setValue(new RegisterResult(R.string.database_transaction_failed));
                                 }
                             },
                             MyApplication.getInstance().getMainExecutor()
                     );
                 }
                 else {
-                    registerResult.setValue(new RegisterResult(R.string.registration_failed));
+                    registerResult.setValue(new RegisterResult(R.string.http_request_failed));
                 }
             }
 
             @Override
             public void onFailure(Call<RegisteredUser> call, Throwable t) {
-                registerResult.setValue(new RegisterResult(R.string.registration_failed));
+                registerResult.setValue(new RegisterResult(R.string.http_connection_failed));
             }
         });
     }
