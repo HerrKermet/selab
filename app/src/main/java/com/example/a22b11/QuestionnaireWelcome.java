@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
@@ -124,6 +126,8 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         startActivity(backToCallingActivity);
     }
 
+    static final private Executor dbTransactionExecutor = Executors.newSingleThreadExecutor();
+
     public void onBtnFinishClick (View view) {
         TextInputEditText textInputEditText = fragmentContainerView.getFragment().getView().findViewById(R.id.textInputEditText);
         notes = textInputEditText.getText().toString();
@@ -143,47 +147,38 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         int mood_score = MoodScore.calculate(mood);
 
-        // only insert mood when questionnaire is valid and not only null
-        if (mood_score != -1){
-            ListenableFuture<Void> moodinsert = moodDao.insert(mood);
-        }
 
 
-         // get test user from Database
+        dbTransactionExecutor.execute(() -> {
+            // only insert mood when questionnaire is valid and not only null
+            try {
+                Log.d("Room", "Starting mood saving transaction");
+                db.runInTransaction(() -> {
+                    if (mood_score != -1) {
+                        moodDao.insertSync(mood);
+                    }
+                    items = moodDao.getAllByUserIdSync(userId);
+                    ArrayList<Instant> differentDates = new ArrayList<>();
+                    int numberOfDifferentDates = 0;
+                    for (Mood questionnaire : items) {
+                        // count number of different days of questionnaires
+                        if (differentDates.contains(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS))) continue;
+                        differentDates.add(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS));
+                    }
+                    numberOfDifferentDates = differentDates.size();
 
-         ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getAllByUserId(userId);
-         Futures.addCallback(
-                 future2,
-                 new FutureCallback<List<Mood>>() {
-                     @Override
-                     public void onSuccess(List<Mood> result) {
-                         items = result;
-                         ArrayList<Instant> differentDates = new ArrayList<>();
-                         int numberOfDifferentDates = 0;
-                         for (Mood questionnaire : items) {
-                             // count number of different days of questionnaires
-                             if (differentDates.contains(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS))) continue;
-                             differentDates.add(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS));
-                         }
-                         numberOfDifferentDates = differentDates.size();
-
-                         //save number of different dates where a questionnaire was taken into shared preferences
-                         sharedPreferences = getApplicationContext().getSharedPreferences("QuestionnaireData", Context.MODE_PRIVATE);
-                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                         editor.putInt("DailyQuestionnaireCount", numberOfDifferentDates);
-                         editor.commit();
-                     }
-
-                     public void onFailure(Throwable thrown) {
-                         Log.e("Failure to retrieve questionnaire data",thrown.getMessage());
-                     }
-                 },
-                 // causes the callbacks to be executed on the main (UI) thread
-                 this.getMainExecutor()
-         );
-
-        //done with database query
-
+                    //save number of different dates where a questionnaire was taken into shared preferences
+                    sharedPreferences = getApplicationContext().getSharedPreferences("QuestionnaireData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("DailyQuestionnaireCount", numberOfDifferentDates);
+                    editor.commit();
+                    Log.d("Room", "Mood transaction succeeded");
+                });
+            }
+            catch (Throwable t) {
+                Log.e("Room", "Mood transaction failed with exception: " + t.getMessage());
+            }
+        });
 
         //initialize new Questionnaire data
 
