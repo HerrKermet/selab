@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 7,
-    "identityHash": "f439fb2d50efec49cae35c011c90312f",
+    "version": 9,
+    "identityHash": "3dde39725bf56f21330dbc72ee4377ea",
     "entities": [
       {
         "tableName": "users",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "activities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `activity_type` TEXT, `custom_type` TEXT, `duration` INTEGER, `automatically_detected` INTEGER NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_id` INTEGER PRIMARY KEY AUTOINCREMENT, `id` INTEGER, `user_id` INTEGER, `is_modified` INTEGER, `last_modification` INTEGER, `start` INTEGER, `end` INTEGER, `activity_type` TEXT, `custom_type` TEXT, `duration` INTEGER, `is_automatically_detected` INTEGER NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "localId",
@@ -108,7 +108,7 @@
           },
           {
             "fieldPath": "isAutomaticallyDetected",
-            "columnName": "automatically_detected",
+            "columnName": "is_automatically_detected",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -379,7 +379,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f439fb2d50efec49cae35c011c90312f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3dde39725bf56f21330dbc72ee4377ea')"
     ]
   }
 }

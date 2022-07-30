@@ -84,7 +84,6 @@ public class Sportactivity_Record extends AppCompatActivity {
 
         if(getIntent().hasExtra("selectedActivityNumber")) selectedActivityNumber = getIntent().getIntExtra("selectedActivityNumber", -1); //TODO -1 means error
 
-
         if (buttonState != 2) {
             finishButton.setVisibility(View.GONE);
         }
@@ -168,13 +167,10 @@ public class Sportactivity_Record extends AppCompatActivity {
     }
 
 
-
-
-
     //Saving SelectedActivity, SelectedActivityNumber, StartTime,EndTime and Duration in intent and passing them into next page
     public void buttonClickFinish(View view){
 
-        duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) ); //TODO getting the duration in minutes, remember to bring back /60
+        duration = (int) Math.floor(((pausedAt - chronometer.getBase()) / 1000) );
         Activity activity = new Activity(startTime, endTime, selectedActivity, duration, Activity.ActivityType.values()[selectedActivityNumber]);
 
         Log.e("this is the error we are looking for ", String.valueOf(duration));
@@ -184,7 +180,6 @@ public class Sportactivity_Record extends AppCompatActivity {
 
         startActivity(intent);
     }
-
 
 
     //to save states when the device is rotated,

@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.time.Instant;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import okhttp3.OkHttpClient;
@@ -121,11 +122,13 @@ public class MyApplication extends Application {
     private class RunnableSync implements Runnable {
         static final private long interval = 60000;
 
+        final private ExecutorService executor = Executors.newSingleThreadExecutor();
+
         @Override
         public void run() {
             Log.d("Sync", "Synchronizing data with the server...");
             Futures.addCallback(
-                    Transactions.synchronizeWithTheServer(Executors.newSingleThreadExecutor()),
+                    Transactions.synchronizeWithTheServer(executor),
                     new FutureCallback<Instant>() {
                         @Override
                         public void onSuccess(Instant instant) {
