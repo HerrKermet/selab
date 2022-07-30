@@ -26,11 +26,20 @@ public interface ActivityDao {
     @Query("SELECT * FROM activities WHERE automatically_detected = 0 ORDER BY start DESC LIMIT :n")
     ListenableFuture<List<Activity>> getLatestNActivities(int n);
 
+    @Query("SELECT * FROM activities WHERE user_id = :userId AND automatically_detected = 0 ORDER BY start DESC LIMIT :n")
+    List<Activity> getUserLatestNActivitiesSync(long userId, int n);
+
+    @Query("SELECT * FROM activities WHERE user_id = :userId AND automatically_detected = 0 AND start BETWEEN :start AND :end ORDER BY start ASC")
+    List<Activity> getUserActivitiesBetweenDatesSync(long userId, Instant start, Instant end);
+
     @Query("SELECT * FROM activities WHERE automatically_detected = 0 ORDER BY start DESC")
     ListenableFuture<List<Activity>> getUserGeneratedActivites();
 
     @Query("SELECT * FROM activities WHERE automatically_detected = 1 ORDER BY start DESC")
     ListenableFuture<List<Activity>> getAppGeneratedActivities();
+
+    @Query("SELECT * FROM activities WHERE user_id = :userId AND automatically_detected = 1 ORDER BY start DESC")
+    List<Activity> getUserAppGeneratedActivitiesSync(long userId);
 
     @Query("DELETE FROM activities WHERE user_id = :userId")
     void deleteAllByUserIdSync(long userId);
