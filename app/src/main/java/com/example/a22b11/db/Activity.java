@@ -36,7 +36,7 @@ public class Activity implements Serializable {
 
     @Ignore
     public Activity(Instant start, Instant end, String type, Integer duration, ActivityType activityType) {
-        this.userId = userId;
+        this.userId = null;
         this.lastModification = Instant.now();
         this.start = start;
         this.end = end;
@@ -91,7 +91,7 @@ public class Activity implements Serializable {
     @ColumnInfo(name = "duration")
     public Integer duration;
 
-    @ColumnInfo(name = "automatically_detected")
-    public Boolean isAutomaticallyDetected;
+    @ColumnInfo(name = "is_automatically_detected")
+    public boolean isAutomaticallyDetected;
 
 }
