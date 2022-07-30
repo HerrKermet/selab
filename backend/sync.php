@@ -126,7 +126,7 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
 // An additional condition can be appended.
 $sql_get_updated_activities = <<<EOD
 select id, {$df('last_modification')}, {$df('start')}, {$df('end')},
-duration, activity_type, type, is_automatically_detected,
+duration, activity_type, type, is_automatically_detected
 
 from activities
 where user_id = :user_id
