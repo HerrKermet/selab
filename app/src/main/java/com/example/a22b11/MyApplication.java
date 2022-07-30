@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
 import com.example.a22b11.api.FitnessApiClient;
@@ -14,6 +17,8 @@ import com.example.a22b11.api.InstantAdapter;
 import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.db.Transactions;
 import com.example.a22b11.db.User;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,6 +36,7 @@ public class MyApplication extends Application {
     private FitnessApiClient fitnessApiClient;
     private Handler syncHandler;
     private User loggedInUser = null;
+    private MutableLiveData<Instant> lastSync;
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
@@ -40,10 +46,20 @@ public class MyApplication extends Application {
         return loggedInUser;
     }
 
+    public LiveData<Instant> getLastSyncLiveData() {
+        return lastSync;
+    }
+
+    public MutableLiveData<Instant> getLastSyncMutableLiveData() {
+        return lastSync;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        lastSync = new MutableLiveData<>(null);
 
         appDatabase = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name")
@@ -108,13 +124,21 @@ public class MyApplication extends Application {
         @Override
         public void run() {
             Log.d("Sync", "Synchronizing data with the server...");
-            try {
-                Transactions.synchronizeWithTheServer(Executors.newSingleThreadExecutor()).get();
-                Log.d("Sync", "Completed");
-            }
-            catch (Throwable t) {
-                Log.w("Sync", "Exception: " + t.getMessage());
-            }
+            Futures.addCallback(
+                    Transactions.synchronizeWithTheServer(Executors.newSingleThreadExecutor()),
+                    new FutureCallback<Instant>() {
+                        @Override
+                        public void onSuccess(Instant instant) {
+                            getLastSyncMutableLiveData().setValue(instant);
+                            Log.d("Sync", "Completed");
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Throwable t) {
+                            Log.w("Sync", "Exception: " + t.getMessage());
+                        }
+                    },
+                    getMainExecutor());
             syncHandler.postDelayed(this, interval);
         }
     }

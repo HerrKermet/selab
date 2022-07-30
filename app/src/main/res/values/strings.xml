@@ -141,4 +141,6 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="dialog_logout">Are you sure you want to log out?</string>
+    <string name="signed_in_user_info">Signed in with user ID: %d</string>
+    <string name="last_sync_info">Last sync: %s</string>
 </resources>
