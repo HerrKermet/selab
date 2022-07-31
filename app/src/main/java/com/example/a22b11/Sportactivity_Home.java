@@ -180,7 +180,7 @@ public class Sportactivity_Home extends AppCompatActivity {
                     runOnUiThread(() -> {
                         itemAdapter adapter = new itemAdapter(latestActivities, activityDao, this);
                         recyclerView.setAdapter(adapter);
-                        plotActivities(true, barChart);
+                        plotActivities(barChart);
                         notificationBadge.setNumber(appGeneratedActivities.size());
                     });
                     Log.d("Room", "Transaction succeeded");
