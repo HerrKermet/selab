@@ -22,6 +22,9 @@ public interface AccelerometerDataDao {
     @Query("SELECT * FROM accelerometer_data WHERE user_id = :userId")
     List<AccelerometerData> getByUserIdSync(Long userId);
 
+    @Query("DELETE FROM accelerometer_data WHERE user_id = :userId")
+    void deleteAllByUserIdSync(long userId);
+
     /**
      * Get all user accelerometer samples after a specific time (inclusive)
      * @param userId - user id

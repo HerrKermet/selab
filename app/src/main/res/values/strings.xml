@@ -127,9 +127,20 @@
     <string name="invalid_userid">Not a valid user ID</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="invalid_credentials">"Invalid user ID or password"</string>
+    <string name="http_connection_failed">"Connection to the server failed"</string>
+    <string name="http_request_failed">"HTTP request failed"</string>
+    <string name="http_response_malformed">"HTTP response malformed"</string>
     <string name="registration_failed">"Registration failed"</string>
-    <string name="account_created_text">A new account has been automatically created for you!\n\nPlease store the following information in a safe place.</string>
+    <string name="account_created_text">A new account has been automatically created for you!\n\nPlease save the following information in a safe place.</string>
     <string name="remember_login">Remember login and password</string>
     <string name="credentials_saved">User credentials saved</string>
     <string name="credentials_not_saved">User credentials could not be saved</string>
+    <string name="logout">Log out</string>
+    <string name="database_transaction_failed">Database transaction failed</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_logout">Are you sure you want to log out?</string>
+    <string name="signed_in_user_info">Signed in with user ID: %d</string>
+    <string name="last_sync_info">Last sync: %s</string>
 </resources>

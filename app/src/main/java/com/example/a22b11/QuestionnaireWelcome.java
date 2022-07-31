@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class QuestionnaireWelcome extends AppCompatActivity {
     // String Boolean which keeps track of answered questions
@@ -67,12 +69,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBarCircular);
         textViewProgressBar = findViewById(R.id.tv_progressBar_circular);
 
-
-
         updateQuestionProgessBar();
-
-
-
     }
 
     @Override
@@ -93,7 +90,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
     }
 
     private int getQuestionCount() {
-        //TODO set this value to number of questions or make it dynamic
+        //set this value to number of questions or make it dynamic
         int questionCount = 7;
         return questionCount;
     }
@@ -116,155 +113,72 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
     public void onBtnNextClick_Questionnaire_Welcome_Fragment(View view) throws ExecutionException, InterruptedException {
-//TODO Delete test code
-        // Begin of testcode
-        /*
-        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
-
-        // create and add test mood
-        MoodDao moodDao = db.moodDao();
-        Mood mood1 = new Mood(2L,Instant.now(),10,10,10,10,10,10,5,5,true,5, Mood.PeopleType.FAMILY,Mood.LocationType.HOME,5,5,5,5);
-
-        ListenableFuture<Void> moodinsert = moodDao.insert(mood1);
-
-        List<Mood> moodList;
-        ListenableFuture<List<Mood>> futuremood = moodDao.getAll();
-        Futures.addCallback(
-                futuremood,
-                new FutureCallback<List<Mood>>() {
-                    @Override
-                    public void onSuccess(List<Mood> result) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-        moodList = futuremood.get();
-        System.out.println("Moods:" + moodList);
-
-
-        //create and add test user
-        UserDao userDao = db.userDao();
-        User user = new User(1, Instant.now(),"test123");
-        User user2 = new User(2,Instant.now(),"hello");
-        ListenableFuture<Void> future = userDao.insertAll(user,user2);
-
-
-        // get test user from Database
-        List<User> userlist;
-        ListenableFuture<List<User>> future2 = userDao.getAll();
-        Futures.addCallback(
-                future2,
-                new FutureCallback<List<User>>() {
-
-
-                    @Override
-                    public void onSuccess(List<User> result) {
-
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        // handle failure
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-        userlist = future2.get();
-        System.out.println(userlist.get(0).password);
-        */
-        // End of Testcode
 
         Navigation.findNavController(view).navigate(R.id.action_questionnaire_Welcome_Fragment_Next);
     }
-
-
-
 
     public void onBtnNotNowClick(View view) {
         Intent backToCallingActivity = new Intent(this, Sportactivity_Home.class);
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
-
         finish();  // delete questionnaire from backstack to prevent going back from recording into questionnaire
 
         startActivity(backToCallingActivity);
-
-
     }
 
+    static final private Executor dbTransactionExecutor = Executors.newSingleThreadExecutor();
 
-
-     public void onBtnFinishClick (View view) {
+    public void onBtnFinishClick (View view) {
         TextInputEditText textInputEditText = fragmentContainerView.getFragment().getView().findViewById(R.id.textInputEditText);
         notes = textInputEditText.getText().toString();
         //get notes from Questionnaire
 
-
-
-         if (notes.replaceAll(" ","").equals("")) notes = "";
-         Log.e("NOTES","STRING NOTE IS:" + notes +"END");
-
-
+        if (notes.replaceAll(" ","").equals("")) notes = "";
+        Log.e("NOTES","STRING NOTE IS:" + notes +"END");
 
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
         MoodDao moodDao = db.moodDao();
 
+        long userId = ((MyApplication) getApplication()).getLoggedInUser().id;
 
         mood.assessment = Instant.now();
         mood.notes = notes;
+        mood.userId = userId;
+
         int mood_score = MoodScore.calculate(mood);
 
-        // only insert mood when questionnaire is valid and not only null
-        if (mood_score != -1){
-            ListenableFuture<Void> moodinsert = moodDao.insert(mood);
-        }
-
-        //TODO Calculate Questionnaire Streak
-         // get test user from Database
-
-         ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getAll();
-         Futures.addCallback(
-                 future2,
-                 new FutureCallback<List<Mood>>() {
 
 
-                     @Override
-                     public void onSuccess(List<Mood> result) {
-                         items = result;
-                         ArrayList<Instant> differentDates = new ArrayList<>();
-                         int numberOfDifferentDates = 0;
-                         for (Mood questionnaire : items) {
-                             // count number of different days of questionnaires
-                             if (differentDates.contains(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS))) continue;
-                             differentDates.add(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS));
-                         }
-                         numberOfDifferentDates = differentDates.size();
+        dbTransactionExecutor.execute(() -> {
+            // only insert mood when questionnaire is valid and not only null
+            try {
+                Log.d("Room", "Starting mood saving transaction");
+                db.runInTransaction(() -> {
+                    if (mood_score != -1) {
+                        moodDao.insertSync(mood);
+                    }
+                    items = moodDao.getAllByUserIdSync(userId);
+                    ArrayList<Instant> differentDates = new ArrayList<>();
+                    int numberOfDifferentDates = 0;
+                    for (Mood questionnaire : items) {
+                        // count number of different days of questionnaires
+                        if (differentDates.contains(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS))) continue;
+                        differentDates.add(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS));
+                    }
+                    numberOfDifferentDates = differentDates.size();
 
-                         //save number of different dates where a questionnaire was taken into shared preferences
-                         sharedPreferences = getApplicationContext().getSharedPreferences("QuestionnaireData", Context.MODE_PRIVATE);
-                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                         editor.putInt("DailyQuestionnaireCount", numberOfDifferentDates);
-                         editor.commit();
-                     }
-
-                     public void onFailure(Throwable thrown) {
-                         Log.e("Failure to retrieve questionnaire data",thrown.getMessage());
-                     }
-                 },
-                 // causes the callbacks to be executed on the main (UI) thread
-                 this.getMainExecutor()
-         );
-
-         //done with database query
-
-
+                    //save number of different dates where a questionnaire was taken into shared preferences
+                    sharedPreferences = getApplicationContext().getSharedPreferences("QuestionnaireData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("DailyQuestionnaireCount", numberOfDifferentDates);
+                    editor.commit();
+                    Log.d("Room", "Mood transaction succeeded");
+                });
+            }
+            catch (Throwable t) {
+                Log.e("Room", "Mood transaction failed with exception: " + t.getMessage());
+            }
+        });
 
         //initialize new Questionnaire data
 
@@ -275,7 +189,6 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         Intent backToCallingActivity = new Intent(this, MainActivity.class);
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
-
 
         finish();
         startActivity(backToCallingActivity);
@@ -289,7 +202,4 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         toast.show();
 
     }
-
-
-
 }

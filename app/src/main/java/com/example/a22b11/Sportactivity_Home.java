@@ -1,7 +1,9 @@
 package com.example.a22b11;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,16 +12,29 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a22b11.adapter.itemAdapter;
+import com.example.a22b11.api.FitnessApiClient;
+import com.example.a22b11.api.Session;
+import com.example.a22b11.db.AccelerometerDataDao;
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
+import com.example.a22b11.db.MoodDao;
+import com.example.a22b11.db.User;
+import com.example.a22b11.db.UserDao;
+import com.example.a22b11.ui.login.LoginActivity;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.formatter.ValueFormatter;
@@ -35,6 +50,8 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,6 +60,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Sportactivity_Home extends AppCompatActivity {
 
@@ -61,6 +85,15 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     Instant startDate, endDate;
 
+    public static String getTimeString(Instant instant) {
+        if (instant == null) {
+            return "/";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+        return formatter.format(instant);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +102,19 @@ public class Sportactivity_Home extends AppCompatActivity {
         setTheme(theme);
 
         setContentView(R.layout.activity_sporthome);
+
+        TextView signInInfo = findViewById(R.id.signInInfo);
+        signInInfo.setText(getResources().getString(R.string.signed_in_user_info,
+                MyApplication.getInstance().getLoggedInUser().id));
+
+        TextView lastSyncInfo = findViewById(R.id.lastSyncInfo);
+        lastSyncInfo.setText(getResources().getString(R.string.last_sync_info,
+                getTimeString(null)));
+
+        MyApplication.getInstance().getLastSyncLiveData().observe(
+                this,
+                instant -> lastSyncInfo.setText(getResources().getString(R.string.last_sync_info,
+                        getTimeString(instant))));
 
         //BarChart
         barChart = findViewById(R.id.barChart3);
@@ -101,100 +147,9 @@ public class Sportactivity_Home extends AppCompatActivity {
             startDate =  endDate.minus(8, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS);      // instant 7 days before start time
         }
         Log.d("currentInstant", startDate + "   " + endDate);
-        /////////////////////////////////////////////////////////////////////////////////
-
-
-
-        //TODO CHANGE QUERY
-        // get recent activites from Database
-        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
-
-        ActivityDao activityDao = db.activityDao();
-        ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getLatestNActivities(5);
-        final Sportactivity_Home mythis = this;
-        Futures.addCallback(
-                future2,
-                new FutureCallback<List<Activity>>() {
-
-
-                    @Override
-                    public void onSuccess(List<Activity> result) {
-                        items = result;
-                        if(items != null) {
-                            if (!items.isEmpty()) {
-
-
-                                itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
-                                recyclerView.setAdapter(adapter);
-                                Log.d("Activities from Database", String.valueOf(items));
-
-                            }
-                        }
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        Log.e("Failure to retrieve activities",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
-        // get activites between start, end
-        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);
-        Futures.addCallback(
-                future3,
-                new FutureCallback<List<Activity>>() {
-
-
-                    @Override
-                    public void onSuccess(List<Activity> result) {
-                        activitiesBetween = result;
-                        Log.d("activity count between", "start:" + startDate.toString() + "  end:" + endDate.toString() + " count: " + String.valueOf(activitiesBetween.size()));
-                        for (Activity activity :
-                                activitiesBetween) {
-                            Log.d("activities retrieved between", activity.type + "  " + activity.duration + "  " + activity.start.toString());
-
-                        }
-                        //TODO check if this can be removed    plotActivities(true, barChart);
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        Log.e("Failure to retrieve activities",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
-        //done with database query
-
-        // get objects from Database
-
-        ListenableFuture<List<Activity>> future4 = (ListenableFuture<List<Activity>>) activityDao.getAppGeneratedActivities();
-        Futures.addCallback(
-                future4,
-                new FutureCallback<List<Activity>>() {
-
-
-                    @Override
-                    public void onSuccess(List<Activity> result) {
-                        appGeneratedActivities = result;
-                        notificationBadge.setNumber(appGeneratedActivities.size());
-
-                    }
-
-                    public void onFailure(@NonNull Throwable thrown) {
-                        Log.e("Failure to retrieve activities",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
-        //done with database query
-
     }
+
+    final static Executor databaseTransactionExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onResume() {
@@ -213,83 +168,34 @@ public class Sportactivity_Home extends AppCompatActivity {
         /////////////////////////////////////////////////////////////////////////////////
 
         // get objects from Database
-        AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
+        final AppDatabase db = ((MyApplication) getApplication()).getAppDatabase();
+        final ActivityDao activityDao = db.activityDao();
+        final long userId = ((MyApplication) getApplication()).getLoggedInUser().id;
 
-        ActivityDao activityDao = db.activityDao();
-        ListenableFuture<List<Activity>> future2 = (ListenableFuture<List<Activity>>) activityDao.getLatestNActivities(5);
-        final Sportactivity_Home mythis = this;
-        Futures.addCallback(
-                future2,
-                new FutureCallback<List<Activity>>() {
+        databaseTransactionExecutor.execute(() -> {
+            Log.d("Room", "Starting transaction");
+            try {
+                db.runInTransaction(() -> {
+                    List<Activity> latestActivities = activityDao.getUserLatestNActivitiesSync(userId, 5);
 
+                    activitiesBetween = activityDao.getUserActivitiesBetweenDatesSync(userId, startDate, endDate);
 
-                    @Override
-                    public void onSuccess(List<Activity> result) {
-                        items = result;
+                    appGeneratedActivities = activityDao.getUserAppGeneratedActivitiesSync(userId);
 
-                        itemAdapter adapter = new itemAdapter(items, activityDao, mythis);
+                    runOnUiThread(() -> {
+                        itemAdapter adapter = new itemAdapter(latestActivities, activityDao, this);
                         recyclerView.setAdapter(adapter);
-                        Log.d("Activities from Database", String.valueOf(items));
-
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        Log.e("Failure to retrieve activities",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
-        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);
-        Futures.addCallback(
-                future3,
-                new FutureCallback<List<Activity>>() {
-
-
-                    @Override
-                    public void onSuccess(List<Activity> result) {
-                        activitiesBetween = result;
                         plotActivities(true, barChart);
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        Log.e("Failure to retrieve activities",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
-        //done with database query
-
-        // get objects from Database
-
-        ListenableFuture<List<Activity>> future4 = (ListenableFuture<List<Activity>>) activityDao.getAppGeneratedActivities();
-        Futures.addCallback(
-                future4,
-                new FutureCallback<List<Activity>>() {
-
-
-                    @Override
-                    public void onSuccess(List<Activity> result) {
-                        appGeneratedActivities = result;
                         notificationBadge.setNumber(appGeneratedActivities.size());
-
-
-                    }
-
-                    public void onFailure(@NonNull Throwable thrown) {
-                        Log.e("Failure to retrieve activities",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
-        //done with database query
-
-
+                    });
+                    Log.d("Room", "Transaction succeeded");
+                });
+            }
+            catch (Throwable t) {
+                Log.e("Room", "Transaction failed with exception: " + t.getMessage());
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.database_transaction_failed, Toast.LENGTH_SHORT).show());
+            }
+        });
     }
 
     public void buttonSelectActivity(View view) {
@@ -334,6 +240,66 @@ public class Sportactivity_Home extends AppCompatActivity {
     public void onBtnClickColorSwitch(View view) {
         Intent intent = new Intent(this, Color_Choose_Theme.class);
         startActivity(intent);
+    }
+
+    private void showToast(@StringRes int toast)
+    {
+        runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
+    }
+
+    private void showToast(final String toast)
+    {
+        runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
+    }
+
+    private void runInAsyncTransaction(Runnable runnable) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                MyApplication.getInstance().getAppDatabase().runInTransaction(runnable);
+            }
+            catch (Throwable t) {
+                Log.e("Room", "Exception: " + t.getMessage());
+                String str = getResources().getString(R.string.database_transaction_failed);
+                showToast(str + ": " + t.getMessage());
+            }
+        });
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    public void onBtnClickLogOut(View view) {
+        new LogoutDialogFragment(() -> runInAsyncTransaction(() -> {
+            final AppDatabase database = MyApplication.getInstance().getAppDatabase();
+            final FitnessApiClient apiClient = MyApplication.getInstance().getFitnessApiClient();
+            final UserDao userDao = database.userDao();
+            final ActivityDao activityDao = database.activityDao();
+            final AccelerometerDataDao accelerometerDataDao = database.accelerometerDataDao();
+            final MoodDao moodDao = database.moodDao();
+
+            // There should be one user in the list
+            for (User user : userDao.getLoggedInSync()) {
+                Session session = new Session(user.loginSession);
+                try {
+                    if (!apiClient.logout(session).execute().isSuccessful())
+                        throw new RuntimeException("HTTP status code is not successful");
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
+                moodDao.deleteAllByUserIdSync(user.id);
+                activityDao.deleteAllByUserIdSync(user.id);
+                accelerometerDataDao.deleteAllByUserIdSync(user.id);
+                userDao.deleteAllSync();
+                runOnUiThread(() -> {
+                    MyApplication.getInstance().setLoggedInUser(null);
+                    MyApplication.getInstance().getLastSyncMutableLiveData().setValue(null);
+                    startLoginActivity();
+                });
+            }
+        })).show(getSupportFragmentManager(), "logout");
     }
 
     private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
@@ -463,8 +429,5 @@ public class Sportactivity_Home extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
-
     }
-
 }

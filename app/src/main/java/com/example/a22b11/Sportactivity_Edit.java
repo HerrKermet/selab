@@ -315,7 +315,6 @@ public class Sportactivity_Edit extends AppCompatActivity  {
 
 
 
-
     public void onClickApply(View view) {
         boolean passedChecks = true;
 
@@ -357,12 +356,15 @@ public class Sportactivity_Edit extends AppCompatActivity  {
 
             AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
+            final long userId = ((MyApplication) getApplication()).getLoggedInUser().id;
+
             activity.start = startInst;
             activity.end = endInst;
             activity.duration = Math.toIntExact(duration);
             activity.activityType = Activity.ActivityType.values()[activitySpinner.getSelectedItemPosition() - 1];
             activity.lastModification = Instant.now();
             activity.isAutomaticallyDetected = false;
+            activity.userId = userId;
 
             Log.d("activity duration", String.valueOf(activity.duration));
 
@@ -396,12 +398,7 @@ public class Sportactivity_Edit extends AppCompatActivity  {
             }
             finish();
             startActivity(intent);
-
-
-
         }
-
-
     }
 
 

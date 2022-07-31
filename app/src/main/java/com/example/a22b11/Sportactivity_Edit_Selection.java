@@ -37,14 +37,14 @@ public class Sportactivity_Edit_Selection extends AppCompatActivity {
         setTheme(theme);
         setContentView(R.layout.activity_sportedit_selection);
         recyclerView = findViewById(R.id.recyclerView);
-
+        final long userId = ((MyApplication) getApplication()).getLoggedInUser().id;
 
         // get test user from Database
         AppDatabase db = ((MyApplication)getApplication()).getAppDatabase();
 
         ActivityDao activityDao = db.activityDao();
         ListenableFuture<List<Activity>> future2;
-        if (!showOnlyAppCreated) future2 = (ListenableFuture<List<Activity>>) activityDao.getUserGeneratedActivites();
+        if (!showOnlyAppCreated) future2 = (ListenableFuture<List<Activity>>) activityDao.getUserGeneratedActivites(userId);
         else future2 = (ListenableFuture<List<Activity>>) activityDao.getAppGeneratedActivities();
         Futures.addCallback(
                 future2,

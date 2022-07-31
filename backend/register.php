@@ -1,19 +1,6 @@
 <?php
 
-function random_str(
-    $length = 8,
-    $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-) {
-    $str = '';
-    $max = mb_strlen($keyspace, '8bit') - 1;
-    if ($max < 1) {
-        throw new Exception('$keyspace must be at least two characters long');
-    }
-    for ($i = 0; $i < $length; ++$i) {
-        $str .= $keyspace[random_int(0, $max)];
-    }
-    return $str;
-}
+require_once "session.php";
 
 function datef(string $field): string {
     return "DATE_FORMAT($field, '%Y-%m-%dT%TZ') as $field";
@@ -22,20 +9,15 @@ function datef(string $field): string {
 $df = 'datef';
 
 try {
-    if (!session_start()) {
-        throw new RuntimeException("Cannot start session");
-    }
-
     header('Content-type: application/json; charset=utf-8');
 
     $user_password = random_str();
     $user_password_hash = password_hash($user_password, PASSWORD_DEFAULT);
 
-    $dbh = require 'connect.php';
-
+    $dbh = require "connect.php";
     $dbh->beginTransaction();
-    
     $dbh->exec('set time_zone = "+00:00";');
+
     $sql = "insert into users (password) values (?);";
     $sth = $dbh->prepare($sql);
     $sth->execute([$user_password_hash]);
@@ -48,18 +30,18 @@ try {
         throw new RuntimeException("Cannot get inserted user row");
     }
 
+    $user_id = $user_row['id'];
+
     $response = [
-        "id" => $user_row['id'],
+        "id" => $user_id,
         "password" => $user_password,
-        "creation" => $user_row['creation']
+        "creation" => $user_row['creation'],
+        "session" => (string) Session::create($dbh, $user_id)
     ];
 
     $json = json_encode($response, JSON_THROW_ON_ERROR);
-    
-    $dbh->commit();
 
-    $_SESSION['user_id'] = $user_id;
-    $_SESSION['last_access'] = time();
+    $dbh->commit();
 }
 catch (Throwable $e) {
     http_response_code(500);

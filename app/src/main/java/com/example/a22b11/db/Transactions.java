@@ -110,18 +110,24 @@ public class Transactions {
         return future;
     }
 
-    public static ListenableFuture<Void> synchronizeWithTheServer(Executor executor) {
-        final SettableFuture<Void> future = SettableFuture.create();
+    // If a synchronization took place returns the sync time, otherwise null
+    public static ListenableFuture<Instant> synchronizeWithTheServer(Executor executor) {
+        final SettableFuture<Instant> future = SettableFuture.create();
         executor.execute(() -> {
             try {
                 final AppDatabase appDatabase = MyApplication.getInstance().getAppDatabase();
+                final Instant syncTime = Instant.now();
+                final Instant[] returnInstant = {null};
                 appDatabase.runInTransaction(() -> {
                     SyncObject syncObject = new SyncObject();
                     ActivityDao activityDao = appDatabase.activityDao();
                     MoodDao moodDao = appDatabase.moodDao();
                     UserDao userDao = appDatabase.userDao();
                     AccelerometerDataDao accelDataDao = appDatabase.accelerometerDataDao();
-                    for (User user : userDao.getLoggedInSync()) {
+                    List<User> users = userDao.getLoggedInSync();
+                    if (users.size() > 0) {
+                        User user = users.get(0);
+                        returnInstant[0] = syncTime;
                         Instant lastSyncTime = user.lastSyncTime;
                         if (lastSyncTime == null) {
                             syncObject.accelerometerData = accelDataDao.getByUserIdSync(user.id);
@@ -159,6 +165,7 @@ public class Transactions {
                         activityDao.updateSync(syncObject.activities.created);
                         moodDao.updateSync(syncObject.moods.created);
                         for (Activity e : retSyncObject.activities.modified) {
+                            e.isModified = false;
                             e.userId = user.id;
                             List<Long> localId = activityDao.getLocalIdById(e.id);
                             if (localId.size() > 0) {
@@ -169,6 +176,7 @@ public class Transactions {
                             }
                         }
                         for (Mood e : retSyncObject.moods.modified) {
+                            e.isModified = false;
                             e.userId = user.id;
                             List<Long> localId = moodDao.getLocalIdById(e.id);
                             if (localId.size() > 0) {
@@ -183,11 +191,11 @@ public class Transactions {
                         }
                         accelDataDao.insertSync(retSyncObject.accelerometerData);
                         user.lastSyncSqn = retSyncObject.lastSyncSqn;
-                        user.lastSyncTime = Instant.now();
+                        user.lastSyncTime = syncTime;
                         userDao.updateSync(user);
                     }
                 });
-                future.set(null);
+                future.set(returnInstant[0]);
             }
             catch (Throwable t) {
                 future.setException(t);

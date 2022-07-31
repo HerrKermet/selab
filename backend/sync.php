@@ -1,5 +1,7 @@
 <?php
 
+require_once "http_exceptions.php";
+require_once "session.php";
 require_once "snake_to_camel.php";
 
 function datef(string $field): string {
@@ -14,13 +16,13 @@ function to_bool($val) {
 
 function assert_is_array($array, $name) {
     if (!is_array($array)) {
-        throw new InvalidArgumentException("$name must be an array");
+        throw new BadRequest("$name must be an array");
     }
 }
 
 function assert_is_numeric($num, $name) {
     if (!is_numeric($num)) {
-        throw new InvalidArgumentException("$name must be numeric");
+        throw new BadRequest("$name must be numeric");
     }
 }
 
@@ -48,8 +50,8 @@ function update_sync_sqn(PDO $dbh, int $user_id) {
 }
 
 $sql_sync_activities_insert = <<<'EOD'
-insert into activities (user_id, last_sync_sqn, last_modification, start, end, type)
-values (:user_id, :sync_sqn, :last_modification, :start, :end, :type);
+insert into activities (user_id, last_sync_sqn, last_modification, start, end, duration, activity_type, type, is_automatically_detected)
+values (:user_id, :sync_sqn, :last_modification, :start, :end, :duration, :activity_type, :type, :is_automatically_detected);
 EOD;
 
 $sql_sync_activities_update = <<<'EOD'
@@ -58,7 +60,11 @@ last_sync_sqn = :sync_sqn,
 last_modification = :last_modification,
 start = :start,
 end = :end,
-type = :type
+duration = :duration,
+activity_type = :activity_type,
+type = :type,
+is_automatically_detected = :is_automatically_detected
+
 where user_id = :user_id and id = :activity_id and last_modification < :last_modification;
 EOD;
 
@@ -79,7 +85,10 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
                 "last_modification" => $created_act['lastModification'] ?? null,
                 "start" => $created_act['start'] ?? null,
                 "end" => $created_act['end'] ?? null,
-                "type" => $created_act['type'] ?? null
+                "duration" => $created_act['duration'] ?? null,
+                "activity_type" => $created_act['activity_type'] ?? null,
+                "type" => $created_act['type'] ?? null,
+                "is_automatically_detected" => $created_act['is_automatically_detected'] ?? null
             ]);
             $act_id_map[] = [
                 "id" => $dbh->lastInsertId()
@@ -102,18 +111,23 @@ function sync_activities(PDO $dbh, int $user_id, int $sync_sqn, array $client_ac
                 "last_modification" => $mod_act['lastModification'] ?? null,
                 "start" => $mod_act['start'] ?? null,
                 "end" => $mod_act['end'] ?? null,
-                "type" => $mod_act['type'] ?? null
+                "duration" => $mod_act['duration'] ?? null,
+                "activity_type" => $mod_act['activity_type'] ?? null,
+                "type" => $mod_act['type'] ?? null,
+                "is_automatically_detected" => $mod_act['is_automatically_detected'] ?? null
             ]);
         }
     }
-    
+
     return $act_id_map;
 }
 
 // Note it is missing a semicolon at the end.
 // An additional condition can be appended.
 $sql_get_updated_activities = <<<EOD
-select id, {$df('last_modification')}, {$df('start')}, {$df('end')}, type
+select id, {$df('last_modification')}, {$df('start')}, {$df('end')},
+duration, activity_type, type, is_automatically_detected
+
 from activities
 where user_id = :user_id
 EOD;
@@ -143,12 +157,13 @@ insert into moods (user_id, last_sync_sqn, last_modification,
 assessment, satisfaction, calmness, comfort, relaxation, energy, wakefulness,
 event_negative_intensity, event_positive_intensity, alone, surrounding_people_liking,
 surrounding_people_type, location, satisfied_with_yourself, consider_yourself_failure,
-acted_impulsively, acted_aggressively)
+acted_impulsively, acted_aggressively, notes)
 
 values (:user_id, :sync_sqn, :last_modification,
 :assessment, :satisfaction, :calmness, :comfort, :relaxation, :energy, :wakefulness,
 :event_negative_intensity, :event_positive_intensity, :alone, :surrounding_people_liking,
-:surrounding_people_type, :location, :satisfied_with_yourself, :consider_yourself_failure, :acted_impulsively, :acted_aggressively);
+:surrounding_people_type, :location, :satisfied_with_yourself, :consider_yourself_failure,
+:acted_impulsively, :acted_aggressively, :notes);
 EOD;
 
 $sql_sync_moods_update = <<<'EOD'
@@ -172,7 +187,8 @@ location = :location,
 satisfied_with_yourself = :satisfied_with_yourself,
 consider_yourself_failure = :consider_yourself_failure,
 acted_impulsively = :acted_impulsively,
-acted_aggressively = :acted_aggressively
+acted_aggressively = :acted_aggressively,
+notes = :notes
 
 where user_id = :user_id and id = :id and last_modification < :last_modification;
 EOD;
@@ -212,7 +228,8 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
                 "satisfied_with_yourself" => $created_mood['satisfied_with_yourself'] ?? null,
                 "consider_yourself_failure" => $created_mood['consider_yourself_failure'] ?? null,
                 "acted_impulsively" => $created_mood['acted_impulsively'] ?? null,
-                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null
+                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null,
+                "notes" => $created_mood['notes'] ?? null,
             ]);
             $mood_id_map[] = [
                 "id" => $dbh->lastInsertId()
@@ -232,28 +249,29 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
                 "id" => $mod_mood['id'],
                 "user_id" => $user_id,
                 "sync_sqn" => $sync_sqn,
-                "last_modification" => $created_mood['lastModification'] ?? null,
-                "assessment" => $created_mood['assessment'] ?? null,
-                "satisfaction" => $created_mood['satisfaction'] ?? null,
-                "calmness" => $created_mood['calmness'] ?? null,
-                "comfort" => $created_mood['comfort'] ?? null,
-                "relaxation" => $created_mood['relaxation'] ?? null,
-                "energy" => $created_mood['energy'] ?? null,
-                "wakefulness" => $created_mood['wakefulness'] ?? null,
-                "event_negative_intensity" => $created_mood['event_negative_intensity'] ?? null,
-                "event_positive_intensity" => $created_mood['event_positive_intensity'] ?? null,
-                "alone" => $created_mood['alone'] ?? null,
-                "surrounding_people_liking" => $created_mood['surrounding_people_liking'] ?? null,
-                "surrounding_people_type" => $created_mood['surrounding_people_type'] ?? null,
-                "location" => $created_mood['location'] ?? null,
-                "satisfied_with_yourself" => $created_mood['satisfied_with_yourself'] ?? null,
-                "consider_yourself_failure" => $created_mood['consider_yourself_failure'] ?? null,
-                "acted_impulsively" => $created_mood['acted_impulsively'] ?? null,
-                "acted_aggressively" => $created_mood['acted_aggressively'] ?? null
+                "last_modification" => $mod_mood['lastModification'] ?? null,
+                "assessment" => $mod_mood['assessment'] ?? null,
+                "satisfaction" => $mod_mood['satisfaction'] ?? null,
+                "calmness" => $mod_mood['calmness'] ?? null,
+                "comfort" => $mod_mood['comfort'] ?? null,
+                "relaxation" => $mod_mood['relaxation'] ?? null,
+                "energy" => $mod_mood['energy'] ?? null,
+                "wakefulness" => $mod_mood['wakefulness'] ?? null,
+                "event_negative_intensity" => $mod_mood['event_negative_intensity'] ?? null,
+                "event_positive_intensity" => $mod_mood['event_positive_intensity'] ?? null,
+                "alone" => $mod_mood['alone'] ?? null,
+                "surrounding_people_liking" => $mod_mood['surrounding_people_liking'] ?? null,
+                "surrounding_people_type" => $mod_mood['surrounding_people_type'] ?? null,
+                "location" => $mod_mood['location'] ?? null,
+                "satisfied_with_yourself" => $mod_mood['satisfied_with_yourself'] ?? null,
+                "consider_yourself_failure" => $mod_mood['consider_yourself_failure'] ?? null,
+                "acted_impulsively" => $mod_mood['acted_impulsively'] ?? null,
+                "acted_aggressively" => $mod_mood['acted_aggressively'] ?? null,
+                "notes" => $mod_mood['notes'] ?? null,
             ]);
         }
     }
-    
+
     return $mood_id_map;
 }
 
@@ -261,7 +279,11 @@ function sync_moods(PDO $dbh, int $user_id, int $sync_sqn, array $client_moods):
 // An additional condition can be appended.
 $sql_get_updated_moods = <<<EOD
 select id, {$df('last_modification')},
-{$df('assessment')}, satisfaction, calmness, comfort, relaxation, energy, wakefulness
+{$df('assessment')}, satisfaction, calmness, comfort, relaxation, energy, wakefulness,
+event_negative_intensity, event_positive_intensity, alone,
+surrounding_people_liking, surrounding_people_type, location,
+satisfied_with_yourself, consider_yourself_failure,
+acted_impulsively, acted_aggressively, notes
 
 from moods
 where user_id = :user_id
@@ -287,27 +309,82 @@ function get_updated_moods(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
     return $sth->fetchAll(PDO::FETCH_ASSOC);
 }
 
-try {
-    if (!session_start()) {
-        throw new RuntimeException("Cannot start session");
-    }
+$sql_insert_accelerometer_data = <<<'EOD'
+insert into accelerometer_data (user_id, last_sync_sqn, time, x, y, z)
+values (:user_id, :sync_sqn, :time, :x, :y, :z)
+ON DUPLICATE KEY UPDATE;
+EOD;
 
+function insert_accelerometer_data(PDO $dbh, int $user_id, int $sync_sqn, ?array $client_accels) {
+    global $sql_insert_accelerometer_data;
+
+    if (isset($client_accels)) {
+        $sth = $dbh->prepare($sql_insert_accelerometer_data);
+        foreach ($client_accels as $accel) {
+            $sth->execute([
+                "user_id" => $user_id,
+                "sync_sqn" => $sync_sqn,
+                "time" => $accel['time'] ?? null,
+                "x" => $accel['y'] ?? null,
+                "y" => $accel['y'] ?? null,
+                "z" => $accel['y'] ?? null
+            ]);
+        }
+    }
+}
+
+// Note it is missing a semicolon at the end.
+// An additional condition can be appended.
+$sql_get_accelerometer_data = <<<EOD
+select {$df('time')}, x, y, z
+from accelerometer_data
+where user_id = :user_id
+EOD;
+
+function get_accelerometer_data(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
+    global $sql_get_accelerometer_data;
+
+    $sql = $sql_get_accelerometer_data;
+
+    $params = [
+        "user_id" => $user_id
+    ];
+
+    if (isset($last_sync_sqn)) {
+        $sql .= " and last_sync_sqn > :last_sync_sqn";
+        $params["last_sync_sqn"] = $last_sync_sqn;
+    }
+    $sql .= ";";
+
+    $sth = $dbh->prepare($sql);
+    $sth->execute($params);
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+}
+
+try {
     header('Content-type: application/json; charset=utf-8');
 
-    $user_id = $_SESSION['user_id'] ?? null;
-    if (!isset($user_id)) {
-        throw new RuntimeException("Not logged in");
-    }
-    $last_access = $_SESSION['last_access'] ?? null;
-    $_SESSION['last_access'] = time();
     $request = require "get_input.php";
-
     $json_pretty = $request['json_pretty'] ?? null;
     $json_pretty = to_bool($json_pretty);
 
+    $sess_str = $request['session'] ?? null;
+
+    if (!isset($sess_str)) {
+        throw new BadRequest();
+    }
+
     $dbh = require 'connect.php';
     $dbh->beginTransaction();
-    $dbh->exec('set time_zone = "+00:00";');
+    $dbh->exec('set time_zone = "+00:00"; SET SESSION sql_mode="ALLOW_INVALID_DATES";');
+
+    $sess = Session::fromString($sess_str);
+
+    $user_id = $sess->authenticate($dbh);
+
+    if ($user_id === false) {
+        throw new Unauthorized();
+    }
 
     $sync_sqn = get_sync_sqn($dbh, $user_id);
 
@@ -323,7 +400,6 @@ try {
 
     $response = [
         "last_sync_sqn" => $sync_sqn,
-        "last_access" => $last_access,
         "activities" => [
             "created" => [],
             "modified" => []
@@ -331,8 +407,8 @@ try {
         "moods" => [
             "created" => [],
             "modified" => []
-        ]
-
+        ],
+        "accelerometer_data" => []
     ];
 
     $client_acts = $request['activities'] ?? null;
@@ -347,6 +423,10 @@ try {
     }
     $response['moods']['modified'] = get_updated_moods($dbh, $user_id, $last_sync_sqn);
 
+    $client_accels = $request['accelerometer_data'] ?? null;
+    insert_accelerometer_data($dbh, $user_id, $sync_sqn, $client_accels);
+    $response['accelerometer_data'] = get_accelerometer_data($dbh, $user_id, $last_sync_sqn);
+
     update_sync_sqn($dbh, $user_id);
 
     arr_snake_to_camel($response);
@@ -357,8 +437,15 @@ try {
     }
 
     $json = json_encode($response, $json_flags);
-    
+
     $dbh->commit();
+}
+catch (HttpException $e) {
+    http_response_code($e->getHttpCode());
+    $json = json_encode(['error' => [
+        'msg' => $e->getMessage(),
+        'code' => $e->getCode()
+    ]]);
 }
 catch (Throwable $e) {
     http_response_code(500);
