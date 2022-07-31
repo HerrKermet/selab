@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -15,12 +16,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.22B11"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".Navigation_Main_Page"
+            android:exported="false" />
         <activity
             android:name=".StartupActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,7 +51,7 @@
         <activity
             android:name=".Sportactivity_Edit_Selection"
             android:exported="false"
-            android:parentActivityName=".Sportactivity_Home"/>
+            android:parentActivityName=".Sportactivity_Home" />
         <activity
             android:name=".Sportactivity_Selection"
             android:exported="false"

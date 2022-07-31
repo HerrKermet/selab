@@ -85,14 +85,6 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     Instant startDate, endDate;
 
-    public static String getTimeString(Instant instant) {
-        if (instant == null) {
-            return "/";
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                .withZone(ZoneId.systemDefault());
-        return formatter.format(instant);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,18 +95,6 @@ public class Sportactivity_Home extends AppCompatActivity {
 
         setContentView(R.layout.activity_sporthome);
 
-        TextView signInInfo = findViewById(R.id.signInInfo);
-        signInInfo.setText(getResources().getString(R.string.signed_in_user_info,
-                MyApplication.getInstance().getLoggedInUser().id));
-
-        TextView lastSyncInfo = findViewById(R.id.lastSyncInfo);
-        lastSyncInfo.setText(getResources().getString(R.string.last_sync_info,
-                getTimeString(null)));
-
-        MyApplication.getInstance().getLastSyncLiveData().observe(
-                this,
-                instant -> lastSyncInfo.setText(getResources().getString(R.string.last_sync_info,
-                        getTimeString(instant))));
 
         //BarChart
         barChart = findViewById(R.id.barChart3);
@@ -242,64 +222,9 @@ public class Sportactivity_Home extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showToast(@StringRes int toast)
-    {
-        runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
-    }
-
-    private void showToast(final String toast)
-    {
-        runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
-    }
-
-    private void runInAsyncTransaction(Runnable runnable) {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                MyApplication.getInstance().getAppDatabase().runInTransaction(runnable);
-            }
-            catch (Throwable t) {
-                Log.e("Room", "Exception: " + t.getMessage());
-                String str = getResources().getString(R.string.database_transaction_failed);
-                showToast(str + ": " + t.getMessage());
-            }
-        });
-    }
-
-    private void startLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    public void onBtnClickSettings(View view) {
+        Intent intent = new Intent(this, Navigation_Main_Page.class);
         startActivity(intent);
-    }
-
-    public void onBtnClickLogOut(View view) {
-        new LogoutDialogFragment(() -> runInAsyncTransaction(() -> {
-            final AppDatabase database = MyApplication.getInstance().getAppDatabase();
-            final FitnessApiClient apiClient = MyApplication.getInstance().getFitnessApiClient();
-            final UserDao userDao = database.userDao();
-            final ActivityDao activityDao = database.activityDao();
-            final AccelerometerDataDao accelerometerDataDao = database.accelerometerDataDao();
-            final MoodDao moodDao = database.moodDao();
-
-            // There should be one user in the list
-            for (User user : userDao.getLoggedInSync()) {
-                Session session = new Session(user.loginSession);
-                try {
-                    if (!apiClient.logout(session).execute().isSuccessful())
-                        throw new RuntimeException("HTTP status code is not successful");
-                } catch (IOException e) {
-                    throw new RuntimeException(e.getMessage());
-                }
-                moodDao.deleteAllByUserIdSync(user.id);
-                activityDao.deleteAllByUserIdSync(user.id);
-                accelerometerDataDao.deleteAllByUserIdSync(user.id);
-                userDao.deleteAllSync();
-                runOnUiThread(() -> {
-                    MyApplication.getInstance().setLoggedInUser(null);
-                    MyApplication.getInstance().getLastSyncMutableLiveData().setValue(null);
-                    startLoginActivity();
-                });
-            }
-        })).show(getSupportFragmentManager(), "logout");
     }
 
     private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {

@@ -187,7 +187,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
         question_progress_dict = new HashMap<>();
         updateQuestionProgessBar();
 
-        Intent backToCallingActivity = new Intent(this, MainActivity.class);
+        Intent backToCallingActivity = new Intent(this, Sportactivity_Home.class);
         if (getIntent().getParcelableExtra(Intent.EXTRA_INTENT) != null) backToCallingActivity = getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
 
         finish();

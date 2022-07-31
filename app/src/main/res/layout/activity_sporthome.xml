@@ -6,26 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Sportactivity_Home">
 
-    <TextView
-        android:id="@+id/signInInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:text="@string/signed_in_user_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/lastSyncInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:text="@string/last_sync_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signInInfo" />
-
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart3"
         android:layout_width="0dp"
@@ -37,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textView31"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button24" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogout" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -178,25 +158,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button24"
-        android:layout_width="155dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="16dp"
-        android:onClick="onBtnClickColorSwitch"
-        android:text="CHANGE COLOR PLACEHOLDER"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/buttonLogout"
         android:layout_width="155dp"
         android:layout_height="38dp"
-        android:layout_marginTop="8dp"
-        android:onClick="onBtnClickLogOut"
-        android:text="@string/logout"
+        android:layout_marginTop="10dp"
+        android:onClick="onBtnClickSettings"
+        android:text="SETTINGS PLACEHOLDER"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button24" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

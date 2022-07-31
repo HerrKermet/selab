@@ -248,6 +248,8 @@ public class MyForegroundService extends Service  {
                 () -> {
                     while (true) {
                         Log.e("Service", "Service is running...");
+                        //TODO insert check for new day notificaiton
+
                         //Log.e("StepCount", String.valueOf(stepCount));
                         try {
                             Thread.sleep(2000);
