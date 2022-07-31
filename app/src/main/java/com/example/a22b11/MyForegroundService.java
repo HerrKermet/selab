@@ -39,13 +39,18 @@ import java.util.concurrent.Executors;
 
 public class MyForegroundService extends Service  {
 
-    int stepThreshholdToTriggerActivity = 930; //TODO adjust value
+    /* Release
+    int stepThresholdToTriggerActivity = 930; //TODO adjust value
     int maxPauseDurationSeconds = 300;  //TODO adjust value
     int arraySize = 30;                  //TODO adjust value
+    */
+
+    // Debug
+    int stepThresholdToTriggerActivity = 40;
+    int maxPauseDurationSeconds = 60;
+    int arraySize = 3;
 
     AppDatabase db;
-
-
 
     int counter = 0;
     int TimeCounterForAccData = 0;
@@ -69,9 +74,7 @@ public class MyForegroundService extends Service  {
 
     Activity activity = new Activity(); // activity which gets recorded
 
-
-    List<AccelerometerData> rawAccData = new LinkedList<>();
-
+    final List<AccelerometerData> rawAccData = new LinkedList<>();
 
     SensorManager sensorManager;
     Sensor sensor;
@@ -111,6 +114,7 @@ public class MyForegroundService extends Service  {
                     }
 
                     Instant now = Instant.now();
+                    final AccelerometerData rawData = new AccelerometerData(now, x, y, z);
                     if (lastSaveTime == null || Duration.between(lastSaveTime, now).toMillis() > 10000) {
                         Log.d("Accelerometer", "10 seconds elapsed, saving sample");
                         databaseTransactionExecutor.execute(() -> {
@@ -120,8 +124,8 @@ public class MyForegroundService extends Service  {
                                     final UserDao userDao = database.userDao();
                                     final AccelerometerDataDao accelerometerDataDao = database.accelerometerDataDao();
                                     for (User user : userDao.getLoggedInSync()) {
-                                        AccelerometerData sample = new AccelerometerData(user.id, now, x, y, z);
-                                        accelerometerDataDao.insertSync(sample);
+                                        rawData.userId = user.id;
+                                        accelerometerDataDao.insertSync(rawData);
                                     }
                                 });
                             }
@@ -131,14 +135,9 @@ public class MyForegroundService extends Service  {
                         });
                         lastSaveTime = now;
                     }
-                    if (isRecording){
-                        AccelerometerData rawData = new AccelerometerData(now, x, y, z);
+                    if (isRecording) {
                         rawAccData.add(rawData);
-
-
                     }
-
-
                 }
             }
 
@@ -200,7 +199,7 @@ public class MyForegroundService extends Service  {
 
 
 
-                    if (sum >= stepThreshholdToTriggerActivity && !isRecording) {
+                    if (sum >= stepThresholdToTriggerActivity && !isRecording) {
                         startRecordingActivity();
                         isRecording = true;
 
@@ -209,7 +208,7 @@ public class MyForegroundService extends Service  {
 
                     }
 
-                    if (sum < stepThreshholdToTriggerActivity && isRecording) {
+                    if (sum < stepThresholdToTriggerActivity && isRecording) {
                         if (isPause) {
                             // check how long  pause
                             pauseDurationSeconds += 10;
@@ -308,6 +307,7 @@ public class MyForegroundService extends Service  {
 
         final ActivityDao activityDao = db.activityDao();
         final UserDao userDao = db.userDao();
+        final AccelerometerDataDao accelDao = db.accelerometerDataDao();
 
         databaseTransactionExecutor.execute(() -> {
             try {
@@ -316,6 +316,11 @@ public class MyForegroundService extends Service  {
                     for (User user : userDao.getLoggedInSync()) {
                         activity.userId = user.id;
                         activityDao.insertSync(activity);
+                        for (AccelerometerData sample : rawAccData) {
+                            sample.userId = user.id;
+                        }
+                        accelDao.insertSync(rawAccData);
+                        rawAccData.clear();
                     }
                     Log.d("Room", "App generated activity saved successfully");
                 });
