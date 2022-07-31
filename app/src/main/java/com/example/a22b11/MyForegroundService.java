@@ -70,7 +70,7 @@ public class MyForegroundService extends Service  {
     Activity activity = new Activity(); // activity which gets recorded
 
 
-    List<AccelerometerData> RawAccDataX = new LinkedList<>();
+    List<AccelerometerData> rawAccData = new LinkedList<>();
 
 
     SensorManager sensorManager;
@@ -131,6 +131,14 @@ public class MyForegroundService extends Service  {
                         });
                         lastSaveTime = now;
                     }
+                    if (isRecording){
+                        AccelerometerData rawData = new AccelerometerData(now, x, y, z);
+                        rawAccData.add(rawData);
+
+
+                    }
+
+
                 }
             }
 
@@ -236,7 +244,6 @@ public class MyForegroundService extends Service  {
         timerObj.schedule(timerTaskObj, 0, 1000);
 
         //thresholdFunction
-
         new Thread(
 
                 () -> {
