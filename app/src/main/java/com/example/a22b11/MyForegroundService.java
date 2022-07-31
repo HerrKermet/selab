@@ -40,15 +40,15 @@ import java.util.concurrent.Executors;
 public class MyForegroundService extends Service  {
 
     /* Release
-    int stepThresholdToTriggerActivity = 930; //TODO adjust value
-    int maxPauseDurationSeconds = 300;  //TODO adjust value
-    int arraySize = 30;                  //TODO adjust value
+    final int stepThresholdToTriggerActivity = 930; //TODO adjust value
+    final int maxPauseDurationSeconds = 300;  //TODO adjust value
+    final int arraySize = 30;                  //TODO adjust value
     */
 
     // Debug
-    int stepThresholdToTriggerActivity = 40;
-    int maxPauseDurationSeconds = 60;
-    int arraySize = 3;
+    final int stepThresholdToTriggerActivity = 40;
+    final int maxPauseDurationSeconds = 60;
+    final int arraySize = 3;
 
     AppDatabase db;
 
@@ -301,7 +301,7 @@ public class MyForegroundService extends Service  {
         isRecording = false;
         isPause = false;
 
-        activity.end = Instant.now().minus(5, ChronoUnit.MINUTES);
+        activity.end = Instant.now().minus(maxPauseDurationSeconds, ChronoUnit.SECONDS);
         final long duration = Duration.between(activity.start, activity.end).getSeconds();
         activity.duration = Math.toIntExact(duration);
 
