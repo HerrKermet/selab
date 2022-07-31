@@ -143,4 +143,8 @@
     <string name="dialog_logout">Are you sure you want to log out?</string>
     <string name="signed_in_user_info">Signed in with user ID: %d</string>
     <string name="last_sync_info">Last sync: %s</string>
+    <string name="questionnaireNotificationTime">Questionnaire Reminder Time</string>
+    <string name="setTheme">Choose Theme</string>
+    <string name="statistics">Statistics</string>
+    <string name="settings">Settings</string>
 </resources>

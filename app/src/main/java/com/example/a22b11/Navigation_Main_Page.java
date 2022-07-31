@@ -76,6 +76,23 @@ public class Navigation_Main_Page extends AppCompatActivity {
             }
         });
 
+        Intent intentSetColor = new Intent(this, Color_Choose_Theme.class);
+        Intent intentStatistics = new Intent(this, inputForStatisticalRepresentation.class);
+
+        textViewStatistics = findViewById(R.id.textView39);
+        textViewSetTheme = findViewById(R.id.textView38);
+        textViewStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentStatistics);
+            }
+        });
+        textViewSetTheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentSetColor);
+            }
+        });
         textViewSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
