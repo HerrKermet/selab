@@ -33,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
@@ -78,6 +78,8 @@ public class MyForegroundService extends Service  {
 
     Instant lastSaveTime = null;
 
+    private final static Executor databaseTransactionExecutor = Executors.newSingleThreadExecutor();
+
     //TODO DELETE SOME LOGS
     @Override
     public void onCreate() {
@@ -111,8 +113,7 @@ public class MyForegroundService extends Service  {
                     Instant now = Instant.now();
                     if (lastSaveTime == null || Duration.between(lastSaveTime, now).toMillis() > 10000) {
                         Log.d("Accelerometer", "10 seconds elapsed, saving sample");
-                        ExecutorService executorService = Executors.newSingleThreadExecutor();
-                        executorService.execute(() -> {
+                        databaseTransactionExecutor.execute(() -> {
                             final AppDatabase database = MyApplication.getInstance().getAppDatabase();
                             try {
                                 database.runInTransaction(() -> {
@@ -128,7 +129,6 @@ public class MyForegroundService extends Service  {
                                 Log.e("Room", "Transaction failed with exception: " + t.getMessage());
                             }
                         });
-                        executorService.shutdown();
                         lastSaveTime = now;
                     }
                 }
