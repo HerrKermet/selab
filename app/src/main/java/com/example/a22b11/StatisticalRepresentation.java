@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.Toast;
 
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
@@ -130,6 +131,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
             catch (@NonNull Throwable t) {
                 Log.e("Room", "Failed to retrieve moods and activities between dates" +
                         "with exception: " + t.getMessage());
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.database_transaction_failed, Toast.LENGTH_SHORT).show());
             }
         });
     }
