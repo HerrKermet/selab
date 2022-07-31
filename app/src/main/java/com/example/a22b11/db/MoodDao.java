@@ -31,6 +31,9 @@ public interface MoodDao {
     @Query("SELECT * FROM moods WHERE user_id = :userId AND assessment > :assessMin AND assessment < :assessMax")
     ListenableFuture<List<Mood>> getAllByUserIdAndAssessmentRange(long userId, Instant assessMin, Instant assessMax);
 
+    @Query("SELECT * FROM moods WHERE assessment BETWEEN :assessMin AND :assessMax ORDER BY assessment ASC")
+    ListenableFuture<List<Mood>> getMoodBetween(Instant assessMin, Instant assessMax);
+
     @Query("SELECT * FROM moods WHERE user_id = :userId AND id IS NULL")
     List<Mood> getNewByUserIdSync(long userId);
 
