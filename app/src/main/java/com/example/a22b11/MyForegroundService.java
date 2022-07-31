@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.a22b11.db.AccelerometerData;
@@ -23,7 +24,6 @@ import com.example.a22b11.db.ActivityDao;
 import com.example.a22b11.db.AppDatabase;
 import com.example.a22b11.db.User;
 import com.example.a22b11.db.UserDao;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -296,12 +296,27 @@ public class MyForegroundService extends Service  {
         isPause = false;
 
         activity.end = Instant.now().minus(5, ChronoUnit.MINUTES);
-        long duration = Duration.between(activity.start, activity.end).getSeconds();
+        final long duration = Duration.between(activity.start, activity.end).getSeconds();
         activity.duration = Math.toIntExact(duration);
 
-        ActivityDao activityDao = db.activityDao();
-        ListenableFuture<Long> asyncAccess = activityDao.insert(activity);
-        Log.d("activity sensor","saved activity with duration of " + duration + " seconds to database");
-    }
+        final ActivityDao activityDao = db.activityDao();
+        final UserDao userDao = db.userDao();
 
+        databaseTransactionExecutor.execute(() -> {
+            try {
+                Log.d("Room", "Saving app generated activity with duration of " + duration + " seconds to database");
+                db.runInTransaction(() -> {
+                    for (User user : userDao.getLoggedInSync()) {
+                        activity.userId = user.id;
+                        activityDao.insertSync(activity);
+                    }
+                    Log.d("Room", "App generated activity saved successfully");
+                });
+            }
+            catch (@NonNull Throwable t) {
+                Log.e("Room", "Saving app generated activity failed with exception: " + t.getMessage());
+            }
+        });
+        // Log.d("activity sensor","saved activity with duration of " + duration + " seconds to database");
+    }
 }
