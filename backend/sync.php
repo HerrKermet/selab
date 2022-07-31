@@ -312,7 +312,7 @@ function get_updated_moods(PDO $dbh, int $user_id, ?int $last_sync_sqn): array {
 $sql_insert_accelerometer_data = <<<'EOD'
 insert into accelerometer_data (user_id, last_sync_sqn, time, x, y, z)
 values (:user_id, :sync_sqn, :time, :x, :y, :z)
-ON DUPLICATE KEY UPDATE;
+ON DUPLICATE KEY UPDATE user_id = :user_id, last_sync_sqn = :sync_sqn, time = :time, x = :x, y = :y, z = :z;
 EOD;
 
 function insert_accelerometer_data(PDO $dbh, int $user_id, int $sync_sqn, ?array $client_accels) {
