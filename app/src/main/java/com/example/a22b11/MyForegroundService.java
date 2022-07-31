@@ -39,17 +39,17 @@ import java.util.concurrent.Executors;
 
 public class MyForegroundService extends Service  {
 
-    /* Release
+    //Release
     final int stepThresholdToTriggerActivity = 930; //TODO adjust value
     final int maxPauseDurationSeconds = 300;  //TODO adjust value
     final int arraySize = 30;                  //TODO adjust value
-    */
 
-    // Debug
+
+    /* Debug
     final int stepThresholdToTriggerActivity = 40;
     final int maxPauseDurationSeconds = 60;
     final int arraySize = 3;
-
+    */
     AppDatabase db;
 
     int counter = 0;
