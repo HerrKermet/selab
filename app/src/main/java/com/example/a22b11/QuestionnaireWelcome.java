@@ -149,13 +149,18 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
 
 
+
+
+
         dbTransactionExecutor.execute(() -> {
             // only insert mood when questionnaire is valid and not only null
             try {
                 Log.d("Room", "Starting mood saving transaction");
                 db.runInTransaction(() -> {
                     if (mood_score != -1) {
+                        Log.d("Questionnaire","mood assesment " + mood.assessment);
                         moodDao.insertSync(mood);
+                        mood = new Mood(); // reset mood for future questionnaires
                     }
                     items = moodDao.getAllByUserIdSync(userId);
                     ArrayList<Instant> differentDates = new ArrayList<>();
@@ -166,6 +171,7 @@ public class QuestionnaireWelcome extends AppCompatActivity {
                         differentDates.add(questionnaire.assessment.truncatedTo(ChronoUnit.DAYS));
                     }
                     numberOfDifferentDates = differentDates.size();
+                    Log.d("Questionnaire","Questionaires for unlock themes " + numberOfDifferentDates);
 
                     //save number of different dates where a questionnaire was taken into shared preferences
                     sharedPreferences = getApplicationContext().getSharedPreferences("QuestionnaireData", Context.MODE_PRIVATE);
@@ -177,12 +183,12 @@ public class QuestionnaireWelcome extends AppCompatActivity {
             }
             catch (Throwable t) {
                 Log.e("Room", "Mood transaction failed with exception: " + t.getMessage());
+                mood = new Mood(); // reset mood for future questionnaires
+
             }
         });
 
         //initialize new Questionnaire data
-
-        mood = new Mood(); // reset mood for future questionnaires
 
         question_progress_dict = new HashMap<>();
         updateQuestionProgessBar();
