@@ -159,12 +159,14 @@
 
     <Button
         android:id="@+id/buttonLogout"
-        android:layout_width="155dp"
+        android:layout_width="400dp"
         android:layout_height="38dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:onClick="onBtnClickSettings"
-        android:text="SETTINGS PLACEHOLDER"
+        android:text="°°°"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
