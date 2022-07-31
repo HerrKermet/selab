@@ -5,7 +5,7 @@ require_once "session.php";
 require_once "snake_to_camel.php";
 
 function datef(string $field): string {
-    return "DATE_FORMAT($field, '%Y-%m-%dT%TZ') as $field";
+    return "DATE_FORMAT($field, '%Y-%m-%dT%T.%fZ') as $field";
 }
 
 $df = "datef";
