@@ -153,4 +153,5 @@
     <string name="statistics">Statistics</string>
     <string name="settings">Settings</string>
     <string name="foreground_service">Foreground service</string>
+    <string name="enableGPS">Enable GPS</string>
 </resources>

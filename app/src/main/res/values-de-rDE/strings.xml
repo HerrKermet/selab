@@ -145,4 +145,5 @@ das bedeutendste positive Ereignis?</string>
     <string name="statistics">Statistiken</string>
     <string name="settings">Einstellungen</string>
     <string name="foreground_service">Foreground service</string>
+    <string name="enableGPS">GPS aktivieren</string>
 </resources>

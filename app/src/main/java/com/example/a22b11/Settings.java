@@ -7,7 +7,12 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -20,11 +25,12 @@ import java.time.format.DateTimeFormatter;
 
 public class Settings extends AppCompatActivity {
 
-    TextView textViewSelectTime;
+    TextView textViewSelectTime, textViewQuestionnaireReminderTime;
     TimePickerDialog timePickerDialog;
     int selectedHour = 18;
     int selectedMinutes = 0;
     private SwitchCompat foregroundServiceSwitch;
+    SwitchCompat enableGpsSwitch;
 
     final private static DateTimeFormatter dateTimeFormatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -49,10 +55,12 @@ public class Settings extends AppCompatActivity {
         setTheme(theme);
         setContentView(R.layout.activity_settings);
 
+        enableGpsSwitch = findViewById(R.id.enableGpsSwitch);
+        boolean gpsSwitchDefault = sharedPreferences.getBoolean("allowGps",false);
+        setEnableGpsSwitch(gpsSwitchDefault);
+
         selectedHour = sharedPreferences.getInt("notificationHour",18);
         selectedMinutes = sharedPreferences.getInt("notificationMinute", 0);
-
-
 
 
         TextView signInInfo = findViewById(R.id.signInInfo2);
@@ -69,8 +77,7 @@ public class Settings extends AppCompatActivity {
                 instant -> lastSyncInfo.setText(getResources().getString(R.string.last_sync_info,
                         getTimeString(instant))));
 
-
-
+        textViewQuestionnaireReminderTime = findViewById(R.id.textView28);
         textViewSelectTime = findViewById(R.id.textView43);
         textViewSelectTime.setText(addLeadingZero(selectedHour) + ":" + addLeadingZero(selectedMinutes));
 
@@ -100,7 +107,39 @@ public class Settings extends AppCompatActivity {
 
         foregroundServiceSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             setForegroundServiceEnabled(isChecked);
+            if (!sharedPreferences.getBoolean(FOREGROUND_SERVICE_ENABLED,false)) {
+                // if foreground service is disabled     make reminder time not clickable
+                textViewSelectTime.setClickable(false);
+                textViewSelectTime.setText("--:--");
+                textViewQuestionnaireReminderTime.setTypeface(null, Typeface.NORMAL);
+            }
+            else {
+
+                textViewSelectTime.setClickable(true);
+                textViewQuestionnaireReminderTime.setTypeface(null, Typeface.BOLD);
+                textViewSelectTime.setText(addLeadingZero(selectedHour) + ":" + addLeadingZero(selectedMinutes));
+            }
         });
+
+        enableGpsSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (enableGpsSwitch.isChecked()) {
+                    sharedPreferences.edit().putBoolean("allowGps", true).commit();
+                    //TODO permission abfrage
+
+
+                    Log.d("GPS", String.valueOf(enableGpsSwitch.isChecked()));
+                }
+                else {
+                    sharedPreferences.edit().putBoolean("allowGps", false).commit();
+                    Log.d("GPS", String.valueOf(enableGpsSwitch.isChecked()));
+
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -126,5 +165,8 @@ public class Settings extends AppCompatActivity {
         String result;
         result = n < 10 ? "0" + n : String.valueOf(n);
         return result;
+    }
+    public void setEnableGpsSwitch(boolean isEnabled) {
+        enableGpsSwitch.setChecked(isEnabled);
     }
 }

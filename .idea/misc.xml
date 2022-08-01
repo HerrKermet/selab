@@ -12,10 +12,12 @@
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.3105" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/ic_baseline_play_circle_filled_24.xml" value="0.3105" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/drawable/item.xml" value="0.3105" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_input_for_statistical_representation.xml" value="0.29717180244829045" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_main.xml" value="0.28940217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_navigation_main_page.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_finished.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_questionnaire_welcome.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_settings.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sporthome.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportrecord.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/dstec/Documents/GitHub/22B11/app/src/main/res/layout/activity_sportselection.xml" value="0.32608695652173914" />
@@ -43,13 +45,14 @@
         <entry key="app/src/main/res/layout/activity_account_created.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12335359675785208" />
-        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sportedit.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/layout/activity_sportedit_selection.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/layout/activity_sporthome.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sportrecord.xml" value="0.7587476979742173" />
         <entry key="app/src/main/res/layout/activity_sportselection.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/layout/activity_startup.xml" value="0.11347517730496454" />
+        <entry key="app/src/main/res/layout/activity_statistical_representation.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_questionnaire__finished_fragment.xml" value="0.19479166666666667" />
       </map>
     </option>
   </component>
