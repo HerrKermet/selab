@@ -220,7 +220,7 @@ public class inputForStatisticalRepresentation extends AppCompatActivity {
 
         //Execute the next page if all checks are passed
         if(validDateEntries) {
-            Intent intent = new Intent(this, Sportactivity_Home.class);
+            Intent intent = new Intent(this, StatisticalRepresentation.class);
             intent.putExtra("startInstant", startInst);
             intent.putExtra("endInstant", endInst);
 

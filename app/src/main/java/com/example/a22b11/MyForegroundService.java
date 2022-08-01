@@ -1,11 +1,15 @@
 package com.example.a22b11;
 
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -27,8 +31,13 @@ import com.example.a22b11.db.UserDao;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -51,6 +60,11 @@ public class MyForegroundService extends Service  {
     final int arraySize = 3;
     */
     AppDatabase db;
+
+
+    LocalDate lastDate = LocalDate.of(2022, 7,31);
+    int lastHour = 18;
+    int lastMinute = 0;
 
     int counter = 0;
     int TimeCounterForAccData = 0;
@@ -248,11 +262,10 @@ public class MyForegroundService extends Service  {
                 () -> {
                     while (true) {
                         Log.e("Service", "Service is running...");
-                        //TODO insert check for new day notificaiton
-
                         //Log.e("StepCount", String.valueOf(stepCount));
                         try {
                             Thread.sleep(2000);
+                            timeChange();
                         } catch ( InterruptedException e) {
 
                             e.printStackTrace();
@@ -332,5 +345,31 @@ public class MyForegroundService extends Service  {
             }
         });
         // Log.d("activity sensor","saved activity with duration of " + duration + " seconds to database");
+    }
+
+
+    public void timeChange() {
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int selectedHour = sharedPreferences.getInt("notificationHour",18);
+        int selectedMinute = sharedPreferences.getInt("notificationMinute", 00);
+        if(!lastDate.equals(LocalDate.now()) || lastHour != selectedHour || lastMinute != selectedMinute) {
+            lastDate = LocalDate.now();
+            lastHour = selectedHour;
+            lastMinute = selectedMinute;
+            startAlarm(lastDate, lastHour, lastMinute);
+        }
+    }
+    public void startAlarm(LocalDate day, int hour, int minute){
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        LocalDateTime time = day.atStartOfDay().plusHours(hour).plusMinutes(minute);
+        ZonedDateTime zdt = ZonedDateTime.of(time, ZoneId.systemDefault());
+        long millis = zdt.toInstant().toEpochMilli();
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, millis, pendingIntent);
     }
 }
