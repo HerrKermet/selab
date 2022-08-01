@@ -40,6 +40,9 @@
             android:exported="false"
             android:label="@string/title_activity_login" />
         <activity
+            android:name=".StatisticalRepresentation"
+            android:exported="false" />
+        <activity
             android:name=".inputForStatisticalRepresentation"
             android:exported="false" />
         <activity
@@ -73,6 +76,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".AlertReceiver"></receiver>
 
         <activity
             android:name=".QuestionnaireWelcome"

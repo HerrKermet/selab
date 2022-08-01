@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -37,6 +38,7 @@ import com.example.a22b11.db.UserDao;
 import com.example.a22b11.ui.login.LoginActivity;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -84,6 +86,9 @@ public class Sportactivity_Home extends AppCompatActivity {
     List<BarEntry> entries;
 
     Instant startDate, endDate;
+    int textColor, color;
+    boolean empty = true;
+
 
 
     @Override
@@ -93,11 +98,20 @@ public class Sportactivity_Home extends AppCompatActivity {
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
 
-        setContentView(R.layout.activity_sporthome);
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(com.google.android.material.R.attr.colorOnBackground, typedValue, true);
+        textColor = typedValue.data;
+        getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
+        color = typedValue.data;
 
+
+        setContentView(R.layout.activity_sporthome);
 
         //BarChart
         barChart = findViewById(R.id.barChart3);
+        barChart.setNoDataText(getString(R.string.NoBarDataLastDays));
+        barChart.setNoDataTextColor(textColor);
+
 
         //Attaching an onclick listener on the Graph so it is clickable
         barChart.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +179,8 @@ public class Sportactivity_Home extends AppCompatActivity {
                     runOnUiThread(() -> {
                         itemAdapter adapter = new itemAdapter(latestActivities, activityDao, this);
                         recyclerView.setAdapter(adapter);
-                        plotActivities(true, barChart);
+                        empty = (activitiesBetween.size() == 0);
+                        plotActivities(barChart);
                         notificationBadge.setNumber(appGeneratedActivities.size());
                     });
                     Log.d("Room", "Transaction succeeded");
@@ -229,28 +244,49 @@ public class Sportactivity_Home extends AppCompatActivity {
 
     private void fillYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
         int [] mergedResults = mergeActivities(activitiesList, durations, startDate, endDate);
+        int highest = 0;
 
-        for(int i=0; i<mergedResults.length; i++){
-            entryList.add(new BarEntry((float) i,mergedResults[i]));
+
+        if(mergedResults!=null) {
+            for (int i = 0; i < mergedResults.length; i++) {
+                float value = (float) mergedResults[i];
+
+                entryList.add(new BarEntry((float) i, value / 60));
+                if (highest < value) {
+                    highest = (int) value;
+                }
+            }
+
+
+            barDataSet = new BarDataSet(entries, getString(R.string.barChartActivities));
+            barDataSet.setColors(color);
+            barDataSet.setValueTextColor(textColor);
+            barChart.getLegend().setTextColor(textColor);
+
+
+            barData = new BarData(barDataSet);
+
+            barChart.setFitBars(true);
+            barChart.setData(barData);
+            barChart.invalidate();
+            barChart.getDescription().setEnabled(false);
+            barChart.animateY(2000);
+            //barChart.setBorderColor(textColor);
+            YAxis yAxisLeft = barChart.getAxisLeft();
+            YAxis yAxisRight = barChart.getAxisRight();
+            yAxisLeft.setDrawZeroLine(true);
+            yAxisRight.setEnabled(false);
+            yAxisLeft.setAxisMinimum(0f); // start at zero
+            yAxisLeft.setGridColor(textColor);
+            yAxisLeft.setTextColor(textColor);
+
+            highest = highest / 60;
+            if (highest < 100) {
+                yAxisLeft.setAxisMaximum(100f); // the axis maximum is 100
+            } else {
+                yAxisLeft.setAxisMaximum(highest + 10);
+            }
         }
-        barDataSet = new BarDataSet(entries, getString(R.string.barChartActivities));
-        TypedValue typedValue = new TypedValue();
-        //getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true);
-        getTheme().resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true);
-        //ToDo: BarChart Color in themes.xml. colorSecondary funktioniert nicht auf Handy
-        int color = typedValue.data;
-        barDataSet.setColors(color);
-
-        barDataSet.setValueTextColor(android.R.color.black);
-        //set.setValueTextSize(16f);
-
-        barData = new BarData(barDataSet);
-
-        barChart.setFitBars(true);
-        barChart.setData(barData); //If no data is available a message is on the screen: "No chart data available"
-        //barChart.getDescription().setText(getString(R.string.barChartActivities));
-        barChart.getDescription().setEnabled(false);
-        barChart.animateY(2000);
     }
 
     private void fillXValues(BarChart chart, LocalDate startDate, int length){
@@ -269,23 +305,17 @@ public class Sportactivity_Home extends AppCompatActivity {
         XAxis xAxis = chart.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(textColor);
     }
-    public static List<LocalDate> dateList(LocalDate startDate, LocalDate endDate) {
 
-        List<LocalDate> days = new ArrayList<>(25);
-        while (startDate.isBefore(endDate) || startDate.equals(endDate)) {
-            days.add(startDate);
-            startDate = startDate.plusDays(1);
-        }
-        return days;
-    }
     /*
     mergeActivities below sums up the duration of activities
     that happened on the same day.
     returns long-Array with durations only
      */
     public static int[] mergeActivities(List<Activity> activitiesList, int[] duration, LocalDate startDate, LocalDate endDate){
-
+        boolean noResults = true;
         int daysBetween = (int) ChronoUnit.DAYS.between(startDate, endDate);
         int result [] = new int[daysBetween+1];
         LocalDate temp;
@@ -293,31 +323,40 @@ public class Sportactivity_Home extends AppCompatActivity {
         for(int i = 0; i < result.length; i++){
             for(int m = 0; m < activitiesList.size(); m++){
                 temp = LocalDate.from(LocalDateTime.ofInstant(activitiesList.get(m).start,ZoneId.systemDefault()));
-                if(startDate.plusDays(i).isEqual(temp)) result[i]+=duration[m]/60;
+                if(startDate.plusDays(i).isEqual(temp)) result[i]+=duration[m];
             }
+            if(result[i] != 0) noResults = false;
         }
+        if(noResults) return null;
         return result;
     }
 
     //Implementation
-    private void plotActivities (boolean checkOpenPage, BarChart bChart){
+    private void plotActivities (BarChart bChart){
         List<Activity> activities;
         LocalDate lo_startDate;
         LocalDate lo_endDate;
 
-        if(checkOpenPage) {
-            activities = activitiesBetween;
-            lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
-            lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
-        }
-        else {
-            activities = activitiesBetween; //ToDo: Use Activity-List with different time-range (user values of start and end)
-            lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
-            lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
-        }
+        activities = activitiesBetween;
+        lo_startDate = LocalDate.from(LocalDateTime.ofInstant(startDate,ZoneId.systemDefault()));
+        lo_endDate = LocalDate.from(LocalDateTime.ofInstant(endDate,ZoneId.systemDefault()));
 
-        fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
+        if(!empty) {
+            fillYValues(entries, activities, getDurations(activities), lo_startDate, lo_endDate);
+        }
         fillXValues(bChart, lo_startDate, entries.size());
+
+    }
+    private void plotEmpty (BarChart bChart){
+        List<BarEntry> entriesEmpty = new ArrayList<>();
+
+        BarDataSet bDataSet = new BarDataSet(entriesEmpty, "This is empty");
+
+        BarData bData = new BarData(bDataSet);
+        bChart.setFitBars(true);
+        bChart.setData(bData);
+        bChart.getDescription().setEnabled(false);
+        bChart.animateY(2000);
     }
 
     private int[] getDurations(List<Activity> activitiesList) {
