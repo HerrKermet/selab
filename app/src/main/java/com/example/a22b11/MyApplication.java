@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.security.NetworkSecurityPolicy;
 import android.util.Log;
@@ -57,9 +58,18 @@ public class MyApplication extends Application {
         return lastSync;
     }
 
+    private SharedPreferences sharedPreferences;
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+
         instance = this;
 
         lastSync = new MutableLiveData<>(null);
@@ -101,9 +111,11 @@ public class MyApplication extends Application {
             startForegroundService(serviceIntent);
         } */
 
-        // Trying to start a foreground service does no harm if it is already running
-        Intent serviceIntent = new Intent(this, MyForegroundService.class);
-        startForegroundService(serviceIntent);
+        if (sharedPreferences.getBoolean("foregroundServiceEnabled", true)) {
+            // Trying to start a foreground service does no harm if it is already running
+            Intent serviceIntent = new Intent(this, MyForegroundService.class);
+            startForegroundService(serviceIntent);
+        }
     }
 
     /*
