@@ -99,6 +99,8 @@ which I felt sorry for afterwards</string>
     <string name="NoBarData">No data could be found for this interval!</string>
     <string name="NoBarDataLastDays">No activities have been recorded in the last 7 days!</string>
 
+    <string name="notificationText">It\'s time for your daily questionnaire!</string>
+
     <string-array name="activity_list">
         <item>@string/please_select_activity</item>
         <item>@string/running</item>

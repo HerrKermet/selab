@@ -1,11 +1,15 @@
 package com.example.a22b11;
 
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -23,8 +27,13 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -40,6 +49,9 @@ public class MyForegroundService extends Service  {
     AppDatabase db;
 
 
+    LocalDate lastDate = LocalDate.of(2022, 7,31);
+    int lastHour = 0;
+    int lastMinute = 0;
 
     int counter = 0;
     int threshold = 150;
@@ -78,6 +90,7 @@ public class MyForegroundService extends Service  {
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         db = ((MyApplication)getApplication()).getAppDatabase();
+
 
         SensorEventListener stepDetector = new SensorEventListener() {
             @Override
@@ -207,6 +220,7 @@ public class MyForegroundService extends Service  {
                         //Log.e("StepCount", String.valueOf(stepCount));
                         try {
                             Thread.sleep(2000);
+                            dateChange();
                         } catch ( InterruptedException e) {
 
                             e.printStackTrace();
@@ -266,4 +280,28 @@ public class MyForegroundService extends Service  {
         Log.d("activity sensor","saved activity with duration of " + duration + " seconds to database");
     }
 
+    public void dateChange() {
+        LocalDate test = LocalDate.now();
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int selectedHour = sharedPreferences.getInt("notificationHour",9);
+        int selectedMinute = sharedPreferences.getInt("notificationMinute", 14);
+        if(!lastDate.equals(test) || lastHour != selectedHour || lastMinute != selectedMinute) {
+            lastDate = LocalDate.now();
+            lastHour = selectedHour;
+            lastMinute = selectedMinute;
+            startAlarm(lastDate, lastHour, lastMinute);
+        }
+    }
+    public void startAlarm(LocalDate day, int hour, int minute){
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        LocalDateTime time = day.atStartOfDay().plusHours(hour).plusMinutes(minute);
+        ZonedDateTime zdt = ZonedDateTime.of(time, ZoneId.systemDefault());
+        long millis = zdt.toInstant().toEpochMilli();
+        LocalDateTime test = LocalDateTime.now();
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, millis, pendingIntent);
+    }
 }

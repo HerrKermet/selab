@@ -61,6 +61,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".AlertReceiver"></receiver>
+
         <activity
             android:name=".QuestionnaireWelcome"
             android:exported="false"

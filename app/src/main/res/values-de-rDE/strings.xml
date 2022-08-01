@@ -109,5 +109,7 @@ das bedeutendste positive Ereignis?</string>
     <string name="NoBarData">Für dieses Intervall konnten keine Daten gefunden werden!</string>
     <string name="NoBarDataLastDays">Keine Aktivitäten in den letzten 7 Tagen!</string>
 
+    <string name="notificationText">Es ist Zeit für den täglichen Fragebogen!</string>
+
 
 </resources>
