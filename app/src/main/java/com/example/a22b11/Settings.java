@@ -1,6 +1,7 @@
 package com.example.a22b11;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -21,20 +24,27 @@ public class Settings extends AppCompatActivity {
     TimePickerDialog timePickerDialog;
     int selectedHour = 18;
     int selectedMinutes = 0;
+    private SwitchCompat foregroundServiceSwitch;
+
+    final private static DateTimeFormatter dateTimeFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withZone(ZoneId.systemDefault());
 
     public static String getTimeString(Instant instant) {
         if (instant == null) {
             return "/";
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                .withZone(ZoneId.systemDefault());
-        return formatter.format(instant);
+        return dateTimeFormatter.format(instant);
     }
+
+    private SharedPreferences sharedPreferences;
+
+    private final static String FOREGROUND_SERVICE_ENABLED = "foregroundServiceEnabled";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        sharedPreferences = MyApplication.getInstance().getSharedPreferences();
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
         setTheme(theme);
         setContentView(R.layout.activity_settings);
@@ -75,8 +85,6 @@ public class Settings extends AppCompatActivity {
                         selectedMinutes = minutes;
                         textViewSelectTime.setText(addLeadingZero(selectedHour) + ":" + addLeadingZero(selectedMinutes));
 
-                        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                        sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putInt("notificationHour", selectedHour);
                         editor.putInt("notificationMinute", selectedMinutes);
@@ -87,6 +95,30 @@ public class Settings extends AppCompatActivity {
 
             }
         });
+
+        foregroundServiceSwitch = findViewById(R.id.foregroundServiceSwitch);
+
+        foregroundServiceSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setForegroundServiceEnabled(isChecked);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        foregroundServiceSwitch.setChecked(sharedPreferences.getBoolean(FOREGROUND_SERVICE_ENABLED, true));
+    }
+
+    private void setForegroundServiceEnabled(boolean enable) {
+        sharedPreferences.edit()
+                .putBoolean(FOREGROUND_SERVICE_ENABLED, enable)
+                .apply();
+        Intent serviceIntent = new Intent(this, MyForegroundService.class);
+        String action = enable ?
+                MyForegroundService.ACTION_START_FOREGROUND_SERVICE
+                : MyForegroundService.ACTION_STOP_FOREGROUND_SERVICE;
+        serviceIntent.setAction(action);
+        startService(serviceIntent);
     }
 
     public String addLeadingZero(Integer n) {
