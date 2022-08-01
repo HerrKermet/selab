@@ -1,5 +1,6 @@
 package com.example.a22b11;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.Toast;
 
 import com.example.a22b11.db.Activity;
 import com.example.a22b11.db.ActivityDao;
@@ -36,6 +38,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class StatisticalRepresentation extends AppCompatActivity {
 
@@ -74,7 +78,6 @@ public class StatisticalRepresentation extends AppCompatActivity {
         if(getIntent().hasExtra("startInstant") && getIntent().hasExtra("endInstant")){
             startDate = (Instant) getIntent().getSerializableExtra("startInstant");
             endDate = (Instant) getIntent().getSerializableExtra("endInstant");
-
         }
 
         else{
@@ -86,7 +89,6 @@ public class StatisticalRepresentation extends AppCompatActivity {
         entriesMood = new ArrayList<>();
         entriesActivities = new ArrayList<>();
 
-
         setContentView(R.layout.activity_statistical_representation);
 
         //SO FAR IT IS NOT PLOTTING FOR ME, aaaaaahhhhhh
@@ -95,15 +97,11 @@ public class StatisticalRepresentation extends AppCompatActivity {
         barChartActivities.setNoDataText(getString(R.string.NoBarData));
         barChartActivities.setNoDataTextColor(textColor);
 
-
-
         barChartMood.setNoDataText(getString(R.string.NoBarData));
         barChartMood.setNoDataTextColor(textColor);
-
-
-
     }
 
+    final private static Executor databaseTransactionExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onResume() {
@@ -111,58 +109,31 @@ public class StatisticalRepresentation extends AppCompatActivity {
         // retrieve mood objects from database
         // get objects from Database
 
-        //TODO QUERY change this to new Query
-        AppDatabase dbMood = ((MyApplication)getApplication()).getAppDatabase();
+        final MyApplication myApplication = ((MyApplication) getApplication());
+        final AppDatabase db = myApplication.getAppDatabase();
+        final MoodDao moodsDao = db.moodDao();
+        final ActivityDao activityDao = db.activityDao();
+        final long userId = myApplication.getLoggedInUser().id;
 
-        MoodDao moodDao = dbMood.moodDao();
-        ListenableFuture<List<Mood>> future2 = (ListenableFuture<List<Mood>>) moodDao.getMoodBetween(startDate, endDate);
-        final StatisticalRepresentation mythis = this;
-        Futures.addCallback(
-                future2,
-                new FutureCallback<List<Mood>>() {
-
-
-                    @Override
-                    public void onSuccess(List<Mood> result) {
-                        moodBetween = result;
-                        Log.d("Mood from Database", String.valueOf(moodBetween));
+        databaseTransactionExecutor.execute(() -> {
+            try {
+                Log.d("Room", "Retrieving moods and activities between dates...");
+                db.runInTransaction(() -> {
+                    moodBetween = moodsDao.getUserMoodBetweenSync(userId, startDate, endDate);
+                    activitiesBetween = activityDao.getUserActivitiesBetweenDatesSync(userId, startDate, endDate);
+                    runOnUiThread(() -> {
                         plotMoods(barChartMood);
-
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        Log.e("Failure to retrieve Mood",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
-        // get objects from Database
-        AppDatabase dbAct = ((MyApplication)getApplication()).getAppDatabase();
-        //TODO QUERY change this to new Query
-        ActivityDao activityDao = dbAct.activityDao();
-
-        ListenableFuture<List<Activity>> future3 = (ListenableFuture<List<Activity>>) activityDao.getActivitiesBetweenDates(startDate, endDate);
-        Futures.addCallback(
-                future3,
-                new FutureCallback<List<Activity>>() {
-
-
-                    @Override
-                    public void onSuccess(List<Activity> result) {
-                        activitiesBetween = result;
                         plotActivities(barChartActivities);
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        Log.e("Failure to retrieve activities",thrown.getMessage());
-                    }
-                },
-                // causes the callbacks to be executed on the main (UI) thread
-                this.getMainExecutor()
-        );
-
+                    });
+                    Log.d("Room", "Moods and activities between dates retrieved successfully");
+                });
+            }
+            catch (@NonNull Throwable t) {
+                Log.e("Room", "Failed to retrieve moods and activities between dates" +
+                        "with exception: " + t.getMessage());
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.database_transaction_failed, Toast.LENGTH_SHORT).show());
+            }
+        });
     }
 
     private void fillActivityYValues(List<BarEntry> entryList, List<Activity> activitiesList, int [] durations, LocalDate startDate, LocalDate endDate) {
@@ -276,9 +247,9 @@ public class StatisticalRepresentation extends AppCompatActivity {
         if(noResults) return null;
         return result;
     }
+
     private void fillMoodYValues(List<BarEntry> entryList, List<Mood> moodList, int [] moodScore, LocalDate startDate, LocalDate endDate) {
         int [] mergedResults = mergeMoods(moodList, moodScore, startDate, endDate);
-
 
         if(mergedResults!=null) {
             for (int i = 0; i < mergedResults.length; i++) {
@@ -311,7 +282,6 @@ public class StatisticalRepresentation extends AppCompatActivity {
         }
     }
 
-
     //Implementation
     private void plotActivities (BarChart bChart){
         List<Activity> activities;
@@ -326,6 +296,7 @@ public class StatisticalRepresentation extends AppCompatActivity {
         fillActivityYValues(entriesActivities, activities, getDurations(activities), lo_startDate, lo_endDate);
         fillXValues(bChart, lo_startDate, entriesActivities.size());
     }
+
     private void plotMoods (BarChart bChart){
         List<Mood> moods;
         LocalDate lo_startDate;

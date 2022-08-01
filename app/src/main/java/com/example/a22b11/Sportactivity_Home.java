@@ -193,6 +193,7 @@ public class Sportactivity_Home extends AppCompatActivity {
             }
         });
     }
+
     public void buttonSelectActivity(View view) {
 
         Intent intentToSportActivity = new Intent(this,Sportactivity_Selection.class);

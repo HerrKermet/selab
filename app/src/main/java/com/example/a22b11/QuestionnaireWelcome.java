@@ -147,11 +147,6 @@ public class QuestionnaireWelcome extends AppCompatActivity {
 
         int mood_score = MoodScore.calculate(mood);
 
-
-
-
-
-
         dbTransactionExecutor.execute(() -> {
             // only insert mood when questionnaire is valid and not only null
             try {

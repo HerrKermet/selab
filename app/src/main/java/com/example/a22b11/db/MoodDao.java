@@ -31,14 +31,20 @@ public interface MoodDao {
     @Query("SELECT * FROM moods WHERE user_id = :userId AND assessment > :assessMin AND assessment < :assessMax")
     ListenableFuture<List<Mood>> getAllByUserIdAndAssessmentRange(long userId, Instant assessMin, Instant assessMax);
 
+    @Query("SELECT * FROM moods WHERE assessment BETWEEN :assessMin AND :assessMax ORDER BY assessment ASC")
+    ListenableFuture<List<Mood>> getMoodBetween(Instant assessMin, Instant assessMax);
+
+    @Query("SELECT * FROM moods WHERE user_id = :userId AND assessment BETWEEN :assessMin AND :assessMax ORDER BY assessment ASC")
+    ListenableFuture<List<Mood>> getUserMoodBetween(long userId, Instant assessMin, Instant assessMax);
+
+    @Query("SELECT * FROM moods WHERE user_id = :userId AND assessment BETWEEN :assessMin AND :assessMax ORDER BY assessment ASC")
+    List<Mood> getUserMoodBetweenSync(long userId, Instant assessMin, Instant assessMax);
+
     @Query("SELECT * FROM moods WHERE user_id = :userId AND id IS NULL")
     List<Mood> getNewByUserIdSync(long userId);
 
     @Query("SELECT * FROM moods WHERE user_id = :userId AND is_modified")
     List<Mood> getModifiedByUserIdSync(long userId);
-
-    @Query("SELECT * FROM moods WHERE assessment BETWEEN :assessMin AND :assessMax ORDER BY assessment ASC")
-    ListenableFuture<List<Mood>> getMoodBetween(Instant assessMin, Instant assessMax);
 
     @Update
     void updateSync(Mood mood);

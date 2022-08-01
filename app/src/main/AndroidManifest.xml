@@ -42,7 +42,6 @@
         <activity
             android:name=".StatisticalRepresentation"
             android:exported="false" />
-
         <activity
             android:name=".inputForStatisticalRepresentation"
             android:exported="false" />
