@@ -220,7 +220,7 @@ public class MyForegroundService extends Service  {
                         //Log.e("StepCount", String.valueOf(stepCount));
                         try {
                             Thread.sleep(2000);
-                            dateChange();
+                            timeChange();
                         } catch ( InterruptedException e) {
 
                             e.printStackTrace();
@@ -280,12 +280,12 @@ public class MyForegroundService extends Service  {
         Log.d("activity sensor","saved activity with duration of " + duration + " seconds to database");
     }
 
-    public void dateChange() {
-        LocalDate test = LocalDate.now();
+    public void timeChange() {
+
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         int selectedHour = sharedPreferences.getInt("notificationHour",9);
-        int selectedMinute = sharedPreferences.getInt("notificationMinute", 14);
-        if(!lastDate.equals(test) || lastHour != selectedHour || lastMinute != selectedMinute) {
+        int selectedMinute = sharedPreferences.getInt("notificationMinute", 27);
+        if(!lastDate.equals(LocalDate.now()) || lastHour != selectedHour || lastMinute != selectedMinute) {
             lastDate = LocalDate.now();
             lastHour = selectedHour;
             lastMinute = selectedMinute;
@@ -301,7 +301,7 @@ public class MyForegroundService extends Service  {
         LocalDateTime time = day.atStartOfDay().plusHours(hour).plusMinutes(minute);
         ZonedDateTime zdt = ZonedDateTime.of(time, ZoneId.systemDefault());
         long millis = zdt.toInstant().toEpochMilli();
-        LocalDateTime test = LocalDateTime.now();
+
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, millis, pendingIntent);
     }
 }
