@@ -2,10 +2,16 @@ plugins {
     id 'com.android.application'
 }
 
-def localProperties = new Properties()
-localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+def server_url = null
 
-def server_url = localProperties['server_url']
+try {
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+    server_url = localProperties['server_url']
+}
+catch (FileNotFoundException ignored) {
+}
+
 if (server_url == null) {
     server_url = "https://fitness.ax24.net/"
 }
