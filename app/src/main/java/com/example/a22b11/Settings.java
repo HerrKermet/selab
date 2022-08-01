@@ -2,15 +2,19 @@ package com.example.a22b11;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Settings extends AppCompatActivity {
 
+    private static final int PERMISSIONS_FINE_LOCATION = 99;
     TextView textViewSelectTime, textViewQuestionnaireReminderTime;
     TimePickerDialog timePickerDialog;
     int selectedHour = 18;
@@ -125,11 +130,26 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (enableGpsSwitch.isChecked()) {
-                    sharedPreferences.edit().putBoolean("allowGps", true).commit();
+
                     //TODO permission abfrage
+                    if (ActivityCompat.checkSelfPermission(Settings.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("GPS", String.valueOf(enableGpsSwitch.isChecked()));
+                        sharedPreferences.edit().putBoolean("allowGps", true).commit();
+                    }
+                    else{
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_FINE_LOCATION);
+                        }
+                        if (ActivityCompat.checkSelfPermission(Settings.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            Log.d("GPS", String.valueOf(enableGpsSwitch.isChecked()));
+                            sharedPreferences.edit().putBoolean("allowGps", true).commit();
+                        }
+                        else {
+                            sharedPreferences.edit().putBoolean("allowGps", false).commit();
+                            setEnableGpsSwitch(false);
+                        }
+                    }
 
-
-                    Log.d("GPS", String.valueOf(enableGpsSwitch.isChecked()));
                 }
                 else {
                     sharedPreferences.edit().putBoolean("allowGps", false).commit();
@@ -169,4 +189,5 @@ public class Settings extends AppCompatActivity {
     public void setEnableGpsSwitch(boolean isEnabled) {
         enableGpsSwitch.setChecked(isEnabled);
     }
+
 }

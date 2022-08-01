@@ -53,7 +53,7 @@ public class Sportactivity_Record extends AppCompatActivity {
     LocationRequest locationRequest; //config file for FusedLocationProvideClient settings (settings in onCreate)
     LocationCallback locationCallback;
     private boolean allowGps = false;
-    private boolean gpsOn = false; //if false, towers+wifi is used
+    private boolean gpsOn = true; //if false, towers+wifi is used
 
 
     long pausedAt;
@@ -71,7 +71,7 @@ public class Sportactivity_Record extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
-        gpsOn = sharedPreferences.getBoolean("gpsOn", false);
+        gpsOn = sharedPreferences.getBoolean("gpsOn", true);
         allowGps = sharedPreferences.getBoolean("allowGps", false);
         setTheme(theme);
         setContentView(R.layout.activity_sportrecord);
