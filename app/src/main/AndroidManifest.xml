@@ -20,10 +20,12 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Settings"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Navigation_Main_Page"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".StartupActivity"
             android:exported="true">
@@ -39,34 +41,43 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".StatisticalRepresentation"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".inputForStatisticalRepresentation"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Color_Choose_Theme"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Sportactivity_Edit"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Sportactivity_Edit_Selection"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Sportactivity_Home" />
         <activity
             android:name=".Sportactivity_Selection"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Sportactivity_Home" />
         <activity
             android:name=".Sportactivity_Record"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Sportactivity_Selection" />
         <activity
             android:name=".Sportactivity_Home"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".MyForegroundService" />
 
@@ -85,7 +96,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".MyForegroundService" />
     </application>
