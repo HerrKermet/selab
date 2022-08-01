@@ -179,6 +179,8 @@ public class Sportactivity_Home extends AppCompatActivity {
                     runOnUiThread(() -> {
                         itemAdapter adapter = new itemAdapter(latestActivities, activityDao, this);
                         recyclerView.setAdapter(adapter);
+                        if(activitiesBetween.size()==0) empty = true;
+                        else empty = false;
                         plotActivities(barChart);
                         notificationBadge.setNumber(appGeneratedActivities.size());
                     });
