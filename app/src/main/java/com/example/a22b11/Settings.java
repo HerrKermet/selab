@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -21,14 +23,17 @@ public class Settings extends AppCompatActivity {
     TimePickerDialog timePickerDialog;
     int selectedHour = 18;
     int selectedMinutes = 0;
+    private Switch foregroundServiceSwitch;
+
+    final private static DateTimeFormatter dateTimeFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withZone(ZoneId.systemDefault());
 
     public static String getTimeString(Instant instant) {
         if (instant == null) {
             return "/";
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                .withZone(ZoneId.systemDefault());
-        return formatter.format(instant);
+        return dateTimeFormatter.format(instant);
     }
 
     @Override
@@ -87,6 +92,21 @@ public class Settings extends AppCompatActivity {
 
             }
         });
+
+        foregroundServiceSwitch = findViewById(R.id.foregroundServiceSwitch);
+
+        foregroundServiceSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setForegroundServiceEnabled(isChecked);
+        });
+    }
+
+    private void setForegroundServiceEnabled(boolean enable) {
+        Intent serviceIntent = new Intent(this, MyForegroundService.class);
+        String action = enable ?
+                MyForegroundService.ACTION_START_FOREGROUND_SERVICE
+                : MyForegroundService.ACTION_STOP_FOREGROUND_SERVICE;
+        serviceIntent.setAction(action);
+        startForegroundService(serviceIntent);
     }
 
     public String addLeadingZero(Integer n) {

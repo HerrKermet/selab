@@ -39,6 +39,9 @@ import java.util.concurrent.Executors;
 
 public class MyForegroundService extends Service  {
 
+    public static final String ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE";
+    public static final String ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE";
+
     //Release
     final int stepThresholdToTriggerActivity = 930; //TODO adjust value
     final int maxPauseDurationSeconds = 300;  //TODO adjust value
@@ -82,6 +85,34 @@ public class MyForegroundService extends Service  {
     Instant lastSaveTime = null;
 
     private final static Executor databaseTransactionExecutor = Executors.newSingleThreadExecutor();
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null) {
+            String action = intent.getAction();
+
+            if (action != null) {
+                switch (action) {
+                    case ACTION_STOP_FOREGROUND_SERVICE:
+                        stopForegroundService();
+                        break;
+                    case ACTION_START_FOREGROUND_SERVICE:
+                    default:
+                        startForegroundService();
+                        break;
+                }
+            }
+            else {
+                startForegroundService();
+            }
+        }
+        return START_STICKY;
+    }
+
+    private void stopForegroundService() {
+        stopForeground(true);
+        stopSelf();
+    }
 
     //TODO DELETE SOME LOGS
     @Override
@@ -150,10 +181,7 @@ public class MyForegroundService extends Service  {
         sensorManager.registerListener(stepDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    @Override
-
-
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    private void startForegroundService() {
         //Timer Init
         Timer timerObj = new Timer();
         TimerTask timerTaskObj = new TimerTask() {
@@ -277,7 +305,6 @@ public class MyForegroundService extends Service  {
 
 
         startForeground(1001, notification.build());
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable
