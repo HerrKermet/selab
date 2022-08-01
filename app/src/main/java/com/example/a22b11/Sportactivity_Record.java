@@ -52,11 +52,10 @@ public class Sportactivity_Record extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;        //Google Api for Location Services
     LocationRequest locationRequest; //config file for FusedLocationProvideClient settings (settings in onCreate)
     LocationCallback locationCallback;
-    private boolean gpsOn = true; //if false, towers+wifi is used
+    private boolean allowGps = false;
+    private boolean gpsOn = false; //if false, towers+wifi is used
 
 
-
-    long startedAt;
     long pausedAt;
     String selectedActivity;
     Integer selectedActivityNumber;
@@ -72,6 +71,8 @@ public class Sportactivity_Record extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         int theme = sharedPreferences.getInt("selectedTheme",R.style.Theme_22B11);
+        gpsOn = sharedPreferences.getBoolean("gpsOn", false);
+        allowGps = sharedPreferences.getBoolean("allowGps", false);
         setTheme(theme);
         setContentView(R.layout.activity_sportrecord);
         button = findViewById(R.id.Start_Button);
@@ -84,8 +85,11 @@ public class Sportactivity_Record extends AppCompatActivity {
         tv_labelLocation.setVisibility(View.GONE);
         tv_address = findViewById(R.id.tv_address);
         //location management
-        locationRequest = new LocationRequest();
-        locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
+        locationRequest = LocationRequest.create()
+                .setInterval(1000 * DEFAULT_UPDATE_INTERVAL) //big Interval
+                .setFastestInterval(1000 * FAST_UPDATE_INTERVAL) //fastest interval, maximum power, maximum accuracy
+                .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY);
+
 
 
 
@@ -95,20 +99,16 @@ public class Sportactivity_Record extends AppCompatActivity {
             selectedActivity = savedInstanceState.getString("selectedActivity");
             textView.setText(getString(R.string.selected)+": " + selectedActivity);
 
-            //startTime = (String) savedInstanceState.getString("startTime");
-            //endTime = savedInstanceState.getString("endTime");
             duration = savedInstanceState.getInt("duration");
         }
 
-        locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL); //big Interval
-        locationRequest.setFastestInterval(1000 * FAST_UPDATE_INTERVAL); //fastest interval, maximum power, maximum accuracy
-        locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
         //TODO implement switch in settings activity (gps or towers+wifi)
         if(gpsOn){
-            locationRequest.setPriority(locationRequest.PRIORITY_HIGH_ACCURACY); //GPS use
+            locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY); //GPS use
         }
         else{
-            locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);//towers+wife use
+            locationRequest.setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY);//towers+wife use
         }
 
         if(getIntent().hasExtra("selectedActivity"))
@@ -124,21 +124,23 @@ public class Sportactivity_Record extends AppCompatActivity {
             finishButton.setVisibility(View.GONE);
         }
         else finishButton.setVisibility(View.VISIBLE);
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                if(locationResult == null) {
-                    return;
+        if(allowGps) {
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+
+                    super.onLocationResult(locationResult);
+                    Location location = locationResult.getLastLocation();
+                    updateUIlocation(location);
+                    //save location
                 }
+            };
 
-                super.onLocationResult(locationResult);
-                Location location = locationResult.getLastLocation();
-                updateUIlocation(location);
-                //save location
-            }
-        };
-
-        updateGPS();
+            updateGPS();
+        }
     }
 
     @Override
@@ -221,21 +223,6 @@ public class Sportactivity_Record extends AppCompatActivity {
         endTime = Instant.now();
 
     }
-
-    public void resetTimer(View view){
-        if(running){
-            chronometer.stop();
-            running = false;
-        }
-
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        chronometer.stop();
-        pauseOffset = 0;
-    }
-
-
-
-
 
     //Saving SelectedActivity, SelectedActivityNumber, StartTime,EndTime and Duration in intent and passing them into next page
     public void buttonClickFinish(View view){
@@ -322,8 +309,6 @@ public class Sportactivity_Record extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
-
-
 
 }
 
