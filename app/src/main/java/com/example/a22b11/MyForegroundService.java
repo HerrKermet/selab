@@ -50,7 +50,7 @@ public class MyForegroundService extends Service  {
 
 
     LocalDate lastDate = LocalDate.of(2022, 7,31);
-    int lastHour = 0;
+    int lastHour = 18;
     int lastMinute = 0;
 
     int counter = 0;
@@ -283,8 +283,8 @@ public class MyForegroundService extends Service  {
     public void timeChange() {
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        int selectedHour = sharedPreferences.getInt("notificationHour",9);
-        int selectedMinute = sharedPreferences.getInt("notificationMinute", 27);
+        int selectedHour = sharedPreferences.getInt("notificationHour",18);
+        int selectedMinute = sharedPreferences.getInt("notificationMinute", 00);
         if(!lastDate.equals(LocalDate.now()) || lastHour != selectedHour || lastMinute != selectedMinute) {
             lastDate = LocalDate.now();
             lastHour = selectedHour;
