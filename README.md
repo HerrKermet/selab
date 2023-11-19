@@ -1,2 +1,2 @@
 # Fitness App
-[Small presentation](presentation.pdf)
+[Click here for a Small presentation](presentation.pdf)
